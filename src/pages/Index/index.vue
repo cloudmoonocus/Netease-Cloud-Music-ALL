@@ -6,11 +6,11 @@
         <i class="iconfont icon-wangyiyunyinyueclick logo"></i>
         <div class="bottom">
             <div class="phone" @click="$router.push('/index/phonesignin')">
-                <van-icon name="phone-circle" class="first" />
+                <Icon name="phone-circle" class="first" />
                 <div>手机登录</div>
             </div>
             <div class="tourist">
-                <van-icon name="friends" class="first" />
+                <Icon name="friends" class="first" @click="friendsSignIn" />
                 <div>游客访问</div>
             </div>
         </div>
@@ -23,20 +23,17 @@
     </div>
 </template>
 
-<script>
-import { Icon, Popup, Field } from 'vant'
-import { ref } from 'vue'
-export default {
-    setup() {
-        // 控制手机号登录弹窗
-        const phoneShow = ref(false);
+<script setup>
+import { Icon } from 'vant'
+import { reqFriendsSignIn } from '@/Api'
+import router from '@/routers';
 
-        return { phoneShow }
-    },
-    components: {
-        VanIcon: Icon,
-        VanPopup: Popup,
-        VanField: Field
+// 游客登录
+async function friendsSignIn() {
+    let friendsSignResult = await reqFriendsSignIn();
+    if (friendsSignResult.code === 200) {
+        router.push('/found')
+        console.log(friendsSignResult.cookie);
     }
 }
 </script>
