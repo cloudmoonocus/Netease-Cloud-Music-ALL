@@ -6,96 +6,26 @@
         </div>
         <!-- 第二层-播放全部- -->
         <div class="second">
-            <van-icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
+            <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
             <span>播放全部</span>
         </div>
         <!-- 歌曲列表 -->
         <div class="third">
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
-            </div>
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
-            </div>
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
-            </div>
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
-            </div>
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
-            </div>
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
-            </div>
-            <div class="card">
-                <img
-                    src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                    alt=""
-                />
-                <div>Always online(温柔男声)</div>
-                <div>嘉琪先生</div>
-                <van-icon name="play-circle-o" class="play-circle-o" />
-                <van-icon name="more-o" class="more-o" />
+            <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic">
+                <img :src="dailyRecMusics.al.picUrl" :alt="dailyRecMusics.name" />
+                <div>{{ dailyRecMusics.name }}</div>
+                <span v-for="nameDate in dailyRecMusics.ar">{{ nameDate.name }}</span>
+                <Icon name="play-circle-o" class="play-circle-o" />
+                <Icon name="more-o" class="more-o" />
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { Icon } from 'vant';
-export default {
-    name: 'DailyRecommendation',
-    setup() {
-        return {};
-    },
-    components: {
-        VanIcon: Icon,
-    },
-};
+import { found } from '@/store/Found';
+const foundData = found();
 </script>
 
 <style lang="less" scoped>
@@ -107,6 +37,7 @@ export default {
         z-index: 100;
         overflow: hidden;
     }
+
     .pure_top::after {
         content: '';
         width: 140%;
@@ -120,6 +51,7 @@ export default {
         background-size: 100% 100%;
     }
 }
+
 .second {
     display: flex;
     margin-top: 10px;
@@ -132,37 +64,52 @@ export default {
         font-weight: 700;
     }
 }
+
 .third {
     margin-top: 20px;
 
     .card {
         position: relative;
         height: 80px;
+
         img:nth-child(1) {
             position: absolute;
             margin-left: 15px;
             border-radius: 10px;
             height: 55px;
+            width: 55px;
         }
+
         div:nth-child(2) {
             position: absolute;
             left: 80px;
-            top: 10px;
+            top: 5px;
             font-size: 13px;
         }
-        div:nth-child(3) {
+
+        span:nth-child(3) {
             position: absolute;
             left: 80px;
-            top: 30px;
+            top: 23px;
             font-size: 10px;
             color: rgb(122, 119, 119);
         }
+
+        span:nth-child(4) {
+            position: absolute;
+            left: 80px;
+            top: 38px;
+            font-size: 10px;
+            color: rgb(122, 119, 119);
+        }
+
         .play-circle-o {
             position: absolute;
             top: 10px;
             right: 55px;
             color: rgb(122, 119, 119);
         }
+
         .more-o {
             position: absolute;
             top: 10px;

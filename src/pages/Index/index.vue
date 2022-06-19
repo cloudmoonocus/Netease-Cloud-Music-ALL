@@ -14,12 +14,6 @@
                 <div>游客访问</div>
             </div>
         </div>
-        <div class="infor">
-            <div>登录接口为官方提供</div>
-            <div>您在此输入的信息不会发送给任何个人</div>
-            <div>仅用于该项目获取您的软件用户信息</div>
-            <div>Made By Cloudmoon</div>
-        </div>
     </div>
 </template>
 
@@ -32,8 +26,8 @@ import router from '@/routers';
 async function friendsSignIn() {
     let friendsSignResult = await reqFriendsSignIn();
     if (friendsSignResult.code === 200) {
-        router.push('/found')
-        console.log(friendsSignResult.cookie);
+        router.replace('/found')
+        localStorage.setItem('cookie', friendsSignResult.cookie)
     }
 }
 </script>
@@ -87,15 +81,6 @@ async function friendsSignIn() {
                 font-size: 15px;
             }
         }
-    }
-
-    .infor {
-        position: fixed;
-        bottom: 5px;
-        left: 50%;
-        transform: translateX(-50%);
-        text-align: center;
-        font-size: 8px;
     }
 
 }

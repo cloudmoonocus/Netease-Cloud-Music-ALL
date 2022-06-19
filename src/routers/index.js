@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { Toast } from 'vant';
 
 const router = createRouter({
     // 哈希模式
@@ -230,6 +231,14 @@ const router = createRouter({
                     meta: { title: '登录', show: false, activeHeader: false },
                 },
             ],
+            // 独享路由守卫
+            beforeEnter: (to, from, next) => {
+                if (localStorage.getItem('cookie')) {
+                    Toast.fail('您已经登录');
+                } else {
+                    next();
+                }
+            },
         },
         // 自动起始跳转到发现页
         {
@@ -243,6 +252,11 @@ const router = createRouter({
             meta: { title: '·*·Failed·*·' },
         },
     ],
+});
+
+// 全局路由前置守卫
+router.beforeEach((to, from, next) => {
+    next();
 });
 
 export default router;

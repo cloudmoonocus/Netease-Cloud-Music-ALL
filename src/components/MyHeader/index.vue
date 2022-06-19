@@ -1,114 +1,125 @@
 <template>
     <!-- 顶部 -->
-    <van-sticky :offset-top="0" v-if="$route.meta.activeHeader">
-        <van-nav-bar :title="title">
+    <Sticky :offset-top="0" v-if="$route.meta.activeHeader">
+        <Nav-bar :title="title">
             <template #left>
-                <van-icon @click="showPopup" name="wap-nav" size="25" style="color: #e60026" />
+                <Icon @click="show = true;" name="wap-nav" size="25" style="color: #e60026" />
             </template>
             <template #right>
-                <van-icon name="search" size="25" style="color: #e60026" @click="$router.push('/search')" />
+                <Icon name="search" size="25" style="color: #e60026" @click="$router.push('/search')" />
             </template>
-        </van-nav-bar>
-    </van-sticky>
+        </Nav-bar>
+    </Sticky>
     <!-- 侧边栏 -->
-    <van-popup v-model:show="show" position="left" :style="{ height: '100%', width: '80%', float: 'left' }"
+    <Popup v-model:show="show" position="left" :style="{ height: '100%', width: '80%', float: 'left' }"
         class="van-popup">
-        <div class="headDiv" @click="$router.push('/index'); show = false">
-            <van-image round width="35px" height="35px"
-                src="https://img-qn-4.51miz.com/Element/00/88/82/33/f95ce822_E888233_91015ccc.png!/quality/90/unsharp/true/compress/true/format/png/fh/320"
-                fit="cover" position="left" class="van-image" />
-            <span class="headSpan">立即登录</span>
-            <van-icon name="arrow" class="head-van-icon" />
+        <div class="headDiv" @click="goSignIn">
+            <van-image round width="35px" height="35px" :src="avatarUrl" fit="cover" position="left"
+                class="van-image" />
+            <span class="headSpan">{{ nickname }}</span>
+            <Icon name="arrow" class="head-van-icon" />
         </div>
         <br />
-        <van-cell-group inset>
-            <van-cell title="&nbsp;我的消息" icon="chat-o" is-link />
-            <van-cell title="&nbsp;云贝中心" icon="cash-back-record" is-link />
-            <van-cell title="&nbsp;创作者中心" icon="bulb-o" is-link />
-        </van-cell-group>
+        <Cell-group inset>
+            <Cell title="&nbsp;我的消息" icon="chat-o" is-link />
+            <Cell title="&nbsp;云贝中心" icon="cash-back-record" is-link />
+            <Cell title="&nbsp;创作者中心" icon="bulb-o" is-link />
+        </Cell-group>
         <br />
-        <van-cell-group inset>
-            <van-cell title="音乐服务" />
-            <van-cell title="&nbsp;云村有票" icon="description" is-link />
-            <van-cell title="&nbsp;商城" icon="shopping-cart-o" is-link />
-            <van-cell title="&nbsp;Beat交易平台" icon="shop-o" is-link />
-            <van-cell title="&nbsp;游戏专区" icon="award-o" is-link />
-            <van-cell title="&nbsp;口袋彩铃" icon="phone-circle-o" is-link />
-        </van-cell-group>
+        <Cell-group inset>
+            <Cell title="音乐服务" />
+            <Cell title="&nbsp;云村有票" icon="description" is-link />
+            <Cell title="&nbsp;商城" icon="shopping-cart-o" is-link />
+            <Cell title="&nbsp;Beat交易平台" icon="shop-o" is-link />
+            <Cell title="&nbsp;游戏专区" icon="award-o" is-link />
+            <Cell title="&nbsp;口袋彩铃" icon="phone-circle-o" is-link />
+        </Cell-group>
         <br />
-        <van-cell-group inset>
-            <van-cell title="其他" />
-            <van-cell title="&nbsp;设置" icon="setting-o" is-link />
-            <van-cell title="&nbsp;夜间模式" icon="closed-eye" is-link>
+        <Cell-group inset>
+            <Cell title="其他" />
+            <Cell title="&nbsp;设置" icon="setting-o" is-link />
+            <Cell title="&nbsp;夜间模式" icon="closed-eye" is-link>
                 <template #right-icon>
-                    <van-switch v-model="checked" size="24" />
+                    <Switch v-model="checked" size="24" />
                 </template>
-            </van-cell>
-            <van-cell title="&nbsp;定时关闭" icon="underway-o" is-link />
-            <van-cell title="&nbsp;个性装扮" icon="contact" is-link />
-            <van-cell title="&nbsp;边听边存" icon="down" is-link />
-            <van-cell title="&nbsp;在线听歌免流量" icon="debit-pay" is-link />
-            <van-cell title="&nbsp;音乐黑名单" icon="close" is-link />
-            <van-cell title="&nbsp;青少年模式" icon="certificate" is-link />
-            <van-cell title="&nbsp;音乐闹钟" icon="tosend" is-link />
-        </van-cell-group>
+            </Cell>
+            <Cell title="&nbsp;定时关闭" icon="underway-o" is-link />
+            <Cell title="&nbsp;个性装扮" icon="contact" is-link />
+            <Cell title="&nbsp;边听边存" icon="down" is-link />
+            <Cell title="&nbsp;在线听歌免流量" icon="debit-pay" is-link />
+            <Cell title="&nbsp;音乐黑名单" icon="close" is-link />
+            <Cell title="&nbsp;青少年模式" icon="certificate" is-link />
+            <Cell title="&nbsp;音乐闹钟" icon="tosend" is-link />
+        </Cell-group>
         <br />
-        <van-cell-group inset>
-            <van-cell title="&nbsp;我的订单" icon="records" is-link />
-            <van-cell title="&nbsp;优惠券" icon="coupon-o" is-link />
-            <van-cell title="&nbsp;我的客服" icon="exchange" is-link />
-            <van-cell title="&nbsp;分享网易云音乐" icon="share-o" is-link />
-            <van-cell title="&nbsp;个人信息收集和使用清单" icon="warning-o" is-link />
-            <van-cell title="&nbsp;个人信息第三方共享清单" icon="browsing-history-o" is-link />
-            <van-cell title="&nbsp;个人信息与隐私保护" icon="cart-o" is-link />
-            <van-cell title="&nbsp;关于" icon="info-o" is-link />
-        </van-cell-group>
+        <Cell-group inset>
+            <Cell title="&nbsp;我的订单" icon="records" is-link />
+            <Cell title="&nbsp;优惠券" icon="coupon-o" is-link />
+            <Cell title="&nbsp;我的客服" icon="exchange" is-link />
+            <Cell title="&nbsp;分享网易云音乐" icon="share-o" is-link />
+            <Cell title="&nbsp;个人信息收集和使用清单" icon="warning-o" is-link />
+            <Cell title="&nbsp;个人信息第三方共享清单" icon="browsing-history-o" is-link />
+            <Cell title="&nbsp;个人信息与隐私保护" icon="cart-o" is-link />
+            <Cell title="&nbsp;关于" icon="info-o" is-link />
+        </Cell-group>
         <br />
-        <van-cell-group inset>
-            <van-cell center style="color: #e60026" title="退出登录/关闭" />
-        </van-cell-group>
+        <Cell-group inset>
+            <Cell center style="color: #e60026" title="退出登录/关闭" @click="logOut" />
+        </Cell-group>
         <br />
-    </van-popup>
+    </Popup>
 </template>
 
-<script>
-import { Icon, Sticky, NavBar, Popup, Cell, CellGroup, ConfigProvider, Switch } from 'vant';
+<script setup>
+import { Icon, Sticky, NavBar, Popup, Cell, CellGroup, ConfigProvider, Switch, Toast, Dialog } from 'vant';
 import { Image as VanImage } from 'vant';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-export default {
-    name: 'MyHeader',
-    setup() {
-        const route = useRoute();
-        const checked = ref(false);
-        const show = ref(false);
-        const title = ref();
-        const showPopup = () => {
-            show.value = true;
-        };
-        // 改变头部信息
-        watch(route, () => {
-            title.value = route.meta.title;
-        });
-        return {
-            checked,
-            show,
-            showPopup,
-            title,
-        };
-    },
-    components: {
-        VanIcon: Icon,
-        VanSticky: Sticky,
-        VanNavBar: NavBar,
-        VanPopup: Popup,
-        VanImage,
-        VanCell: Cell,
-        VanCellGroup: CellGroup,
-        ConfigProvider,
-        VanSwitch: Switch,
-    },
-};
+import { reqLogOut, reqSignInState } from '@/Api';
+import router from '@/routers';
+const route = useRoute();
+
+// 顶部标题
+const title = ref('网易云音乐');
+// 改变顶部标题
+watch(route, () => {
+    title.value = route.meta.title;
+});
+// 控制展示侧边栏
+const show = ref(false);
+// 侧边栏的名称和头像
+const nickname = ref('');
+const avatarUrl = ref('');
+onMounted(async () => {
+    let stateResult = await reqSignInState();
+    if (stateResult.data.code === 200) {
+        nickname.value = stateResult.data.profile.nickname;
+        avatarUrl.value = stateResult.data.profile.avatarUrl;
+    }
+})
+// 跳转登录界面
+function goSignIn() {
+    if (localStorage.getItem('cookie')) {
+        Dialog.alert({
+            message: '💖💖未制作个人主页💖💖',
+            theme: 'round-button',
+        })
+    } else {
+        router.push('/index');
+        show = false;
+    }
+}
+// 控制开关夜间模式（样式作用，无任何作用）
+const checked = ref(false);
+// 退出登录
+async function logOut() {
+    let logOutResult = await reqLogOut();
+    if (logOutResult.code === 200) {
+        localStorage.removeItem('cookie');
+        Toast.success('退出成功');
+    }
+}
+
 </script>
 
 <style lang="less" scoped>

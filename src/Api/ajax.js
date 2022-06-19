@@ -3,7 +3,7 @@ import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 
 const requests = axios.create({
-    baseURL: 'https://neteasecloudmusic-six.vercel.app/',
+    baseURL: 'https://neteasecloudmusic-cloudmoonocus.vercel.app/',
     timeout: 5000,
 });
 

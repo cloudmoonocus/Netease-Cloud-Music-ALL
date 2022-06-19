@@ -4,18 +4,9 @@
     <MyFooter />
 </template>
 
-<script>
+<script setup>
 import MyHeader from '@/components/MyHeader';
 import MyFooter from '@/components/MyFooter';
-
-export default {
-    name: 'App',
-    setup() { },
-    components: {
-        MyHeader,
-        MyFooter,
-    },
-};
 </script>
 
 <style lang="less">
@@ -34,4 +25,9 @@ export default {
         border-left-color: #e60026 !important;
     }
 }
+
+// overflow: hidden;
+// display: -webkit-box;
+// -webkit-line-clamp: 1;
+// -webkit-box-orient: vertical;
 </style>

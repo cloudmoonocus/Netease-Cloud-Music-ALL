@@ -26,6 +26,7 @@
 import { Field, Button, Toast, PasswordInput, NumberKeyboard, Notify } from "vant";
 import { ref, watch } from "vue";
 import { reqSignIn, reqIfPhoneExist, reqSignInFinal } from "@/Api";
+import router from "@/routers";
 
 // 获取输入的手机号
 const tel = ref('');
@@ -61,6 +62,7 @@ async function next() {
             let ifPhoneResult = await reqIfPhoneExist(tel.value)
             if (ifPhoneResult.exist === 1) {
                 const phoneResult = await reqSignIn(tel.value);
+
                 if (phoneResult.code === 400 && phoneResult.message === '发送验证码超过限制:每个手机号一天只能发5条验证码') {
                     Notify({ type: 'danger', message: '🔔一个手机号每天最多能发送五次验证码' });
                 } else if (phoneResult.code === 200) {
@@ -95,6 +97,8 @@ async function submit() {
     console.log(codeResult);
     if (codeResult.code === 200) {
         Toast.success('登录成功');
+        localStorage.setItem('cookie', codeResult.cookie)
+        router.replace('/found')
     } else {
         Toast.fail('登录失败');
     }
