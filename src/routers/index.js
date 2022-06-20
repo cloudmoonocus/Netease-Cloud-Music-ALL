@@ -67,12 +67,6 @@ const router = createRouter({
                             component: () => import('@/pages/Found/DigitalAlbum/MusicLanguage'),
                             meta: { title: '语种风格馆', show: false },
                         },
-                        {
-                            name: 'albumbuy',
-                            path: 'albumbuy',
-                            component: () => import('@/pages/Found/DigitalAlbum/AlbumBuy'),
-                            meta: { title: '已购', show: false },
-                        },
                     ],
                 },
                 {

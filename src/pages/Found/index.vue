@@ -23,7 +23,8 @@
                 <a class="more" @click="$router.push('/found/musiclist')">更多 ></a>
             </div>
             <Grid :border="false" :column-num="3" class="vanGridItemParent" :center="false">
-                <Grid-item class="vanGridItem" v-for="dailyLists in foundData.dailyList" :key="dailyLists.id">
+                <Grid-item class="vanGridItem" v-for="dailyLists in foundData.dailyList.slice(0, 6)"
+                    :key="dailyLists.id">
                     <van-image class="vanImage" radius="5" :src="dailyLists.picUrl" />
                     <a :title="dailyLists.name">{{ dailyLists.name }}</a>
                 </Grid-item>

@@ -1,861 +1,122 @@
 <template>
     <div class="head">
         <!-- 此处未展示全部标签 -->
-        <van-tabs swipeable line-height="8px" :lazy-render="true" offset-top animated>
+        <Tabs swipeable line-height="8px" :lazy-render="true" offset-top="40px" animated sticky>
             <!-- 歌单列表 -->
-            <van-tab title="推荐">
+            <Tab title="精品">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityList">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="官方">
+            </Tab>
+            <Tab title="华语">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityChina">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/oQi2gsP06bgQglRzywaAaw==/3426078237827725.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>5434万</span>
-                        </div>
-                        <div>『一页岛屿』台湾.indie乐队小集</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="精品">
+            </Tab>
+            <Tab title="流行">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityPop">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/zSfYEsji6db19IVt78hG2Q==/109951167133825724.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>54万</span>
-                        </div>
-                        <div>《从 对 抗 路 打 到 刘 辉 商 店》</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="华语">
+            </Tab>
+            <Tab title="说唱">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityRap">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="流行">
+            </Tab>
+            <Tab title="电子">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityEle">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="说唱">
+            </Tab>
+            <Tab title="摇滚">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityRock">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="电子">
+            </Tab>
+            <Tab title="古风">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
+                    <div class="card" v-for="value in foundData.highQulityAncient">
+                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
                         <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
+                            <Icon name="play-circle-o" class="icon" />
+                            <span>{{ formatNumber(value.playCount) }}</span>
                         </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
+                        <div>{{ value.name }}</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="摇滚">
-                <div class="out">
-                    <!-- 歌单 -->
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                    <div class="card">
-                        <img
-                            src="https://p1.music.126.net/-iIyU37CwUSeOaMDb7iD5g==/109951163728254731.jpg?param=140y140"
-                            alt=""
-                        />
-                        <div>
-                            <van-icon name="play-circle-o" class="icon" />
-                            <span>699万</span>
-                        </div>
-                        <div>学生时代的歌词本，书写青春岁月</div>
-                    </div>
-                </div>
-            </van-tab>
-            <!-- 最右侧警告标志 -->
-            <template #nav-right>
-                <van-icon name="warning-o" />
-            </template>
-        </van-tabs>
+            </Tab>
+        </Tabs>
     </div>
 </template>
 
-<script>
+<script setup>
 import { Icon, Tab, Tabs } from 'vant';
-export default {
-    name: 'MusicList',
-    setup() {
-        return {};
-    },
-    components: {
-        VanTabs: Tabs,
-        VanTab: Tab,
-        VanIcon: Icon,
-    },
-};
+import { formatNumber } from '@/plugins/DigitalConverter'
+import { found } from "@/store/Found";
+const foundData = found();
+// 精品
+foundData.getHighQulity('', 99)
+// 华语
+foundData.getHighQulity('华语', 99)
+// 流行
+foundData.getHighQulity('流行', 99)
+// 说唱
+foundData.getHighQulity('说唱', 99)
+// 电子
+foundData.getHighQulity('电子', 99)
+// 摇滚
+foundData.getHighQulity('摇滚', 99)
+// 古风
+foundData.getHighQulity('古风', 99)
 </script>
 
 <style lang="less" scoped>
@@ -875,6 +136,7 @@ export default {
                 width: 100px;
                 border-radius: 13px;
             }
+
             div:nth-child(2) {
                 position: absolute;
                 top: 5px;
@@ -887,10 +149,12 @@ export default {
                 .icon {
                     margin-left: 3px;
                 }
+
                 span {
                     margin-right: 3px;
                 }
             }
+
             div:nth-child(3) {
                 font-size: 13px;
                 // 超过两行隐藏

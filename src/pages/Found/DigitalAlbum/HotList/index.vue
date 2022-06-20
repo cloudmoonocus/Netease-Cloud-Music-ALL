@@ -1,565 +1,293 @@
 <template>
-    <div style="background-color: #fff; height: 93.5vh">
+    <div style="background-color: #fff">
         <div class="head">
-            <van-tabs type="card">
+            <Tabs type="card">
                 <!-- 数字专辑 -->
-                <van-tab title="数字专辑榜">
+                <Tab title="数字专辑榜">
                     <div class="myBody">
-                        <van-tabs title-active-color="#e60026" :lazy-render="true">
-                            <van-tab title="日榜">
+                        <Tabs title-active-color="#e60026" :lazy-render="true">
+                            <Tab title="日榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
+                                </div>
+                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                <!-- 排名上升的标签为up，下降的为down，不变的为no（无需加<span>） -->
+                                <div class="second">
+                                    <div class="card" v-for="value in foundData.dailyRankingList0"
+                                        :key="value.rank + 1">
+                                        <div>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                            <div>支持</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Tab>
+                            <Tab title="周榜">
+                                <div class="first">
+                                    <span>榜单每半小时更新1次&nbsp;</span>
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.weekRankingList0" :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>2</span>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                            <div class="down">
-                                                <van-icon name="arrow-down" />
-                                                <span>1</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>5</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                            <div class="no">
-                                                <van-icon name="minus" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
-                            <van-tab title="周榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
-                                <div class="second">
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">1</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>2</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                            <div class="down">
-                                                <van-icon name="arrow-down" />
-                                                <span>1</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>5</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                            <div class="no">
-                                                <van-icon name="minus" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </van-tab>
+                            </Tab>
                             <!-- 年度总榜只做了2022年 -->
-                            <van-tab title="2022年榜">
+                            <Tab title="2022年榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 年榜无排名变动 -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.yearRankingList0" :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                            </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
-                            <van-tab title="总榜">
+                            </Tab>
+                            <Tab title="总榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 总榜无排名变动 -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.totalRankingList0"
+                                        :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                            </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
-                        </van-tabs>
-                    </div>
-                </van-tab>
+                            </Tab>
+                        </Tabs>
+                    </div>https://github.com/cloudmoonocus
+                </Tab>
                 <!-- 数字单曲 -->
-                <van-tab title="数字单曲榜">
+                <Tab title="数字单曲榜">
                     <div class="myBody">
-                        <van-tabs title-active-color="#e60026" :lazy-render="true">
-                            <van-tab title="日榜">
+                        <Tabs title-active-color="#e60026" :lazy-render="true">
+                            <Tab title="日榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.dailyRankingList1"
+                                        :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>2</span>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                            <div class="down">
-                                                <van-icon name="arrow-down" />
-                                                <span>1</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>5</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                            <div class="no">
-                                                <van-icon name="minus" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
-                            <van-tab title="周榜">
+                            </Tab>
+                            <Tab title="周榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.weekRankingList1" :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>2</span>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                            <div class="down">
-                                                <van-icon name="arrow-down" />
-                                                <span>1</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                            <div class="up">
-                                                <van-icon name="arrow-up" />
-                                                <span>5</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                            <div class="no">
-                                                <van-icon name="minus" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
+                            </Tab>
                             <!-- 年度总榜只做了2022年 -->
-                            <van-tab title="2022年榜">
+                            <Tab title="2022年榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 年榜无排名变动 -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.yearRankingList1" :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                            </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
-                            <van-tab title="总榜">
+                            </Tab>
+                            <Tab title="总榜">
                                 <div class="first">
                                     <span>榜单每半小时更新1次&nbsp;</span>
-                                    <van-icon name="warning-o" />
+                                    <Icon name="warning-o" />
                                 </div>
                                 <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
                                 <!-- 总榜无排名变动 -->
                                 <div class="second">
-                                    <div class="card">
+                                    <div class="card" v-for="value in foundData.totalRankingList1"
+                                        :key="value.rank + 1">
                                         <div>
-                                            <div class="three">1</div>
+                                            <div
+                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                {{ value.rank + 1 }}</div>
+                                            <div
+                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                    v-show="value.rankIncr" />
+                                                <Icon name="minus" v-show="!value.rankIncr" />
+                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                            </div>
                                         </div>
                                         <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">2</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="three">3</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
-                                            <div>支持</div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div>
-                                            <div class="noThree">4</div>
-                                        </div>
-                                        <div>
-                                            <img src="https://p1.music.126.net/J9t-hmMYJMVXpFdMgHMB6A==/109951167149343548.jpg?param=177y177"
-                                                alt="" />
-                                            <div>I NEVER DIE</div>
-                                            <div>已售1170张</div>
+                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <div>{{ value.albumName }}</div>
+                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
                                         </div>
                                     </div>
                                 </div>
-                            </van-tab>
-                        </van-tabs>
+                            </Tab>
+                        </Tabs>
                     </div>
-                </van-tab>
-            </van-tabs>
+                </Tab>
+            </Tabs>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { Tab, Tabs, Icon } from 'vant';
-export default {
-    name: 'HotList',
-    setup() {
-        return {};
-    },
-    components: {
-        VanTabs: Tabs,
-        VanTab: Tab,
-        VanIcon: Icon,
-    },
-};
+import { found } from '@/store/Found';
+import { formatNumber } from '@/plugins/DigitalConverter'
+const foundData = found();
+// 数字专辑日榜
+foundData.getAllRankingList('daily', 0)
+// 数字专辑周榜
+foundData.getAllRankingList('week', 0)
+// 数字专辑年榜
+foundData.getAllRankingList('year', 0)
+// 数字专辑总榜
+foundData.getAllRankingList('total', 0)
+// 数字单曲日榜
+foundData.getAllRankingList('daily', 1)
+// 数字单曲周榜
+foundData.getAllRankingList('week', 1)
+// 数字单曲年榜
+foundData.getAllRankingList('year', 1)
+// 数字单曲总榜
+foundData.getAllRankingList('total', 1)
 </script>
 
 <style lang="less" scoped>
@@ -651,6 +379,11 @@ export default {
                     position: absolute;
                     top: 20px;
                     margin-left: 90px;
+                    width: 135px;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
                     font-size: 14px;
                 }
 

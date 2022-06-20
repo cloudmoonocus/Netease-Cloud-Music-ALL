@@ -109,3 +109,34 @@ export const reqHotTopic = () =>
         withCredentials: true,
     });
 // #endregion
+
+// *歌单页
+// !精品歌单
+export const reqHighQuality = (tag, num) =>
+    requests({
+        url: `/top/playlist/highquality?cat=${tag}&limit=${num}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !专辑/单曲榜单
+export const reqAllRankingList = (type, albumType) =>
+    requests({
+        url: `/album/songsaleboard?type=${type}&albumType=${albumType}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !风格馆
+export const reqLanguage = (language) =>
+    requests({
+        url: `/album/list/style?area=${language}&limit=50&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !关注新歌
+export const reqNewAirtistMusic = () =>
+    requests({
+        url: `/artist/new/song?timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// #endregion

@@ -84,6 +84,11 @@ const foundData = found();
             position: absolute;
             left: 80px;
             top: 5px;
+            width: 160px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             font-size: 13px;
         }
 
@@ -91,6 +96,11 @@ const foundData = found();
             position: absolute;
             left: 80px;
             top: 23px;
+            width: 110px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             font-size: 10px;
             color: rgb(122, 119, 119);
         }
@@ -99,6 +109,11 @@ const foundData = found();
             position: absolute;
             left: 80px;
             top: 38px;
+            width: 110px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             font-size: 10px;
             color: rgb(122, 119, 119);
         }

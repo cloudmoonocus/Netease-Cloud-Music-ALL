@@ -4,7 +4,7 @@ import 'nprogress/nprogress.css';
 
 const requests = axios.create({
     baseURL: 'https://neteasecloudmusic-cloudmoonocus.vercel.app/',
-    timeout: 5000,
+    timeout: 10000,
 });
 
 // 请求拦截器

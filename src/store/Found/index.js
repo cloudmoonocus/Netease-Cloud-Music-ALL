@@ -8,6 +8,10 @@ import {
     reqDigitalAlbum,
     reqRankingList,
     reqHotTopic,
+    reqHighQuality,
+    reqAllRankingList,
+    reqLanguage,
+    reqNewAirtistMusic,
 } from '@/Api';
 
 export const found = defineStore('found', {
@@ -21,6 +25,26 @@ export const found = defineStore('found', {
             newDigitalAlbum: [],
             rankingList: [],
             hotTopic: [],
+            highQulityList: [],
+            highQulityChina: [],
+            highQulityPop: [],
+            highQulityRap: [],
+            highQulityEle: [],
+            highQulityRock: [],
+            highQulityAncient: [],
+            dailyRankingList0: [],
+            weekRankingList0: [],
+            yearRankingList0: [],
+            totalRankingList0: [],
+            dailyRankingList1: [],
+            weekRankingList1: [],
+            yearRankingList1: [],
+            totalRankingList1: [],
+            languageChinaList: [],
+            languageEuropeList: [],
+            languageKoreaList: [],
+            languageJapanList: [],
+            newAirtistMusic: [],
         };
     },
     actions: {
@@ -78,6 +102,112 @@ export const found = defineStore('found', {
             const hotTopicResult = await reqHotTopic();
             if (hotTopicResult.code === 200) {
                 this.hotTopic = hotTopicResult.hot;
+            }
+        },
+        // 精品歌单
+        async getHighQulity(tag, num) {
+            const highQulityResult = await reqHighQuality(tag, num);
+            if (highQulityResult.code === 200) {
+                switch (tag) {
+                    case '':
+                        this.highQulityList = highQulityResult.playlists;
+                        break;
+                    case '华语':
+                        this.highQulityChina = highQulityResult.playlists;
+                        break;
+                    case '流行':
+                        this.highQulityPop = highQulityResult.playlists;
+                        break;
+                    case '说唱':
+                        this.highQulityRap = highQulityResult.playlists;
+                        break;
+                    case '电子':
+                        this.highQulityEle = highQulityResult.playlists;
+                        break;
+                    case '摇滚':
+                        this.highQulityRock = highQulityResult.playlists;
+                        break;
+                    case '古风':
+                        this.highQulityAncient = highQulityResult.playlists;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        },
+        // 专辑/单曲榜单
+        async getAllRankingList(type, albumType) {
+            const allRankingResult = await reqAllRankingList(type, albumType);
+            if (allRankingResult.code === 200) {
+                switch (albumType) {
+                    case 0:
+                        switch (type) {
+                            case 'daily':
+                                this.dailyRankingList0 = allRankingResult.products;
+                                break;
+                            case 'week':
+                                this.weekRankingList0 = allRankingResult.products;
+                                break;
+                            case 'year':
+                                this.yearRankingList0 = allRankingResult.products;
+                                break;
+                            case 'total':
+                                this.totalRankingList0 = allRankingResult.products;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 1:
+                        switch (type) {
+                            case 'daily':
+                                this.dailyRankingList1 = allRankingResult.products;
+                                break;
+                            case 'week':
+                                this.weekRankingList1 = allRankingResult.products;
+                                break;
+                            case 'year':
+                                this.yearRankingList1 = allRankingResult.products;
+                                break;
+                            case 'total':
+                                this.totalRankingList1 = allRankingResult.products;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        },
+        // 风格馆
+        async getLanguage(language) {
+            const languageResult = await reqLanguage(language);
+            if (languageResult.code === 200) {
+                switch (language) {
+                    case 'Z_H':
+                        this.languageChinaList = languageResult.albumProducts;
+                        break;
+                    case 'E_A':
+                        this.languageEuropeList = languageResult.albumProducts;
+                        break;
+                    case 'KR':
+                        this.languageKoreaList = languageResult.albumProducts;
+                        break;
+                    case 'JP':
+                        this.languageJapanList = languageResult.albumProducts;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        },
+        // 关注歌手新歌
+        async getNewAirtistMusic() {
+            const newAirtistMusicResult = await reqNewAirtistMusic();
+            if (newAirtistMusicResult.code === 200) {
+                this.newAirtistMusic = newAirtistMusicResult.data.newWorks;
             }
         },
     },
