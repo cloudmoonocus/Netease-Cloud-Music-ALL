@@ -19,9 +19,9 @@ import browserClient from '@apmplus/web';
 
 browserClient('init', {
     aid: 372146,
-    userId: '请填写userId',
-    env: '请填写env',
-    release: '请填写release',
+    userId: '356660222',
+    env: 'production/staging',
+    release: '1.0.0',
     plugins: {
         pageview: {
             routeMode: 'history',
