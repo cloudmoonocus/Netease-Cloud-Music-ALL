@@ -7,9 +7,9 @@ import { createPinia } from 'pinia';
 import { Lazyload } from 'vant';
 
 const app = createApp(App);
-app.use(router);
+
 app.use(createPinia());
-app.use(Lazyload, {
-    lazyComponent: true,
-});
+app.use(router);
+app.use(Lazyload);
+
 app.mount('#app');

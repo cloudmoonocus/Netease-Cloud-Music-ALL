@@ -1,9 +1,9 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { Toast } from 'vant';
 
 const router = createRouter({
     // 哈希模式
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     // 路由切换滚动到顶部
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
