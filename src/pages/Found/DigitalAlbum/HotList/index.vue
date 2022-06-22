@@ -130,7 +130,7 @@
                                 </div>
                             </Tab>
                         </Tabs>
-                    </div>https://github.com/cloudmoonocus
+                    </div>
                 </Tab>
                 <!-- 数字单曲 -->
                 <Tab title="数字单曲榜">

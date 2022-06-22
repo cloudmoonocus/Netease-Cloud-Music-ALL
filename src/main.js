@@ -13,3 +13,21 @@ app.use(router);
 app.use(Lazyload);
 
 app.mount('#app');
+
+// 火山引擎监控
+import browserClient from '@apmplus/web';
+
+browserClient('init', {
+    aid: 372146,
+    userId: '请填写userId',
+    env: '请填写env',
+    release: '请填写release',
+    plugins: {
+        pageview: {
+            routeMode: 'history',
+        },
+    },
+});
+
+// 开启上报
+browserClient('start');
