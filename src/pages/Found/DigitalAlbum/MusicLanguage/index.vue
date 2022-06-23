@@ -1,10 +1,15 @@
 <template>
-    <div style="background-color: #fff">
-        <Tabs title-active-color="#e60026">
+    <MyLoading v-show="outShow" />
+    <div style="background-color: #fff" v-show="inShow">
+        <Tabs title-active-color="#e60026" ref="tabs">
             <Tab title="华语">
                 <div class="out">
                     <div class="card" v-for="value in foundData.languageChinaList" :key="value.albumId">
-                        <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div class="musicTitle">{{ value.albumName }}</div>
                         <div class="author">{{ value.artistName }}</div>
                         <div class="price">￥{{ value.price }}</div>
@@ -14,7 +19,11 @@
             <Tab title="欧美">
                 <div class="out">
                     <div class="card" v-for="value in foundData.languageEuropeList" :key="value.albumId">
-                        <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div class="musicTitle">{{ value.albumName }}</div>
                         <div class="author">{{ value.artistName }}</div>
                         <div class="price">￥{{ value.price }}</div>
@@ -24,7 +33,11 @@
             <Tab title="韩国">
                 <div class="out">
                     <div class="card" v-for="value in foundData.languageKoreaList" :key="value.albumId">
-                        <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div class="musicTitle">{{ value.albumName }}</div>
                         <div class="author">{{ value.artistName }}</div>
                         <div class="price">￥{{ value.price }}</div>
@@ -34,7 +47,11 @@
             <Tab title="日本">
                 <div class="out">
                     <div class="card" v-for="value in foundData.languageJapanList" :key="value.albumId">
-                        <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div class="musicTitle">{{ value.albumName }}</div>
                         <div class="author">{{ value.artistName }}</div>
                         <div class="price">￥{{ value.price }}</div>
@@ -47,8 +64,25 @@
 
 <script setup>
 import { Tab, Tabs, Icon } from 'vant';
+import { Image as VanImage } from 'vant';
 import { found } from '@/store/Found';
+import { ref, watch } from 'vue';
 const foundData = found();
+
+const tabs = ref();
+
+const outShow = ref(true);
+const inShow = ref(false);
+
+watch(() => foundData.languageJapanList, () => {
+    if (foundData.languageJapanList.length) {
+        setTimeout(() => {
+            outShow.value = false;
+            inShow.value = true;
+            tabs.value.resize();
+        }, 700);
+    }
+})
 
 // 华语
 foundData.getLanguage('Z_H');
@@ -72,11 +106,6 @@ foundData.getLanguage('JP');
     .card {
         margin-top: 20px;
         width: 130px;
-
-        img {
-            height: 130px;
-            width: 130px;
-        }
 
         .musicTitle {
             margin-top: -3px;

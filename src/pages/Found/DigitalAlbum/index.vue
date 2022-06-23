@@ -1,10 +1,11 @@
 <template>
     <router-view />
-    <div style="background-color: #fff; z-index: -10; padding-bottom: 20px;"
-        v-if="$route.path == '/found/digitalalbum'">
+    <MyLoading v-show="outShow" v-if="$route.path == '/found/digitalalbum'" />
+    <div style="background-color: #fff; z-index: -10; height: 93vh;" v-if="$route.path == '/found/digitalalbum'"
+        v-show="inShow">
         <!-- 轮播图 -->
         <div class="head">
-            <Swipe :autoplay="3500" lazy-render class="swiper" round>
+            <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swiper">
                 <Swipe-item v-for="image in foundData.bannerImage" :key="image">
                     <img :src="image.pic" class="swiperIn" />
                 </Swipe-item>
@@ -39,8 +40,13 @@
             </div>
             <div>
                 <!-- 列表 -->
-                <div class="card" v-for="value in foundData.newDigitalAlbum.splice(0, 48)" :key="value.albumId">
-                    <img v-lazy="value.coverUrl" :alt="value.albumName" :title="value.albumName" />
+                <div class="card" v-for="value in foundData.newDigitalAlbumShou" :key="value.albumId">
+                    <van-image height="100" width="100" :src="value.coverUrl" :alt="value.albumName"
+                        :title="value.albumName" class="cardImg">
+                        <template v-slot:loading>
+                            <van-loading type="spinner" size="20" />
+                        </template>
+                    </van-image>
                     <div class="imgTitle">{{ value.albumName }}</div>
                     <div class="author">{{ value.artistName }}</div>
                     <div class="money">￥{{ value.price }}</div>
@@ -52,9 +58,22 @@
 
 <script setup>
 import { Swipe, SwipeItem, Icon } from 'vant';
+import { Image as VanImage } from 'vant'
 import router from '@/routers';
 import { found } from '@/store/Found';
+import { ref } from 'vue';
 const foundData = found();
+
+const swiper = ref();
+
+const outShow = ref(true);
+const inShow = ref(false);
+
+setTimeout(() => {
+    outShow.value = false;
+    inShow.value = true;
+    swiper.value.resize();
+}, 1200);
 
 function routerHotList() {
     router.push('/found/digitalalbum/hotlist');
@@ -138,45 +157,41 @@ function routerBuy() {
     div:nth-child(2) {
         display: flex;
         justify-content: space-between;
+        // width: 95%;
+        margin: 0 auto;
         flex-wrap: wrap;
 
         .card {
-            position: relative;
             margin-top: 15px;
             width: 100px;
-            height: 140px;
+            height: 135px;
             font-size: 10px;
             font-weight: 400;
 
-            img {
-                height: 100px;
-                width: 100px;
-            }
-
             .imgTitle {
-                position: absolute;
-                top: 105px;
                 width: 100px;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 1;
                 -webkit-box-orient: vertical;
-                color: #000;
+                font-size: 12px;
             }
 
             .author {
-                position: absolute;
-                top: 118px;
+                margin-top: 1px;
+                width: 100px;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 1;
                 -webkit-box-orient: vertical;
+                font-size: 10px;
                 color: rgb(122, 119, 119);
             }
 
             .money {
-                position: absolute;
-                top: 130px;
+                margin-top: 1px;
+                font-size: 10px;
+                font-weight: 700;
                 color: #e60026;
             }
         }

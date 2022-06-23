@@ -1,9 +1,10 @@
 <template>
     <router-view />
-    <div v-if="$route.path == '/found'">
+    <MyLoading v-show='outShow' v-if="$route.path == '/found'" />
+    <div v-if="$route.path == '/found'" v-show="inShow">
         <!-- 轮播图 -->
         <div>
-            <Swipe :autoplay="3500" lazy-render class="swiper" round>
+            <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swipe">
                 <Swipe-item v-for="image in foundData.bannerImage" :key="image">
                     <img :src="image.pic" class="swiperIn" />
                 </Swipe-item>
@@ -25,7 +26,11 @@
             <Grid :border="false" :column-num="3" class="vanGridItemParent" :center="false">
                 <Grid-item class="vanGridItem" v-for="dailyLists in foundData.dailyList.slice(0, 6)"
                     :key="dailyLists.id">
-                    <van-image class="vanImage" radius="5" :src="dailyLists.picUrl" />
+                    <van-image class="vanImage" radius="5" :src="dailyLists.picUrl">
+                        <template v-slot:loading>
+                            <van-loading type="spinner" size="20" />
+                        </template>
+                    </van-image>
                     <a :title="dailyLists.name">{{ dailyLists.name }}</a>
                 </Grid-item>
             </Grid>
@@ -46,7 +51,7 @@
         </div>
         <!-- 新歌 新碟 数字专辑 -->
         <div class="rec3">
-            <Tabs v-model:active="active" swipeable :lazy-render="false">
+            <Tabs v-model:active="active" swipeable :lazy-render="false" ref="tabs">
                 <Tab title="新歌">
                     <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
                         <Grid-item v-for="newMusics in foundData.newMusic.slice(0, 5)" :key="newMusics.album.id"
@@ -100,12 +105,29 @@
 import { Swipe, SwipeItem, Grid, GridItem, Icon, Tab, Tabs } from 'vant';
 import { Image as VanImage } from 'vant';
 import Tip from '@/components/Tip';
-import { ref } from 'vue';
-import { found } from '@/store/Found';
+import { ref, watch } from 'vue';
+import { found } from '@/store/Found'
 const foundData = found();
+
+const swipe = ref();
+const tabs = ref();
 
 const active = ref(0);
 
+const outShow = ref(true);
+const inShow = ref(false);
+
+watch(() => foundData.rankingList, () => {
+    if (foundData.rankingList.length) {
+        setTimeout(() => {
+            outShow.value = false;
+            inShow.value = true;
+            // 重绘标签栏底部颜色和轮播图位置
+            swipe.value.resize();
+            tabs.value.resize();
+        }, 800);
+    }
+})
 
 // banner图
 foundData.getBannerImage();
@@ -137,11 +159,13 @@ foundData.getNewAlbum();
 // 数字专辑
 foundData.getNewDigitalAlbum();
 
-// 数字单曲榜单
-foundData.getRankingList();
 
 // 热门话题
 foundData.getHotTopic();
+
+// 数字单曲榜单
+foundData.getRankingList();
+
 </script>
 
 <style scoped>
@@ -213,7 +237,7 @@ foundData.getHotTopic();
 
 .recChild {
     display: flex;
-    height: 30px;
+    height: 33px;
 }
 
 .recommention {
@@ -248,6 +272,7 @@ foundData.getHotTopic();
 .vanImage {
     border-radius: 10px;
     width: 95px;
+    height: 95px;
 }
 
 .vanGridItemParent {

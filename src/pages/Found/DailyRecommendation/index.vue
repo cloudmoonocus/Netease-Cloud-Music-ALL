@@ -1,5 +1,6 @@
 <template>
-    <div style="background-color: #fff">
+    <MyLoading v-show="outShow" />
+    <div style="background-color: #fff" v-show="inShow">
         <!-- 顶部图片 -->
         <div class="head">
             <div class="pure_top"></div>
@@ -12,9 +13,14 @@
         <!-- 歌曲列表 -->
         <div class="third">
             <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic">
-                <img :src="dailyRecMusics.al.picUrl" :alt="dailyRecMusics.name" />
+                <van-image width="55" height="55" :src="dailyRecMusics.al.picUrl" :alt="dailyRecMusics.name"
+                    class="cardImage" radius="10">
+                    <template v-slot:loading>
+                        <van-loading type="spinner" size="20" />
+                    </template>
+                </van-image>
                 <div>{{ dailyRecMusics.name }}</div>
-                <span v-for="nameDate in dailyRecMusics.ar">{{ nameDate.name }}</span>
+                <span>{{ dailyRecMusics.ar[0].name }}</span>
                 <Icon name="play-circle-o" class="play-circle-o" />
                 <Icon name="more-o" class="more-o" />
             </div>
@@ -25,7 +31,19 @@
 <script setup>
 import { Icon } from 'vant';
 import { found } from '@/store/Found';
+import { ref } from 'vue';
+import { Image as VanImage } from 'vant';
+
+const outShow = ref(true);
+const inShow = ref(false);
+
 const foundData = found();
+
+setTimeout(() => {
+    outShow.value = false;
+    inShow.value = true;
+}, 1200);
+
 </script>
 
 <style lang="less" scoped>
@@ -47,7 +65,7 @@ const foundData = found();
         top: 0;
         z-index: 100;
         border-radius: 0 0 130px 130px;
-        background-image: url('@/assets/images/Found/headDaily.jpg');
+        background-image: url('~@/assets/images/Found/headDaily.jpg');
         background-size: 100% 100%;
     }
 }
@@ -72,10 +90,9 @@ const foundData = found();
         position: relative;
         height: 80px;
 
-        img:nth-child(1) {
+        .cardImage {
             position: absolute;
             margin-left: 15px;
-            border-radius: 10px;
             height: 55px;
             width: 55px;
         }

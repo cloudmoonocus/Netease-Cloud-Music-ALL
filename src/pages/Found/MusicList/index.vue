@@ -1,13 +1,17 @@
 <template>
     <div class="head">
         <!-- 此处未展示全部标签 -->
-        <Tabs swipeable line-height="8px" :lazy-render="true" offset-top="40px" animated sticky>
+        <Tabs line-height="8px" offset-top="40px" sticky duration="0">
             <!-- 歌单列表 -->
             <Tab title="精品">
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityList">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -20,7 +24,11 @@
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityChina">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -33,7 +41,11 @@
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityPop">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -46,7 +58,11 @@
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityRap">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -59,7 +75,11 @@
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityEle">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -72,7 +92,11 @@
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityRock">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -85,7 +109,11 @@
                 <div class="out">
                     <!-- 歌单 -->
                     <div class="card" v-for="value in foundData.highQulityAncient">
-                        <img :alt="value.name" v-lazy="value.coverImgUrl" />
+                        <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
                         <div>
                             <Icon name="play-circle-o" class="icon" />
                             <span>{{ formatNumber(value.playCount) }}</span>
@@ -100,9 +128,14 @@
 
 <script setup>
 import { Icon, Tab, Tabs } from 'vant';
+import { Image as VanImage } from 'vant';
 import { formatNumber } from '@/plugins/DigitalConverter'
 import { found } from "@/store/Found";
+import { ref, watch } from 'vue';
 const foundData = found();
+
+const tabs = ref();
+
 // 精品
 foundData.getHighQulity('', 99)
 // 华语
@@ -131,10 +164,9 @@ foundData.getHighQulity('古风', 99)
             margin-top: 15px;
             width: 100px;
 
-            img {
+            .cardImage {
                 height: 100px;
                 width: 100px;
-                border-radius: 13px;
             }
 
             div:nth-child(2) {

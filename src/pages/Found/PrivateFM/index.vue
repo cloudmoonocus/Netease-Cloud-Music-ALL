@@ -1,44 +1,48 @@
 <template>
-    <div class="out"></div>
-    <div class="second">
-        <img src="https://p2.music.126.net/jJoLr9_AChEv-LcmDiPJzg==/109951165533909512.jpg?param=130y130" alt="" />
-        <div class="name">夏天的风</div>
-        <div class="author">
-            <span class="author">曹浩煜&nbsp;</span>
-            <van-icon name="add-o" class="icon" />
-        </div>
-        <van-slider v-model="value" active-color="#e60026" @change="onChange" class="bottom">
-            <template #button>
-                <div class="custom-button">{{ value }}</div>
-            </template>
-        </van-slider>
-        <div class="fuc">
-            <i class="iconfont icon-buxihuan"></i>
-            <i class="iconfont icon-xihuan"></i>
-            <i class="iconfont icon-zanting1"></i>
-            <i class="iconfont icon-xiayigexiayishou"></i>
-            <i class="iconfont icon-pinglun"></i>
+    <MyLoading v-show="outShow" />
+    <div v-show="inShow">
+        <div class="out"></div>
+        <div class="second">
+            <img src="https://p2.music.126.net/jJoLr9_AChEv-LcmDiPJzg==/109951165533909512.jpg?param=130y130" alt="" />
+            <div class="name">夏天的风</div>
+            <div class="author">
+                <span class="author">曹浩煜&nbsp;</span>
+                <Icon name="add-o" class="icon" />
+            </div>
+            <Slider v-model="value" active-color="#e60026" @change="onChange" class="bottom">
+                <template #button>
+                    <div class="custom-button">{{ value }}</div>
+                </template>
+            </Slider>
+            <div class="fuc">
+                <i class="iconfont icon-buxihuan"></i>
+                <i class="iconfont icon-xihuan"></i>
+                <i class="iconfont icon-zanting1"></i>
+                <i class="iconfont icon-xiayigexiayishou"></i>
+                <i class="iconfont icon-pinglun"></i>
+            </div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 import { Icon, Slider } from 'vant';
-export default {
-    name: 'PrivateFM',
-    setup() {
-        const value = ref(50);
-        const onChange = (value) => {
-            console.log(value);
-        };
-        return { value, onChange };
-    },
-    components: {
-        VanIcon: Icon,
-        VanSlider: Slider,
-    },
+const value = ref(50);
+
+const outShow = ref(true);
+const inShow = ref(false);
+
+// 进度条
+function onChange(value) {
+    console.log(value);
 };
+
+setTimeout(() => {
+    outShow.value = false;
+    inShow.value = true;
+}, 1200);
+
 </script>
 
 <style lang="less" scoped>
@@ -52,6 +56,7 @@ export default {
     z-index: -1;
     filter: blur(30px);
 }
+
 .second {
     display: flex;
     flex-direction: column;
@@ -62,6 +67,7 @@ export default {
         height: 300px;
         width: 300px;
     }
+
     .name {
         margin: 0 auto;
         margin-top: 20px;
@@ -69,6 +75,7 @@ export default {
         font-weight: 700;
         color: #fff;
     }
+
     .author {
         margin: 0 auto;
         margin-top: 10px;
@@ -78,6 +85,7 @@ export default {
         font-weight: 300;
         color: #eee;
     }
+
     .bottom {
         margin: 0 auto;
         margin-top: 140px;
@@ -93,6 +101,7 @@ export default {
             border-radius: 100px;
         }
     }
+
     .fuc {
         display: flex;
         justify-content: space-evenly;
@@ -102,16 +111,20 @@ export default {
         i:nth-child(1) {
             font-size: 25px;
         }
+
         i:nth-child(2) {
             font-size: 25px;
         }
+
         i:nth-child(3) {
             font-size: 50px;
             transform: translateY(-10px);
         }
+
         i:nth-child(4) {
             font-size: 25px;
         }
+
         i:nth-child(5) {
             font-size: 25px;
         }

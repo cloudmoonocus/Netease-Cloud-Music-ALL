@@ -23,6 +23,7 @@ export const found = defineStore('found', {
             newMusic: [],
             newAlbum: [],
             newDigitalAlbum: [],
+            newDigitalAlbumShou: [],
             rankingList: [],
             hotTopic: [],
             highQulityList: [],
@@ -88,6 +89,9 @@ export const found = defineStore('found', {
             const newDigitalAlbumResult = await reqDigitalAlbum();
             if (newDigitalAlbumResult.code === 200) {
                 this.newDigitalAlbum = newDigitalAlbumResult.products;
+                for (let index = 0; index < 6; index++) {
+                    this.newDigitalAlbumShou[index] = this.newDigitalAlbum[index];
+                }
             }
         },
         // 数字单曲榜单

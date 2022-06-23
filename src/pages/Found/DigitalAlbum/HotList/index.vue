@@ -1,7 +1,8 @@
 <template>
-    <div style="background-color: #fff">
+    <MyLoading v-show="outShow" />
+    <div style="background-color: #fff" v-show="inShow">
         <div class="head">
-            <Tabs type="card">
+            <Tabs type="card" ref="tabs">
                 <!-- 数字专辑 -->
                 <Tab title="数字专辑榜">
                     <div class="myBody">
@@ -29,7 +30,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -59,7 +65,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -90,7 +101,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -121,7 +137,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -159,7 +180,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -189,7 +215,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -220,7 +251,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -251,7 +287,12 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <img v-lazy="value.coverUrl" :alt="value.albumName" />
+                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                height="80" width="80" class="myImage">
+                                                <template v-slot:loading>
+                                                    <van-loading type="spinner" size="20" />
+                                                </template>
+                                            </van-image>
                                             <div>{{ value.albumName }}</div>
                                             <div>已售{{ formatNumber(value.saleNum) }}张</div>
                                             <div>支持</div>
@@ -269,9 +310,28 @@
 
 <script setup>
 import { Tab, Tabs, Icon } from 'vant';
+import { Image as VanImage } from 'vant';
 import { found } from '@/store/Found';
 import { formatNumber } from '@/plugins/DigitalConverter'
+import { ref, watch } from 'vue';
 const foundData = found();
+
+const tabs = ref();
+
+const outShow = ref(true);
+const inShow = ref(false);
+
+watch(() => foundData.totalRankingList1, () => {
+    if (foundData.totalRankingList1.length) {
+        setTimeout(() => {
+            outShow.value = false;
+            inShow.value = true;
+            tabs.value.resize();
+        }, 400);
+    }
+})
+
+
 // 数字专辑日榜
 foundData.getAllRankingList('daily', 0)
 // 数字专辑周榜
@@ -369,10 +429,8 @@ foundData.getAllRankingList('total', 1)
                 width: 85%;
                 margin-left: 10px;
 
-                img {
+                .myImage {
                     position: absolute;
-                    border-radius: 4px;
-                    height: 80px;
                 }
 
                 div:nth-child(2) {

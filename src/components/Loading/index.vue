@@ -1,0 +1,42 @@
+<template>
+    <div id="out">
+        <h1>Loading...</h1>
+        <div id="loading"></div>
+    </div>
+</template>
+
+<style scoped>
+#out {
+    margin-top: 25px;
+    color: #e60026;
+    text-align: center;
+}
+
+h1 {
+    font: 20px 'Roboto', sans-serif;
+    margin-bottom: 40px;
+}
+
+#loading {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #e7cbcf;
+    border-radius: 50%;
+    border-top-color: #e60026;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+</style>

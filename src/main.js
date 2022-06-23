@@ -4,13 +4,17 @@ import 'amfe-flexible/index.js';
 import router from '@/routers';
 import './assets/icons/iconfont.css';
 import { createPinia } from 'pinia';
-import { Lazyload } from 'vant';
+import { Lazyload, Loading } from 'vant';
+import MyLoading from '@/components/Loading';
 
 const app = createApp(App);
+
+app.component('MyLoading', MyLoading);
 
 app.use(createPinia());
 app.use(router);
 app.use(Lazyload);
+app.use(Loading);
 
 app.mount('#app');
 

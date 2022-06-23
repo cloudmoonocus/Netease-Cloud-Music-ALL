@@ -1,20 +1,43 @@
 <template>
-    <div class="first"></div>
-    <div class="out">
-        <div class="card" v-for="value in foundData.newAirtistMusic" style="background-color: #fff;">
-            <img v-lazy="value.blockTitle.imgUrl" :alt="value.blockTitle.resourceName" />
-            <div>{{ value.blockTitle.resourceName }}</div>
-            <span>{{ value.blockTitle.artistName }}</span>
-            <Icon name="play-circle-o" class="play-circle-o" />
-            <Icon name="more-o" class="more-o" />
+    <MyLoading v-show="outShow" />
+    <div v-show="inShow">
+        <div class="first"></div>
+        <div class="out">
+            <div class="card" v-for="value in foundData.newAirtistMusic" style="background-color: #fff;">
+                <van-image :src="value.blockTitle.imgUrl" :alt="value.blockTitle.resourceName" width="55" height="55"
+                    radius="10" class="cardImage" fit="cover" position="center">
+                    <template v-slot:loading>
+                        <van-loading type="spinner" size="20" />
+                    </template>
+                </van-image>
+                <div>{{ value.blockTitle.resourceName }}</div>
+                <span>{{ value.blockTitle.artistName }}</span>
+                <Icon name="play-circle-o" class="play-circle-o" />
+                <Icon name="more-o" class="more-o" />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import { Icon } from 'vant';
+import { Image as VanImage } from 'vant';
 import { found } from '@/store/Found';
+import { ref, watch } from 'vue';
 const foundData = found();
+
+const outShow = ref(true);
+const inShow = ref(false);
+
+watch(() => foundData.newAirtistMusic, () => {
+    if (foundData.newAirtistMusic.length) {
+        setTimeout(() => {
+            outShow.value = false;
+            inShow.value = true;
+        }, 1000);
+    }
+})
+
 foundData.getNewAirtistMusic();
 </script>
 
@@ -29,12 +52,9 @@ foundData.getNewAirtistMusic();
         position: relative;
         height: 80px;
 
-        img:nth-child(1) {
+        .cardImage {
             position: absolute;
             margin-left: 15px;
-            border-radius: 10px;
-            height: 55px;
-            width: 55px;
         }
 
         div:nth-child(2) {
