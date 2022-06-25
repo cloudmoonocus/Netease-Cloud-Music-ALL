@@ -137,14 +137,6 @@
                 </van-grid-item>
             </van-grid>
         </div>
-        <!-- 轮播图2 -->
-        <div>
-            <van-swipe :autoplay="5000" lazy-render class="swiper" round>
-                <van-swipe-item v-for="image in images" :key="image">
-                    <img :src="image" class="swiperIn" />
-                </van-swipe-item>
-            </van-swipe>
-        </div>
         <!-- 音乐推荐 -->
         <div class="rec1">
             <div class="recChild">

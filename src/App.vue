@@ -7,6 +7,11 @@
 <script setup>
 import MyHeader from '@/components/MyHeader';
 import MyFooter from '@/components/MyFooter';
+
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+// 禁止环形进度条展示
+NProgress.configure({ showSpinner: false })
 </script>
 
 <style lang="less">
@@ -14,10 +19,17 @@ import MyFooter from '@/components/MyFooter';
 #nprogress {
     .bar {
         background: #e60026 !important;
+
     }
 
     .peg {
-        box-shadow: 0 0 10px #e60026, 0 0 5px #e60026 !important;
+        box-shadow:
+            2.3px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+            5.6px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+            10.5px 12.5px 10px rgba(0, 0, 0, 0.042),
+            18.8px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+            35.1px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+            84px 100px 80px rgba(0, 0, 0, 0.02) !important;
     }
 
     .spinner-icon {

@@ -131,10 +131,7 @@ import { Icon, Tab, Tabs } from 'vant';
 import { Image as VanImage } from 'vant';
 import { formatNumber } from '@/plugins/DigitalConverter'
 import { found } from "@/store/Found";
-import { ref, watch } from 'vue';
 const foundData = found();
-
-const tabs = ref();
 
 // 精品
 foundData.getHighQulity('', 99)

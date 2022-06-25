@@ -1,101 +1,31 @@
 <template>
     <!-- 全部分类的内组件，使用时传参即可 -->
     <div style="background-color: #fff; padding-top: 10px; padding-bottom: 10px">
-        <div class="card">
-            <img
-                src="https://p1.music.126.net/yG30SbJ_8MirwPnhKUecuQ==/109951167437139689.jpg?param=180y180"
-                alt="看见什么吃什么"
-            />
+        <div class="card" v-for="value in props.list">
+            <van-image :src="value.picUrl" :alt="value.name" radius="10" class="myImage">
+                <template v-slot:loading>
+                    <van-loading type="spinner" size="20" />
+                </template>
+            </van-image>
             <div>
-                <div>看见什么吃什么</div>
-                <div>温柔男声轻声吟唱</div>
+                <div>{{ value.name }}</div>
+                <div>{{ value.rcmdtext }}</div>
                 <div>
-                    <span><i class="iconfont icon-bofangzhong"></i>81</span>
-                    <span><i class="iconfont icon-kaishi"></i>1038万</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img
-                src="https://p1.music.126.net/yG30SbJ_8MirwPnhKUecuQ==/109951167437139689.jpg?param=180y180"
-                alt="看见什么吃什么"
-            />
-            <div>
-                <div>看见什么吃什么</div>
-                <div>温柔男声轻声吟唱</div>
-                <div>
-                    <span><i class="iconfont icon-bofangzhong"></i>81</span>
-                    <span><i class="iconfont icon-kaishi"></i>1038万</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img
-                src="https://p1.music.126.net/yG30SbJ_8MirwPnhKUecuQ==/109951167437139689.jpg?param=180y180"
-                alt="看见什么吃什么"
-            />
-            <div>
-                <div>看见什么吃什么</div>
-                <div>温柔男声轻声吟唱</div>
-                <div>
-                    <span><i class="iconfont icon-bofangzhong"></i>81</span>
-                    <span><i class="iconfont icon-kaishi"></i>1038万</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img
-                src="https://p1.music.126.net/yG30SbJ_8MirwPnhKUecuQ==/109951167437139689.jpg?param=180y180"
-                alt="看见什么吃什么"
-            />
-            <div>
-                <div>看见什么吃什么</div>
-                <div>温柔男声轻声吟唱</div>
-                <div>
-                    <span><i class="iconfont icon-bofangzhong"></i>81</span>
-                    <span><i class="iconfont icon-kaishi"></i>1038万</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img
-                src="https://p1.music.126.net/yG30SbJ_8MirwPnhKUecuQ==/109951167437139689.jpg?param=180y180"
-                alt="看见什么吃什么"
-            />
-            <div>
-                <div>看见什么吃什么</div>
-                <div>温柔男声轻声吟唱</div>
-                <div>
-                    <span><i class="iconfont icon-bofangzhong"></i>81</span>
-                    <span><i class="iconfont icon-kaishi"></i>1038万</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img
-                src="https://p1.music.126.net/yG30SbJ_8MirwPnhKUecuQ==/109951167437139689.jpg?param=180y180"
-                alt="看见什么吃什么"
-            />
-            <div>
-                <div>看见什么吃什么</div>
-                <div>温柔男声轻声吟唱</div>
-                <div>
-                    <span><i class="iconfont icon-bofangzhong"></i>81</span>
-                    <span><i class="iconfont icon-kaishi"></i>1038万</span>
+                    <span><i class="iconfont icon-bofangzhong"></i>{{ value.programCount }}</span>
+                    <span><i class="iconfont icon-kaishi"></i>{{ value.playCount }}</span>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    name: 'Presentation',
-    setup() {
-        return {};
-    },
-    components: {},
-};
+<script setup>
+import { Image as VanImage } from 'vant';
+
+// 获取父组件传来的数据
+const props = defineProps({
+    list: Array
+})
 </script>
 
 <style lang="less" scoped>
@@ -104,11 +34,11 @@ export default {
     margin-top: 10px;
     margin-bottom: 15px;
 
-    img {
+    .myImage {
         margin-left: 20px;
         height: 85px;
-        border-radius: 10px;
     }
+
     div:nth-child(2) {
         display: flex;
         flex-direction: column;
@@ -132,6 +62,7 @@ export default {
             font-size: 11px;
             color: rgb(122, 119, 119);
         }
+
         div:nth-child(3) {
             margin-left: 15px;
             font-size: 10px;
@@ -143,6 +74,7 @@ export default {
                     font-size: 10px;
                 }
             }
+
             span:nth-child(2) {
                 margin-left: 10px;
 

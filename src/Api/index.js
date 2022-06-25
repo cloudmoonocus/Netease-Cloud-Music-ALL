@@ -111,6 +111,7 @@ export const reqHotTopic = () =>
 // #endregion
 
 // *歌单页
+// #region
 // !精品歌单
 export const reqHighQuality = (tag, num) =>
     requests({
@@ -136,6 +137,18 @@ export const reqLanguage = (language) =>
 export const reqNewAirtistMusic = () =>
     requests({
         url: `/artist/new/song?timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// #endregion
+// #endregion
+
+// *播客页API
+// #region
+// !全部分类
+export const reqAllCategory = (type) =>
+    requests({
+        url: `/dj/radio/hot?cateId=${type}&timestamp=${timeNow}`,
         method: 'post',
         withCredentials: true,
     });

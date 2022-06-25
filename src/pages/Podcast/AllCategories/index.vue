@@ -1,187 +1,63 @@
 <template>
+    <Notice-bar left-icon="info-o">
+        播放数为0是该接口返回的播放数全部为0,但未调用其他接口来获取数量
+    </Notice-bar>
     <div class="head">
-        <van-tabs v-model:active="active" swipeable :lazy-render="true">
-            <van-tab title="创作翻唱">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="歌曲翻唱">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="抖音热歌">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="新闻资讯">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="商业财经">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="热点资讯">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="情感">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="情感故事">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="成长励志">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="电音">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="3D环绕">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="REMIX">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="知识">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="个人提升">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="商业财经">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="二次元">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="动漫">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="游戏">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="脱口秀">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="搞笑段子">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="脱口秀">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-            <van-tab title="相声曲艺">
-                <van-tabs
-                    swipeable
-                    :lazy-render="true"
-                    title-active-color="#000"
-                    title-inactive-color="rgb(122, 119, 119)"
-                    line-height="0"
-                >
-                    <!-- 只展示三个选项 -->
-                    <van-tab title="全部">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="相声">
-                        <Presentation />
-                    </van-tab>
-                    <van-tab title="小品">
-                        <Presentation />
-                    </van-tab>
-                </van-tabs>
-            </van-tab>
-        </van-tabs>
+        <Tabs swipeable duration="0" :lazy-render="false" line-height="7" ref="tabs">
+            <Tab title="创作翻唱">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category2001" />
+            </Tab>
+            <Tab title="新闻资讯">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category3087096" />
+            </Tab>
+            <Tab title="情感">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category3" />
+            </Tab>
+            <Tab title="电音">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category10002" />
+            </Tab>
+            <Tab title="知识">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category11" />
+            </Tab>
+            <Tab title="二次元">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category3001" />
+            </Tab>
+            <Tab title="脱口秀">
+                <!-- 内容 -->
+                <Presentation :list="podcastData.category8" />
+            </Tab>
+        </Tabs>
     </div>
 </template>
 
-<script>
-import { Tab, Tabs } from 'vant';
-import { ref } from 'vue';
+<script setup>
+import { Tab, Tabs, NoticeBar } from 'vant';
 import Presentation from './Presentation.vue';
+import podcast from '@/store/Podcast';
+const podcastData = podcast();
 
-export default {
-    name: 'AllCategories',
-    setup() {
-        const active = ref(0);
-        return { active };
-    },
-    components: {
-        Presentation,
-        VanTabs: Tabs,
-        VanTab: Tab,
-    },
-};
+// 创作翻唱
+podcastData.getAllCategory(2001);
+// 新闻资讯
+podcastData.getAllCategory(3087096);
+// 情感
+podcastData.getAllCategory(3);
+// 电音
+podcastData.getAllCategory(10002);
+// 知识
+podcastData.getAllCategory(11);
+// 二次元
+podcastData.getAllCategory(3001);
+// 脱口秀
+podcastData.getAllCategory(8);
+
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+</style>
