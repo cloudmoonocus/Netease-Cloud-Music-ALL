@@ -1,6 +1,7 @@
 <template>
     <router-view />
-    <div v-if="$route.path == '/podcast'">
+    <MyLoading v-if="$route.path == '/podcast'" v-show="outShow" />
+    <div v-if="$route.path == '/podcast'" v-show="inShow">
         <!-- 功能列表 -->
         <div>
             <Grid :gutter="5" class="grid" icon-size="25px" column-num="3">
@@ -124,7 +125,18 @@ import { Grid, GridItem, Swipe, SwipeItem } from 'vant';
 import { Image as VanImage } from 'vant';
 import Tip from '@/components/Tip';
 import podcast from '@/store/Podcast';
+import { ref, watch } from 'vue';
 const podcastData = podcast();
+
+const outShow = ref(true);
+const inShow = ref(false);
+
+watch(podcastData.indexCategory3001, () => {
+    if (podcastData.indexCategory3001.length) {
+        outShow.value = false;
+        inShow.value = true;
+    }
+})
 
 // 功能列表
 const grids = [
@@ -163,15 +175,15 @@ podcastData.getDjRecom();
     margin: 0 auto;
     margin-top: 10px;
     width: 92%;
-}
 
-.gridIn {
-    color: #e60026;
-    text-decoration: line-through;
-}
+    .gridIn {
+        color: #e60026;
+        text-decoration: line-through;
+    }
 
-.gridInRight {
-    color: #e60026;
+    .gridInRight {
+        color: #e60026;
+    }
 }
 
 .swiper {
@@ -180,59 +192,57 @@ podcastData.getDjRecom();
     margin-top: 10px;
     height: 140px;
     width: 91%;
-}
 
-.swiperIn {
-    margin-left: 50%;
-    transform: translate(-50%);
-    width: 100%;
-    height: 140px;
+    .swiperIn {
+        margin-left: 50%;
+        transform: translate(-50%);
+        width: 100%;
+        height: 140px;
+    }
 }
 
 .rec1 {
     background-color: #fff;
     margin: 0 auto;
     margin-top: 10px;
-    /* margin-bottom: 30px; */
     width: 91%;
-    /* height: 190px; */
-}
 
-.recChild {
-    display: flex;
-    height: 30px;
-}
+    .recChild {
+        display: flex;
+        height: 30px;
+    }
 
-.vanImage {
-    border-radius: 10px;
-    width: 95px;
-}
+    .vanImage {
+        border-radius: 10px;
+        width: 95px;
+    }
 
-.vanGridItem {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+    .vanGridItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
-.vanGridItemParent {
-    display: flex;
-    align-items: flex-start;
-}
+    .vanGridItemParent {
+        display: flex;
+        align-items: flex-start;
+    }
 
-.vanGridItem a {
-    margin-top: 4px;
-    font-size: 10px;
-    width: 95px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
+    .vanGridItem a {
+        margin-top: 4px;
+        font-size: 10px;
+        width: 95px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
 
-.recommention {
-    margin-left: 10px;
-    margin-top: 12px;
-    font-size: 15px;
-    font-weight: 700;
+    .recommention {
+        margin-left: 10px;
+        margin-top: 12px;
+        font-size: 15px;
+        font-weight: 700;
+    }
 }
 </style>
