@@ -152,4 +152,18 @@ export const reqAllCategory = (type) =>
         method: 'post',
         withCredentials: true,
     });
+// !电台banner
+export const reqDjBanner = () =>
+    requests({
+        url: `/dj/banner`,
+        method: 'get',
+        withCredentials: true,
+    })
+// !猜你喜欢
+export const reqDjRecom = () =>
+    requests({
+        url: `/dj/personalize/recommend`,
+        method: 'get',
+        withCredentials: true,
+    })
 // #endregion
