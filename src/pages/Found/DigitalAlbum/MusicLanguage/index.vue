@@ -1,65 +1,67 @@
 <template>
     <MyLoading v-show="outShow" />
-    <div style="background-color: #fff" v-show="inShow">
-        <Tabs title-active-color="#e60026" ref="tabs">
-            <Tab title="华语">
-                <div class="out">
-                    <div class="card" v-for="value in foundData.languageChinaList" :key="value.albumId">
-                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
-                            <template v-slot:loading>
-                                <van-loading type="spinner" size="20" />
-                            </template>
-                        </van-image>
-                        <div class="musicTitle">{{ value.albumName }}</div>
-                        <div class="author">{{ value.artistName }}</div>
-                        <div class="price">￥{{ value.price }}</div>
+    <transition name="van-fade">
+        <div style="background-color: #fff" v-show="inShow">
+            <Tabs title-active-color="#e60026" ref="tabs">
+                <Tab title="华语">
+                    <div class="out">
+                        <div class="card" v-for="value in foundData.languageChinaList" :key="value.albumId">
+                            <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                                <template v-slot:loading>
+                                    <van-loading type="spinner" size="20" />
+                                </template>
+                            </van-image>
+                            <div class="musicTitle">{{ value.albumName }}</div>
+                            <div class="author">{{ value.artistName }}</div>
+                            <div class="price">￥{{ value.price }}</div>
+                        </div>
                     </div>
-                </div>
-            </Tab>
-            <Tab title="欧美">
-                <div class="out">
-                    <div class="card" v-for="value in foundData.languageEuropeList" :key="value.albumId">
-                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
-                            <template v-slot:loading>
-                                <van-loading type="spinner" size="20" />
-                            </template>
-                        </van-image>
-                        <div class="musicTitle">{{ value.albumName }}</div>
-                        <div class="author">{{ value.artistName }}</div>
-                        <div class="price">￥{{ value.price }}</div>
+                </Tab>
+                <Tab title="欧美">
+                    <div class="out">
+                        <div class="card" v-for="value in foundData.languageEuropeList" :key="value.albumId">
+                            <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                                <template v-slot:loading>
+                                    <van-loading type="spinner" size="20" />
+                                </template>
+                            </van-image>
+                            <div class="musicTitle">{{ value.albumName }}</div>
+                            <div class="author">{{ value.artistName }}</div>
+                            <div class="price">￥{{ value.price }}</div>
+                        </div>
                     </div>
-                </div>
-            </Tab>
-            <Tab title="韩国">
-                <div class="out">
-                    <div class="card" v-for="value in foundData.languageKoreaList" :key="value.albumId">
-                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
-                            <template v-slot:loading>
-                                <van-loading type="spinner" size="20" />
-                            </template>
-                        </van-image>
-                        <div class="musicTitle">{{ value.albumName }}</div>
-                        <div class="author">{{ value.artistName }}</div>
-                        <div class="price">￥{{ value.price }}</div>
+                </Tab>
+                <Tab title="韩国">
+                    <div class="out">
+                        <div class="card" v-for="value in foundData.languageKoreaList" :key="value.albumId">
+                            <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                                <template v-slot:loading>
+                                    <van-loading type="spinner" size="20" />
+                                </template>
+                            </van-image>
+                            <div class="musicTitle">{{ value.albumName }}</div>
+                            <div class="author">{{ value.artistName }}</div>
+                            <div class="price">￥{{ value.price }}</div>
+                        </div>
                     </div>
-                </div>
-            </Tab>
-            <Tab title="日本">
-                <div class="out">
-                    <div class="card" v-for="value in foundData.languageJapanList" :key="value.albumId">
-                        <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
-                            <template v-slot:loading>
-                                <van-loading type="spinner" size="20" />
-                            </template>
-                        </van-image>
-                        <div class="musicTitle">{{ value.albumName }}</div>
-                        <div class="author">{{ value.artistName }}</div>
-                        <div class="price">￥{{ value.price }}</div>
+                </Tab>
+                <Tab title="日本">
+                    <div class="out">
+                        <div class="card" v-for="value in foundData.languageJapanList" :key="value.albumId">
+                            <van-image :src="value.coverUrl" :alt="value.albumName" width="130" height="130">
+                                <template v-slot:loading>
+                                    <van-loading type="spinner" size="20" />
+                                </template>
+                            </van-image>
+                            <div class="musicTitle">{{ value.albumName }}</div>
+                            <div class="author">{{ value.artistName }}</div>
+                            <div class="price">￥{{ value.price }}</div>
+                        </div>
                     </div>
-                </div>
-            </Tab>
-        </Tabs>
-    </div>
+                </Tab>
+            </Tabs>
+        </div>
+    </transition>
 </template>
 
 <script setup>

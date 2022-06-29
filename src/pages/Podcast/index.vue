@@ -1,123 +1,126 @@
 <template>
     <router-view />
     <MyLoading v-if="$route.path == '/podcast'" v-show="outShow" />
-    <div v-if="$route.path == '/podcast'" v-show="inShow">
-        <!-- 功能列表 -->
-        <div>
-            <Grid :gutter="5" class="grid" icon-size="25px" column-num="3">
-                <Grid-item v-for="value in grids" :key="value.id" :icon="value.icon" :text="value.text" :to="value.path"
-                    :class="{ gridIn: value.text != '全部分类', gridInRight: value.text === '全部分类' }" />
-            </Grid>
-        </div>
-        <!-- 轮播图 -->
-        <div>
-            <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swipe">
-                <Swipe-item v-for="value in podcastData.djBanner" :key="value.targetId">
-                    <van-image :src="value.pic" class="swiperIn" radius="10">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                </Swipe-item>
-            </Swipe>
-        </div>
-        <!-- 猜你喜欢 -->
-        <div class="rec1">
-            <div class="recChild">
-                <span class="recommention">猜你喜欢</span>
+    <transition name="van-fade">
+        <div v-if="$route.path == '/podcast'" v-show="inShow">
+            <!-- 功能列表 -->
+            <div>
+                <Grid :gutter="5" class="grid" icon-size="25px" column-num="3">
+                    <Grid-item v-for="value in grids" :key="value.id" :icon="value.icon" :text="value.text"
+                        :to="value.path"
+                        :class="{ gridIn: value.text != '全部分类', gridInRight: value.text === '全部分类' }" />
+                </Grid>
             </div>
-            <Grid :border="false" :column-num="3" class="vanGridItemParent">
-                <Grid-item class="vanGridItem" v-for="value in podcastData.djRecom">
-                    <van-image class="vanImage" radius="5" :src="value.picUrl" />
-                    <a :title="value.name">{{ value.name }}</a>
-                </Grid-item>
-            </Grid>
-        </div>
-        <!-- 创作翻唱 -->
-        <div class="rec1">
-            <div class="recChild" @click="$router.push('/podcast/allcategories')">
-                <span class="recommention">创作翻唱</span>
+            <!-- 轮播图 -->
+            <div>
+                <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swipe">
+                    <Swipe-item v-for="value in podcastData.djBanner" :key="value.targetId">
+                        <van-image :src="value.pic" class="swiperIn" radius="10">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                    </Swipe-item>
+                </Swipe>
             </div>
-            <Grid :border="false" :column-num="3" class="vanGridItemParent">
-                <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory2001" :key="value.id">
-                    <van-image class="vanImage" radius="5" :src="value.picUrl">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                    <a :title="value.name">{{ value.name }}</a>
-                </Grid-item>
-            </Grid>
-        </div>
-        <!-- 情感 -->
-        <div class="rec1">
-            <div class="recChild">
-                <span class="recommention">情感</span>
+            <!-- 猜你喜欢 -->
+            <div class="rec1">
+                <div class="recChild">
+                    <span class="recommention">猜你喜欢</span>
+                </div>
+                <Grid :border="false" :column-num="3" class="vanGridItemParent">
+                    <Grid-item class="vanGridItem" v-for="value in podcastData.djRecom">
+                        <van-image class="vanImage" radius="5" :src="value.picUrl" />
+                        <a :title="value.name">{{ value.name }}</a>
+                    </Grid-item>
+                </Grid>
             </div>
-            <Grid :border="false" :column-num="3" class="vanGridItemParent">
-                <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory3" :key="value.id">
-                    <van-image class="vanImage" radius="5" :src="value.picUrl">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                    <a :title="value.name">{{ value.name }}</a>
-                </Grid-item>
-            </Grid>
-        </div>
-        <!-- 电音 -->
-        <div class="rec1">
-            <div class="recChild">
-                <span class="recommention">电音</span>
+            <!-- 创作翻唱 -->
+            <div class="rec1">
+                <div class="recChild" @click="$router.push('/podcast/allcategories')">
+                    <span class="recommention">创作翻唱</span>
+                </div>
+                <Grid :border="false" :column-num="3" class="vanGridItemParent">
+                    <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory2001" :key="value.id">
+                        <van-image class="vanImage" radius="5" :src="value.picUrl">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                        <a :title="value.name">{{ value.name }}</a>
+                    </Grid-item>
+                </Grid>
             </div>
-            <Grid :border="false" :column-num="3" class="vanGridItemParent">
-                <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory10002" :key="value.id">
-                    <van-image class="vanImage" radius="5" :src="value.picUrl">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                    <a :title="value.name">{{ value.name }}</a>
-                </Grid-item>
-            </Grid>
-        </div>
-        <!-- 知识 -->
-        <div class="rec1">
-            <div class="recChild">
-                <span class="recommention">知识</span>
+            <!-- 情感 -->
+            <div class="rec1">
+                <div class="recChild">
+                    <span class="recommention">情感</span>
+                </div>
+                <Grid :border="false" :column-num="3" class="vanGridItemParent">
+                    <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory3" :key="value.id">
+                        <van-image class="vanImage" radius="5" :src="value.picUrl">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                        <a :title="value.name">{{ value.name }}</a>
+                    </Grid-item>
+                </Grid>
             </div>
-            <Grid :border="false" :column-num="3" class="vanGridItemParent">
-                <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory11" :key="value.id">
-                    <van-image class="vanImage" radius="5" :src="value.picUrl">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                    <a :title="value.name">{{ value.name }}</a>
-                </Grid-item>
-            </Grid>
-        </div>
-        <!-- 二次元 -->
-        <div class="rec1">
-            <div class="recChild">
-                <span class="recommention">二次元</span>
+            <!-- 电音 -->
+            <div class="rec1">
+                <div class="recChild">
+                    <span class="recommention">电音</span>
+                </div>
+                <Grid :border="false" :column-num="3" class="vanGridItemParent">
+                    <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory10002" :key="value.id">
+                        <van-image class="vanImage" radius="5" :src="value.picUrl">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                        <a :title="value.name">{{ value.name }}</a>
+                    </Grid-item>
+                </Grid>
             </div>
-            <Grid :border="false" :column-num="3" class="vanGridItemParent">
-                <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory3001" :key="value.id">
-                    <van-image class="vanImage" radius="5" :src="value.picUrl">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                    <a :title="value.name">{{ value.name }}</a>
-                </Grid-item>
-            </Grid>
+            <!-- 知识 -->
+            <div class="rec1">
+                <div class="recChild">
+                    <span class="recommention">知识</span>
+                </div>
+                <Grid :border="false" :column-num="3" class="vanGridItemParent">
+                    <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory11" :key="value.id">
+                        <van-image class="vanImage" radius="5" :src="value.picUrl">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                        <a :title="value.name">{{ value.name }}</a>
+                    </Grid-item>
+                </Grid>
+            </div>
+            <!-- 二次元 -->
+            <div class="rec1">
+                <div class="recChild">
+                    <span class="recommention">二次元</span>
+                </div>
+                <Grid :border="false" :column-num="3" class="vanGridItemParent">
+                    <Grid-item class="vanGridItem" v-for="value in podcastData.indexCategory3001" :key="value.id">
+                        <van-image class="vanImage" radius="5" :src="value.picUrl">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                        <a :title="value.name">{{ value.name }}</a>
+                    </Grid-item>
+                </Grid>
+            </div>
+            <!-- 底部 -->
+            <Tip />
+            <!-- 防止底部遮挡 -->
+            <div style="height: 60px; width: 100%"></div>
         </div>
-        <!-- 底部 -->
-        <Tip />
-        <!-- 防止底部遮挡 -->
-        <div style="height: 60px; width: 100%"></div>
-    </div>
+    </transition>
 </template>
 
 <script setup>

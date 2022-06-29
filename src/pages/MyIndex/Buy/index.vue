@@ -1,35 +1,37 @@
 <template>
     <div style="background-color: #fff">
         <div class="out">
-            <div class="card">
-                <img src="https://p1.music.126.net/SrQOymubpzWHHL2XC97Ylw==/109951167508113796.jpg?param=130y130"
-                    alt="">
-                <div class="right">
-                    <div class="title">看得最远的地方</div>
-                    <div class="author">毛不易</div>
-                    <div class="buy">已购6534首</div>
+            <div v-if="myindexData.buy.list">
+                <div class="card" v-for="value in myindexData.buy.list">
+                    <van-image height="120" width="120" :src="value.picUrl" :alt="value.albumName" class="myImage">
+                        <template v-slot:loading>
+                            <van-loading type="spinner" size="20" />
+                        </template>
+                    </van-image>
+                    <div class="right">
+                        <div class="title">{{ value.albumName }}</div>
+                        <div class="author">{{ value.artistName }}</div>
+                        <div class="buy">已购{{ formatNumber(value.boughtCount) }}首</div>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <img src="https://p1.music.126.net/SrQOymubpzWHHL2XC97Ylw==/109951167508113796.jpg?param=130y130"
-                    alt="">
-                <div class="right">
-                    <div class="title">看得最远的地方</div>
-                    <div class="author">毛不易</div>
-                    <div class="buy">已购6534首</div>
-                </div>
+            <div v-if="!myindexData.buy.list" style="height: 92vh; background-color:#fff;">
+                <Empty image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png" image-size="80"
+                    description="暂无购买的单曲" />
             </div>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    name: 'Buy',
-    setup() {
-        return {};
-    },
-};
+<script setup>
+import { Image as VanImage } from 'vant';
+import { Empty } from 'vant'
+import myindex from '@/store/MyIndex';
+import { formatNumber } from '@/plugins/DigitalConverter'
+const myindexData = myindex();
+
+// 获取数据
+myindexData.getBuy();
 </script>
 
 <style lang="less" scoped>
@@ -39,13 +41,12 @@ export default {
 
     .card {
         margin-top: 15px;
+        padding-bottom: 15px;
         width: 100%;
         height: 120px;
 
-        img {
+        .myImage {
             float: left;
-            height: 120px;
-            width: 120px;
         }
 
         .right {

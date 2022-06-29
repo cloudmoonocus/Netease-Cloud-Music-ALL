@@ -167,3 +167,106 @@ export const reqDjRecom = () =>
         withCredentials: true,
     })
 // #endregion
+
+// *我的页API
+// #region
+// !用户信息
+export const reqUserInfor = () =>
+    requests({
+        url: `/user/account`,
+        method: 'get',
+        withCredentials: true,
+    })
+// !关注列表
+export const reqFollowList = (id) =>
+    requests({
+        url: `/user/follows?uid=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !粉丝列表
+export const reqFansList = (id) =>
+    requests({
+        url: `/user/followeds?uid=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !等级信息
+export const reqUserLV = () =>
+    requests({
+        url: `/user/level`,
+        method: 'get',
+        withCredentials: true,
+    })
+// !最近播放歌曲
+export const reqRencentSong = () =>
+    requests({
+        url: `/record/recent/song?timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !已购单曲
+export const reqBuy = () =>
+    requests({
+        url: `/song/purchased?timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !取消/关注用户
+export const reqIsFollow = (id, kind) =>
+    requests({
+        url: `/follow?id=${id}&t=${kind}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !收藏的专辑
+export const reqAlbumList = () =>
+    requests({
+        url: `/album/sublist?timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !收藏的视频
+export const reqMv = () =>
+    requests({
+        url: `/mv/sublist?timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !获取喜欢的音乐
+export const reqLikeMusic = (id) =>
+    requests({
+        url: `/likelist?uid=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !获取用户创建的歌单
+export const reqLikeList = (id) =>
+    requests({
+        url: `/user/playlist?uid=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !删除歌单
+export const reqDeleteList = (id) =>
+    requests({
+        url: `/playlist/delete?id=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !创建歌单
+export const reqCreateList = (name, privacy) =>
+    requests({
+        url: `/playlist/create?name=${name}&privacy=${privacy}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// #endregion
+
+// *!获取歌曲详情接口
+export const reqMusicDetail = (id) =>
+    requests({
+        url: `/song/detail?ids=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });

@@ -1,59 +1,61 @@
 <template>
     <router-view />
     <MyLoading v-show="outShow" v-if="$route.path == '/found/digitalalbum'" />
-    <div style="background-color: #fff; z-index: -10; height: 93vh;" v-if="$route.path == '/found/digitalalbum'"
-        v-show="inShow">
-        <!-- 轮播图 -->
-        <div class="head">
-            <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swiper">
-                <Swipe-item v-for="image in foundData.bannerImage" :key="image">
-                    <img :src="image.pic" class="swiperIn" />
-                </Swipe-item>
-            </Swipe>
-        </div>
-        <!-- 功能列表 -->
-        <div class="second">
-            <div class="fun" @click="routerHotList">
+    <transition name="van-fade">
+        <div style="background-color: #fff; z-index: -10; height: 93vh;" v-if="$route.path == '/found/digitalalbum'"
+            v-show="inShow">
+            <!-- 轮播图 -->
+            <div class="head">
+                <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swiper">
+                    <Swipe-item v-for="image in foundData.bannerImage" :key="image">
+                        <img :src="image.pic" class="swiperIn" />
+                    </Swipe-item>
+                </Swipe>
+            </div>
+            <!-- 功能列表 -->
+            <div class="second">
+                <div class="fun" @click="routerHotList">
+                    <div>
+                        <Icon name="fire-o" class="icon" />
+                    </div>
+                    <div>畅销榜</div>
+                </div>
+                <div class="fun" @click="routerMusicLanguage">
+                    <div>
+                        <Icon name="expand-o" class="icon" />
+                    </div>
+                    <div>风格馆</div>
+                </div>
+                <div class="fun" @click="routerBuy">
+                    <div>
+                        <Icon name="passed" class="icon" />
+                    </div>
+                    <div>已购</div>
+                </div>
+            </div>
+            <!-- 最新上架 -->
+            <div class="third">
+                <div @click="routerMusicLanguage">
+                    <span>最新上架&nbsp;</span>
+                    <Icon name="arrow" />
+                </div>
                 <div>
-                    <Icon name="fire-o" class="icon" />
-                </div>
-                <div>畅销榜</div>
-            </div>
-            <div class="fun" @click="routerMusicLanguage">
-                <div>
-                    <Icon name="expand-o" class="icon" />
-                </div>
-                <div>风格馆</div>
-            </div>
-            <div class="fun" @click="routerBuy">
-                <div>
-                    <Icon name="passed" class="icon" />
-                </div>
-                <div>已购</div>
-            </div>
-        </div>
-        <!-- 最新上架 -->
-        <div class="third">
-            <div @click="routerMusicLanguage">
-                <span>最新上架&nbsp;</span>
-                <Icon name="arrow" />
-            </div>
-            <div>
-                <!-- 列表 -->
-                <div class="card" v-for="value in foundData.newDigitalAlbumShou" :key="value.albumId">
-                    <van-image height="100" width="100" :src="value.coverUrl" :alt="value.albumName"
-                        :title="value.albumName" class="cardImg">
-                        <template v-slot:loading>
-                            <van-loading type="spinner" size="20" />
-                        </template>
-                    </van-image>
-                    <div class="imgTitle">{{ value.albumName }}</div>
-                    <div class="author">{{ value.artistName }}</div>
-                    <div class="money">￥{{ value.price }}</div>
+                    <!-- 列表 -->
+                    <div class="card" v-for="value in foundData.newDigitalAlbumShou" :key="value.albumId">
+                        <van-image height="100" width="100" :src="value.coverUrl" :alt="value.albumName"
+                            :title="value.albumName" class="cardImg">
+                            <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                            </template>
+                        </van-image>
+                        <div class="imgTitle">{{ value.albumName }}</div>
+                        <div class="author">{{ value.artistName }}</div>
+                        <div class="money">￥{{ value.price }}</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script setup>

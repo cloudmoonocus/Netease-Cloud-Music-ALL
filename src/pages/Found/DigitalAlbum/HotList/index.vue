@@ -1,311 +1,317 @@
 <template>
     <MyLoading v-show="outShow" />
-    <div style="background-color: #fff" v-show="inShow">
-        <div class="head">
-            <Tabs type="card" ref="tabs">
-                <!-- 数字专辑 -->
-                <Tab title="数字专辑榜">
-                    <div class="myBody">
-                        <Tabs title-active-color="#e60026" :lazy-render="true">
-                            <Tab title="日榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 排名上升的标签为up，下降的为down，不变的为no（无需加<span>） -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.dailyRankingList0"
-                                        :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+    <transition name="van-fade">
+        <div style="background-color: #fff" v-show="inShow">
+            <div class="head">
+                <Tabs type="card" ref="tabs">
+                    <!-- 数字专辑 -->
+                    <Tab title="数字专辑榜">
+                        <div class="myBody">
+                            <Tabs title-active-color="#e60026" :lazy-render="true">
+                                <Tab title="日榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 排名上升的标签为up，下降的为down，不变的为no（无需加<span>） -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.dailyRankingList0"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                            <Tab title="周榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.weekRankingList0" :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                                <Tab title="周榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.weekRankingList0"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                            <!-- 年度总榜只做了2022年 -->
-                            <Tab title="2022年榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 年榜无排名变动 -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.yearRankingList0" :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                                <!-- 年度总榜只做了2022年 -->
+                                <Tab title="2022年榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 年榜无排名变动 -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.yearRankingList0"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                            <Tab title="总榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 总榜无排名变动 -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.totalRankingList0"
-                                        :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                                <Tab title="总榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 总榜无排名变动 -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.totalRankingList0"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                        </Tabs>
-                    </div>
-                </Tab>
-                <!-- 数字单曲 -->
-                <Tab title="数字单曲榜">
-                    <div class="myBody">
-                        <Tabs title-active-color="#e60026" :lazy-render="true">
-                            <Tab title="日榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.dailyRankingList1"
-                                        :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                            </Tabs>
+                        </div>
+                    </Tab>
+                    <!-- 数字单曲 -->
+                    <Tab title="数字单曲榜">
+                        <div class="myBody">
+                            <Tabs title-active-color="#e60026" :lazy-render="true">
+                                <Tab title="日榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.dailyRankingList1"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                            <Tab title="周榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.weekRankingList1" :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                                <Tab title="周榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 排名上升的标签为up，下降的为down，不变的为no（无序加<span>） -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.weekRankingList1"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                            <!-- 年度总榜只做了2022年 -->
-                            <Tab title="2022年榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 年榜无排名变动 -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.yearRankingList1" :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                                <!-- 年度总榜只做了2022年 -->
+                                <Tab title="2022年榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 年榜无排名变动 -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.yearRankingList1"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                            <Tab title="总榜">
-                                <div class="first">
-                                    <span>榜单每半小时更新1次&nbsp;</span>
-                                    <Icon name="warning-o" />
-                                </div>
-                                <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
-                                <!-- 总榜无排名变动 -->
-                                <div class="second">
-                                    <div class="card" v-for="value in foundData.totalRankingList1"
-                                        :key="value.rank + 1">
-                                        <div>
-                                            <div
-                                                :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
-                                                {{ value.rank + 1 }}</div>
-                                            <div
-                                                :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
-                                                <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
-                                                    v-show="value.rankIncr" />
-                                                <Icon name="minus" v-show="!value.rankIncr" />
-                                                <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                </Tab>
+                                <Tab title="总榜">
+                                    <div class="first">
+                                        <span>榜单每半小时更新1次&nbsp;</span>
+                                        <Icon name="warning-o" />
+                                    </div>
+                                    <!-- 前三的左侧排名标签为three，非前三标签为noThree -->
+                                    <!-- 总榜无排名变动 -->
+                                    <div class="second">
+                                        <div class="card" v-for="value in foundData.totalRankingList1"
+                                            :key="value.rank + 1">
+                                            <div>
+                                                <div
+                                                    :class="{ three: ((value.rank + 1) <= 3), noThree: ((value.rank + 1) > 3) }">
+                                                    {{ value.rank + 1 }}</div>
+                                                <div
+                                                    :class="{ up: (value.rankIncr > 0), down: (value.rankIncr < 0), no: (value.rankIncr === 0) }">
+                                                    <Icon :name="value.rankIncr > 0 ? 'arrow-up' : 'arrow-down'"
+                                                        v-show="value.rankIncr" />
+                                                    <Icon name="minus" v-show="!value.rankIncr" />
+                                                    <span v-show="value.rankIncr">{{ Math.abs(value.rankIncr) }}</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
+                                                    height="80" width="80" class="myImage">
+                                                    <template v-slot:loading>
+                                                        <van-loading type="spinner" size="20" />
+                                                    </template>
+                                                </van-image>
+                                                <div>{{ value.albumName }}</div>
+                                                <div>已售{{ formatNumber(value.saleNum) }}张</div>
+                                                <div>支持</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <van-image :src="value.coverUrl" :alt="value.albumName" radius="4"
-                                                height="80" width="80" class="myImage">
-                                                <template v-slot:loading>
-                                                    <van-loading type="spinner" size="20" />
-                                                </template>
-                                            </van-image>
-                                            <div>{{ value.albumName }}</div>
-                                            <div>已售{{ formatNumber(value.saleNum) }}张</div>
-                                            <div>支持</div>
-                                        </div>
                                     </div>
-                                </div>
-                            </Tab>
-                        </Tabs>
-                    </div>
-                </Tab>
-            </Tabs>
+                                </Tab>
+                            </Tabs>
+                        </div>
+                    </Tab>
+                </Tabs>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script setup>

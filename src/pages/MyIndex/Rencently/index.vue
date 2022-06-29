@@ -1,113 +1,50 @@
 <template>
     <div style="background-color: #fff">
         <div class="rcMyHead">
-            <van-tabs swipeable line-height="6px" :lazy-render="true">
-                <van-tab title="歌曲" badge="300">
+            <Tabs swipeable line-height="6px" :lazy-render="true">
+                <Tab title="歌曲">
                     <div class="rcSecond">
-                        <van-icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
+                        <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
                         <span>播放全部</span>
-                        <span>(300)</span>
+                        <span>({{ myindexData.recentSong.list.length }})</span>
                     </div>
                     <div class="rcThird">
-                        <div class="rcCard">
+                        <div class="rcCard" v-for="value in myindexData.recentSong.list" :key="value.resourceId">
                             <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
+                                <div>{{ value.data.name }}</div>
+                                <div>{{ value.data.ar[0].name }} - {{ value.data.al.name }}</div>
                             </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
-                        </div>
-                        <div class="rcCard">
-                            <div>
-                                <div>念想</div>
-                                <div>小好14/于懿 - 念想</div>
-                            </div>
-                            <van-icon class="rcIcon" name="ellipsis" />
+                            <Icon class="rcIcon" name="ellipsis" />
                         </div>
                     </div>
-                </van-tab>
-                <van-tab title="视频" badge="13">
+                </Tab>
+                <Tab title="视频">
                     <strong>本页未编写</strong>
-                </van-tab>
-                <van-tab title="声音" badge="23">
+                </Tab>
+                <Tab title="声音">
                     <strong>本页未编写</strong>
-                </van-tab>
-                <van-tab title="歌单" badge="78">
+                </Tab>
+                <Tab title="歌单">
                     <strong>本页未编写</strong>
-                </van-tab>
-                <van-tab title="专辑" badge="0">
+                </Tab>
+                <Tab title="专辑">
                     <strong>本页未编写</strong>
-                </van-tab>
-                <van-tab title="播客" badge="8">
+                </Tab>
+                <Tab title="播客">
                     <strong>本页未编写</strong>
-                </van-tab>
-            </van-tabs>
+                </Tab>
+            </Tabs>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { Tab, Tabs, Icon } from 'vant';
+import myindex from '@/store/MyIndex';
+const myindexData = myindex();
 
-export default {
-    name: 'Rencently',
-    setup() {
-        return {};
-    },
-    components: {
-        VanTabs: Tabs,
-        VanTab: Tab,
-        VanIcon: Icon,
-    },
-};
+// 获取最近播放歌曲
+myindexData.getRecentSong();
 </script>
 
 <style lang="less" scoped>

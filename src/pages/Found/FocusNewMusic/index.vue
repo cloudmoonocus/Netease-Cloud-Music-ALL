@@ -1,22 +1,24 @@
 <template>
     <MyLoading v-show="outShow" />
-    <div v-show="inShow">
-        <div class="first"></div>
-        <div class="out">
-            <div class="card" v-for="value in foundData.newAirtistMusic" style="background-color: #fff;">
-                <van-image :src="value.blockTitle.imgUrl" :alt="value.blockTitle.resourceName" width="55" height="55"
-                    radius="10" class="cardImage" fit="cover" position="center">
-                    <template v-slot:loading>
-                        <van-loading type="spinner" size="20" />
-                    </template>
-                </van-image>
-                <div>{{ value.blockTitle.resourceName }}</div>
-                <span>{{ value.blockTitle.artistName }}</span>
-                <Icon name="play-circle-o" class="play-circle-o" />
-                <Icon name="more-o" class="more-o" />
+    <transition name="van-fade">
+        <div v-show="inShow">
+            <div class="first"></div>
+            <div class="out">
+                <div class="card" v-for="value in foundData.newAirtistMusic" style="background-color: #fff;">
+                    <van-image :src="value.blockTitle.imgUrl" :alt="value.blockTitle.resourceName" width="55"
+                        height="55" radius="10" class="cardImage" fit="cover" position="center">
+                        <template v-slot:loading>
+                            <van-loading type="spinner" size="20" />
+                        </template>
+                    </van-image>
+                    <div>{{ value.blockTitle.resourceName }}</div>
+                    <span>{{ value.blockTitle.artistName }}</span>
+                    <Icon name="play-circle-o" class="play-circle-o" />
+                    <Icon name="more-o" class="more-o" />
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script setup>

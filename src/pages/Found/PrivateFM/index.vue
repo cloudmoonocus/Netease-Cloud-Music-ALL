@@ -1,28 +1,31 @@
 <template>
     <MyLoading v-show="outShow" />
-    <div v-show="inShow">
-        <div class="out"></div>
-        <div class="second">
-            <img src="https://p2.music.126.net/jJoLr9_AChEv-LcmDiPJzg==/109951165533909512.jpg?param=130y130" alt="" />
-            <div class="name">夏天的风</div>
-            <div class="author">
-                <span class="author">曹浩煜&nbsp;</span>
-                <Icon name="add-o" class="icon" />
-            </div>
-            <Slider v-model="value" active-color="#e60026" @change="onChange" class="bottom">
-                <template #button>
-                    <div class="custom-button">{{ value }}</div>
-                </template>
-            </Slider>
-            <div class="fuc">
-                <i class="iconfont icon-buxihuan"></i>
-                <i class="iconfont icon-xihuan"></i>
-                <i class="iconfont icon-zanting1"></i>
-                <i class="iconfont icon-xiayigexiayishou"></i>
-                <i class="iconfont icon-pinglun"></i>
+    <transition name="van-fade">
+        <div v-show="inShow">
+            <div class="out"></div>
+            <div class="second">
+                <img src="https://p2.music.126.net/jJoLr9_AChEv-LcmDiPJzg==/109951165533909512.jpg?param=130y130"
+                    alt="" />
+                <div class="name">夏天的风</div>
+                <div class="author">
+                    <span class="author">曹浩煜&nbsp;</span>
+                    <Icon name="add-o" class="icon" />
+                </div>
+                <Slider v-model="value" active-color="#e60026" @change="onChange" class="bottom">
+                    <template #button>
+                        <div class="custom-button">{{ value }}</div>
+                    </template>
+                </Slider>
+                <div class="fuc">
+                    <i class="iconfont icon-buxihuan"></i>
+                    <i class="iconfont icon-xihuan"></i>
+                    <i class="iconfont icon-zanting1"></i>
+                    <i class="iconfont icon-xiayigexiayishou"></i>
+                    <i class="iconfont icon-pinglun"></i>
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script setup>

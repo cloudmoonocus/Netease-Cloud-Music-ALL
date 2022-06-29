@@ -1,106 +1,47 @@
 <template>
     <div style="background-color: #fff;">
-        <van-tabs line-height="7px">
-            <van-tab title="专辑">
-                <div class="album">
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
-                    </div>
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
-                    </div>
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
-                    </div>
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
-                    </div>
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
-                    </div>
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
-                    </div>
-                    <div class="card">
-                        <img src="https://p2.music.126.net/XYXw4JhqbH4szy0IwQ4cmA==/109951165825546595.jpg?param=130y130"
-                            alt="" />
-                        <div>Always online(温柔男声)</div>
-                        <div>嘉琪先生&nbsp;&nbsp;8首</div>
-                        <van-icon name="more-o" class="more-o" />
+        <Tabs line-height="7px">
+            <Tab title="专辑">
+                <div class="album" v-if="myindexData.albumList.length">
+                    <div class="card" v-for="value in myindexData.albumList" :key="value.id">
+                        <img :src="value.picUrl" :alt="value.name" />
+                        <div>{{ value.name }}</div>
+                        <div>{{ value.artists[0].name }}&nbsp;&nbsp;{{ value.size }}首</div>
+                        <Icon name="more-o" class="more-o" />
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="视频">
-                <div class="video">
-                    <div class="card">
-                        <div></div>
-                        <div>《弱者的命运》原曲：尚雯婕《致勇敢的我们》</div>
-                        <div>一泽万EZ</div>
-                        <div>12分钟前赞过</div>
-                    </div>
-                    <div class="card">
-                        <div></div>
-                        <div>《弱者的命运》原曲：尚雯婕《致勇敢的我们》</div>
-                        <div>一泽万EZ</div>
-                        <div>12分钟前赞过</div>
-                    </div>
-                    <div class="card">
-                        <div></div>
-                        <div>《弱者的命运》原曲：尚雯婕《致勇敢的我们》</div>
-                        <div>一泽万EZ</div>
-                        <div>12分钟前赞过</div>
-                    </div>
-                    <div class="card">
-                        <div></div>
-                        <div>《弱者的命运》原曲：尚雯婕《致勇敢的我们》</div>
-                        <div>一泽万EZ</div>
-                        <div>12分钟前赞过</div>
+                <Empty v-if="!myindexData.albumList.length"
+                    image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png" image-size="80"
+                    description="暂无收藏的专辑" style="background-color: #fff; height:87vh" />
+            </Tab>
+            <Tab title="视频">
+                <div class="video" v-if="myindexData.mv.length">
+                    <div class="card" v-for="value in myindexData.mv">
+                        <img :src="value.coverUrl" />
+                        <div>{{ value.title }}</div>
+                        <div>{{ value.creator[0].userName }}</div>
+                        <div>? / ? 收藏</div>
                     </div>
                 </div>
-            </van-tab>
-            <van-tab title="专栏">内容 3</van-tab>
-        </van-tabs>
+                <Empty v-if="!myindexData.mv.length"
+                    image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png" image-size="80"
+                    description="暂无收藏的视频" style="background-color: #fff; height:87vh" />
+            </Tab>
+        </Tabs>
     </div>
 </template>
 
-<script>
-import { Tab, Tabs, Icon } from 'vant';
+<script setup>
+import { Tab, Tabs, Icon, Empty } from 'vant';
+import myindex from '@/store/MyIndex';
+const myindexData = myindex();
 
-export default {
-    name: 'Collection-Praise',
-    setup() {
-        return {};
-    },
-    components: {
-        VanTabs: Tabs,
-        VanTab: Tab,
-        VanIcon: Icon
-    }
-};
+// 获取收藏专辑
+myindexData.getAlbumList();
+// 获取收藏视频
+myindexData.getMv();
+
+
 </script>
 
 <style lang="less" scoped>
@@ -157,12 +98,10 @@ export default {
         position: relative;
         height: 100px;
 
-        div:nth-child(1) {
+        img:nth-child(1) {
             position: absolute;
             left: 15px;
             top: -5px;
-            background-image: url(http://p6.music.126.net/obj/w5nDkMOCwrDCmDDDi8Om/15031378431/c3b2/511a/e7d8/11a4a2d5df64702520d5ee5a23f26278.data);
-            background-size: cover;
             border-radius: 10px;
             width: 180px;
             height: 100px;
