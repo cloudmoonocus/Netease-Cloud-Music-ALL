@@ -1,42 +1,114 @@
 <template>
-    <div id="out">
-        <h1>Loading...</h1>
-        <div id="loading"></div>
+    <!-- https://codepen.io/blakemanzo/pen/OXOBaw -->
+    <div class="three-balls">
+        <div class="ball ball1"></div>
+        <div class="ball ball2"></div>
+        <div class="ball"></div>
     </div>
 </template>
 
 <style scoped>
-#out {
-    margin-top: 25px;
-    color: #e60026;
+.three-balls {
+    margin: 0 auto;
+    width: 70px;
     text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 45%;
 }
 
-h1 {
-    font: 20px 'Roboto', sans-serif;
-    margin-bottom: 40px;
-}
-
-#loading {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 3px solid #e7cbcf;
+.three-balls .ball {
+    position: relative;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
-    border-top-color: #e60026;
-    animation: spin 1s ease-in-out infinite;
-    -webkit-animation: spin 1s ease-in-out infinite;
+    display: inline-block;
+    -webkit-animation: bouncedelay 2.0s infinite cubic-bezier(.62, .28, .23, .99) both;
+    animation: bouncedelay 2.0s infinite cubic-bezier(.62, .28, .23, .99) both;
 }
 
-@keyframes spin {
-    to {
-        -webkit-transform: rotate(360deg);
+.three-balls .ball1 {
+    -webkit-animation-delay: -.16s;
+    animation-delay: -.16s;
+}
+
+.three-balls .ball2 {
+    -webkit-animation-delay: -.08s;
+    animation-delay: -.08s;
+}
+
+@keyframes bouncedelay {
+    0% {
+        bottom: 0;
+        background-color: #03A9F4;
+    }
+
+    16.66% {
+        bottom: 40px;
+        background-color: #FB6542;
+    }
+
+    33.33% {
+        bottom: 0;
+        background-color: #FB6542;
+    }
+
+    50% {
+        bottom: 40px;
+        background-color: #FFBB00;
+    }
+
+    66.66% {
+        bottom: 0;
+        background-color: #FFBB00;
+    }
+
+    83.33% {
+        bottom: 40px;
+        background-color: #03A9F4;
+    }
+
+    100% {
+        bottom: 0;
+        background-color: #03A9F4;
     }
 }
 
-@-webkit-keyframes spin {
-    to {
-        -webkit-transform: rotate(360deg);
+@-webkit-keyframes bouncedelay {
+    0% {
+        bottom: 0;
+        background-color: #03A9F4;
+    }
+
+    16.66% {
+        bottom: 40px;
+        background-color: #FB6542;
+    }
+
+    33.33% {
+        bottom: 0;
+        background-color: #FB6542;
+    }
+
+    50% {
+        bottom: 40px;
+        background-color: #FFBB00;
+    }
+
+    66.66% {
+        bottom: 0;
+        background-color: #FFBB00;
+    }
+
+    83.33% {
+        bottom: 40px;
+        background-color: #03A9F4;
+    }
+
+    100% {
+        bottom: 0;
+        background-color: #03A9F4;
     }
 }
 </style>
