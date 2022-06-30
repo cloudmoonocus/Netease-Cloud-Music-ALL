@@ -121,13 +121,11 @@ const inShow = ref(false);
 
 watch(() => foundData.rankingList, () => {
     if (foundData.rankingList.length) {
-        setTimeout(() => {
-            outShow.value = false;
-            inShow.value = true;
-            // 重绘标签栏底部颜色和轮播图位置
-            swipe.value.resize();
-            tabs.value.resize();
-        }, 800);
+        outShow.value = false;
+        inShow.value = true;
+        // 重绘标签栏底部颜色和轮播图位置
+        swipe.value.resize();
+        tabs.value.resize();
     }
 })
 

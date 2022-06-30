@@ -44,7 +44,7 @@ function onChange(value) {
 setTimeout(() => {
     outShow.value = false;
     inShow.value = true;
-}, 1200);
+}, 200);
 
 </script>
 

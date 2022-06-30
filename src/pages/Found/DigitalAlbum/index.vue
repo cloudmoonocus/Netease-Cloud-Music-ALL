@@ -75,7 +75,7 @@ setTimeout(() => {
     outShow.value = false;
     inShow.value = true;
     swiper.value.resize();
-}, 1200);
+}, 200);
 
 function routerHotList() {
     router.push('/found/digitalalbum/hotlist');

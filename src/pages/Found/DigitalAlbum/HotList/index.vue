@@ -329,11 +329,9 @@ const inShow = ref(false);
 
 watch(() => foundData.totalRankingList1, () => {
     if (foundData.totalRankingList1.length) {
-        setTimeout(() => {
-            outShow.value = false;
-            inShow.value = true;
-            tabs.value.resize();
-        }, 400);
+        outShow.value = false;
+        inShow.value = true;
+        tabs.value.resize();
     }
 })
 

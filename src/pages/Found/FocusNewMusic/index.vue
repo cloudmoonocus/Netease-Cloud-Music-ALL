@@ -33,10 +33,8 @@ const inShow = ref(false);
 
 watch(() => foundData.newAirtistMusic, () => {
     if (foundData.newAirtistMusic.length) {
-        setTimeout(() => {
-            outShow.value = false;
-            inShow.value = true;
-        }, 1000);
+        outShow.value = false;
+        inShow.value = true;
     }
 })
 

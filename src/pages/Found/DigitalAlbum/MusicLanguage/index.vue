@@ -78,11 +78,9 @@ const inShow = ref(false);
 
 watch(() => foundData.languageJapanList, () => {
     if (foundData.languageJapanList.length) {
-        setTimeout(() => {
-            outShow.value = false;
-            inShow.value = true;
-            tabs.value.resize();
-        }, 700);
+        outShow.value = false;
+        inShow.value = true;
+        tabs.value.resize();
     }
 })
 
