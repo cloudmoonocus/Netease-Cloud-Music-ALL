@@ -6,10 +6,12 @@ import './assets/icons/iconfont.css';
 import { createPinia } from 'pinia';
 import { Lazyload, Loading } from 'vant';
 import MyLoading from '@/components/Loading';
+import MyEmpty from '@/components/MyEmpty'
 
 const app = createApp(App);
 
 app.component('MyLoading', MyLoading);
+app.component('MyEmpty', MyEmpty);
 
 app.use(createPinia());
 app.use(router);

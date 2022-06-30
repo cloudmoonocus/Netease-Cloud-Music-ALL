@@ -1,23 +1,7 @@
 <template>
     <div class="head">
-        <div class="friend">
-            <img src="https://p1.music.126.net/_aEPXmHuskM-g140GROZnQ==/109951163879490620.jpg?param=45y45" alt="" />
-            <span class="cname">你的好友1号</span>
-        </div>
-        <div class="friend">
-            <img src="https://p1.music.126.net/_aEPXmHuskM-g140GROZnQ==/109951163879490620.jpg?param=45y45" alt="" />
-            <span class="cname">你的好友2号</span>
-        </div>
-        <div class="friend">
-            <img src="https://p1.music.126.net/_aEPXmHuskM-g140GROZnQ==/109951163879490620.jpg?param=45y45" alt="" />
-            <span class="cname">你的好友3号</span>
-        </div>
-        <div class="friend">
-            <img src="https://p1.music.126.net/_aEPXmHuskM-g140GROZnQ==/109951163879490620.jpg?param=45y45" alt="" />
-            <span class="cname">你的好友4号</span>
-        </div>
         <div class="allFriend" @click="allFriend">
-            <van-icon name="more-o" class="icon" />
+            <Icon name="more-o" class="icon" />
             <span>全部好友</span>
         </div>
     </div>
@@ -28,41 +12,34 @@
         <s>音乐人</s>
         <span>全部</span>
     </div>
+    <Empty image="error" description="动态消息未编写" style="background-color: #fff; height: 70.5vh;" />
+    <!-- 网络错误 -->
 </template>
 
-<script>
+<script setup>
 import router from '@/routers';
-import { Icon } from 'vant';
+import { Icon, Empty } from 'vant';
 import { onMounted } from 'vue';
-export default {
-    name: 'Attention',
-    setup() {
-        onMounted(() => {
-            checkLength();
-        });
 
-        // 超出文字长度变为省略号
-        function checkLength() {
-            let cname = document.getElementsByClassName('cname');
-            for (let i = 0; i < cname.length; i++) {
-                let nowLength = cname[i].textContent.length;
-                if (nowLength > 4) {
-                    cname[i].innerHTML = cname[i].innerHTML.substr(0, 4) + '...';
-                }
-            }
+onMounted(() => {
+    checkLength();
+});
+
+// 超出文字长度变为省略号
+function checkLength() {
+    let cname = document.getElementsByClassName('cname');
+    for (let i = 0; i < cname.length; i++) {
+        let nowLength = cname[i].textContent.length;
+        if (nowLength > 4) {
+            cname[i].innerHTML = cname[i].innerHTML.substr(0, 4) + '...';
         }
+    }
+}
 
-        // 全部好友跳转
-        function allFriend() {
-            router.push('/myindex/friends')
-        }
-
-        return { checkLength, allFriend };
-    },
-    components: {
-        VanIcon: Icon,
-    },
-};
+// 全部好友跳转
+function allFriend() {
+    router.push('/myindex/friends')
+}
 </script>
 
 <style lang="less" scoped>
