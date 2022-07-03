@@ -7,7 +7,6 @@
 <script setup>
 import MyHeader from '@/components/MyHeader';
 import MyFooter from '@/components/MyFooter';
-
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 // 禁止环形进度条展示

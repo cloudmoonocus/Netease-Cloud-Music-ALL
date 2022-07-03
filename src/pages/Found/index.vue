@@ -109,6 +109,10 @@ import { Image as VanImage } from 'vant';
 import Tip from '@/components/Tip';
 import { ref, watch } from 'vue';
 import { found } from '@/store/Found'
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
 const foundData = found();
 
 const swipe = ref();
