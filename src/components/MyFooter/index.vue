@@ -17,7 +17,7 @@
 import { Tabbar, TabbarItem, Sticky } from 'vant';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import MusicPlayer from '@/components/MyFooter/musicPlayer.vue';
+import MusicPlayer from '@/components/MyFooter/MusicPlayer';
 let route = useRoute();
 
 const active = ref(-1);

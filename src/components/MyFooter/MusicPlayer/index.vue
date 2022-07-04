@@ -1,26 +1,49 @@
 <template>
-    <div class="playerOut">
+    <div class="playerOut" @click="showMusicDetail">
         <div class="leftImage leftAnimate">
             <img src="http://p1.music.126.net/JnQmWLPgIh97PZnBtpPKOA==/109951164274045767.jpg?param=140y140" />
         </div>
         <div class="name">
             <span>xxxxxxxxxxxxxx</span>
         </div>
-        <div class="pause">
+        <div class="pause" @click.stop="musicPause">
             <Circle v-model:current-rate="currentRate" :stroke-width="50" size="30px" color="#000" layer-color="#eee"
                 text="▶" :speed="10" />
         </div>
-        <div class="list">
+        <div class="list" @click.stop="showMusicList">
             <Icon name="bars" />
         </div>
     </div>
+    <MusicDetail :show="detailShow" @changeShow="changeDetailShow" />
+    <MusicList />
 </template>
 
 <script setup>
 import { Circle, Icon } from 'vant'
 import { ref } from 'vue';
+import MusicDetail from '@/components/MyFooter/MusicPlayer/MusicDetail'
+import MusicList from '@/components/MyFooter/MusicPlayer/MusicList'
 
 const currentRate = ref(0);
+const detailShow = ref(false);
+
+// 展示歌曲详情页
+function showMusicDetail() {
+    detailShow.value = true;
+}
+// 自定义时间，子组件关闭歌曲页后改变值，方便下次判别
+function changeDetailShow(value) {
+    detailShow.value = value;
+}
+// 暂停/开始歌曲
+function musicPause() {
+
+}
+// 展示歌曲列表
+function showMusicList() {
+
+}
+
 </script>
 
 <style lang="less" scoped>

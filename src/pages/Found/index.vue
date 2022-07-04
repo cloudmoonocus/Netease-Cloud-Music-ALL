@@ -5,7 +5,7 @@
         <div v-if="$route.path == '/found'" v-show="inShow">
             <!-- 轮播图 -->
             <div>
-                <Swipe :autoplay="3500" lazy-render class="swiper" round ref="swipe">
+                <Swipe :autoplay="3500" class="swiper" round ref="swipe">
                     <Swipe-item v-for="image in foundData.bannerImage" :key="image">
                         <img :src="image.pic" class="swiperIn" />
                     </Swipe-item>
