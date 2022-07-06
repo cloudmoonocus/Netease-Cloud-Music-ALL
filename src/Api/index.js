@@ -263,6 +263,31 @@ export const reqCreateList = (name, privacy) =>
     });
 // #endregion
 
+// *搜索页API
+// #region
+// !获取热门搜索
+export const reqHotSearch = () =>
+    requests({
+        url: `/search/hot/detail`,
+        method: 'get',
+        withCredentials: true,
+    });
+// !获取搜索建议
+export const reqSearchSuggest = (keyWord) =>
+    requests({
+        url: `/search/suggest?keywords=${keyWord}&type=mobile&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !搜索结果
+export const reqSearchResult = (keyWord) =>
+    requests({
+        url: `/cloudsearch?keywords=${keyWord}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// #endregion
+
 // *!获取歌曲详情接口
 export const reqMusicDetail = (id) =>
     requests({

@@ -15,7 +15,7 @@
         </div>
     </div>
     <MusicDetail :show="detailShow" @changeShow="changeDetailShow" />
-    <MusicList />
+    <MusicList :show="listShow" @changeShow="changeListShow" />
 </template>
 
 <script setup>
@@ -26,24 +26,28 @@ import MusicList from '@/components/MyFooter/MusicPlayer/MusicList'
 
 const currentRate = ref(0);
 const detailShow = ref(false);
+const listShow = ref(false);
 
 // 展示歌曲详情页
 function showMusicDetail() {
     detailShow.value = true;
 }
-// 自定义时间，子组件关闭歌曲页后改变值，方便下次判别
 function changeDetailShow(value) {
     detailShow.value = value;
 }
+
 // 暂停/开始歌曲
 function musicPause() {
 
 }
+
 // 展示歌曲列表
 function showMusicList() {
-
+    listShow.value = true;
 }
-
+function changeListShow(value) {
+    listShow.value = value;
+}
 </script>
 
 <style lang="less" scoped>

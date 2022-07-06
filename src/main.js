@@ -7,11 +7,13 @@ import { createPinia } from 'pinia';
 import { Lazyload, Loading } from 'vant';
 import MyLoading from '@/components/Loading';
 import MyEmpty from '@/components/MyEmpty'
+import MusicList from "@/components/MusicList";
 
 const app = createApp(App);
 
 app.component('MyLoading', MyLoading);
 app.component('MyEmpty', MyEmpty);
+app.component('MusicList', MusicList);
 
 app.use(createPinia());
 app.use(router);

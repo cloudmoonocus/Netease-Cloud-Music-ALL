@@ -1,125 +1,100 @@
 <template>
-    <van-search v-model.trim="value" placeholder="xxxx" shape="round" clearable />
+    <Search v-model.trim="searchValue" placeholder="请输入您要搜索的内容" shape="round" clearable @search="onSearch" />
+    <!-- 热搜 -->
     <div class="hot" v-show="hotShow">
         <div class="first">
             <span>热搜榜</span>
-            <span>
-                <van-icon name="play-circle" /> 播放
-            </span>
+            <span> <Icon name="play-circle" /> 播放 </span>
         </div>
-        <van-divider :hairline="false" />
+        <Divider :hairline="false" />
         <div class="list">
-            <div class="card">
-                <span class="three">1</span>
-                <span>林俊杰</span>
+            <div class="card" v-for="(value, index) in searchData.hotSearch" :key="index">
+                <span :class="{ three: index < 3, noThree: index >= 3 }">{{ ++index }}</span>
+                <span>{{ value.searchWord }}</span>
             </div>
-            <div class="card">
-                <span class="three">2</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="three">3</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">4</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">5</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">6</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">7</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">8</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">9</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">10</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">11</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">12</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">13</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">14</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">15</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">16</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">17</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">18</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">19</span>
-                <span>林俊杰</span>
-            </div>
-            <div class="card">
-                <span class="noThree">20</span>
-                <span>林俊杰</span>
+        </div>
+    </div>
+    <!-- 搜索建议 -->
+    <div class="suggest" v-show="suggestShow">
+        <div class="card" v-for="value in searchData.searchSuggest.allMatch">
+            <Icon name="search" class="icon" />
+            <span>{{ value.keyword }}</span>
+        </div>
+    </div>
+    <!-- 搜索结果 -->
+    <div class="result" v-show="resultShow">
+        <div class="top">
+            <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
+            <span>播放全部</span>
+        </div>
+        <div class="listResult">
+            <div class="cardResult" v-for="value in searchData.result" style="background-color: #fff">
+                <van-image :src="value.al.picUrl" :alt="value.name" width="55" height="55" radius="10" class="cardImage" fit="cover" position="center">
+                    <template v-slot:loading>
+                        <van-loading type="spinner" size="20" />
+                    </template>
+                </van-image>
+                <div>{{ value.name }}</div>
+                <span>{{ value.ar[0].name }}</span>
+                <Icon name="play-circle-o" class="play-circle-o" />
+                <Icon name="more-o" class="more-o" />
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { Search, Icon, Divider } from 'vant';
+import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
-export default {
-    name: 'Search',
-    setup() {
-        // 搜索内容
-        const value = ref('');
-        // 搜索建议时的操作
-        const hotShow = ref(true);
-        const searchWatch = watch(value, () => {
-            if (value.value) {
-                hotShow.value = false;
-            } else {
-                hotShow.value = true;
-            }
-        })
+import search from '@/store/Search';
+const searchData = search();
 
-
-        return { value, hotShow, searchWatch };
-    },
-    components: {
-        VanSearch: Search,
-        VanIcon: Icon,
-        VanDivider: Divider
+// 搜索内容
+const searchValue = ref('');
+// 搜索建议时的操作
+const hotShow = ref(true);
+const suggestShow = ref(false);
+watch(searchValue, () => {
+    if (searchValue.value) {
+        hotShow.value = false;
+        resultShow.value = false;
+        suggestShow.value = true;
+    } else {
+        hotShow.value = true;
+        suggestShow.value = false;
+        resultShow.value = false;
     }
-};
+});
+
+// 防抖
+function debounce(fn, arg) {
+    let timeout = null;
+    return function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            fn.call(this, arg);
+        }, 1000);
+    };
+}
+// 获取搜索建议
+watch(searchValue, () => {
+    if (searchValue.value) {
+        const fun = debounce(searchData.getSearchSuggest, searchValue.value);
+        fun();
+    }
+});
+
+// 获取搜索结果
+const resultShow = ref(false);
+function onSearch() {
+    hotShow.value = false;
+    suggestShow.value = false;
+    resultShow.value = true;
+    searchData.getSearchResult(searchValue.value);
+}
+// 获取热搜
+searchData.getHotSearch();
 </script>
 
 <style lang="less" scoped>
@@ -162,20 +137,134 @@ export default {
                 position: absolute;
                 font-size: 20px;
                 font-weight: 700;
+                line-height: 25px;
                 color: #e60026;
             }
 
             .noThree {
                 position: absolute;
-                font-size: 20px;
+                font-size: 16px;
+                line-height: 25px;
                 width: 15px;
                 color: rgb(122, 119, 119);
             }
 
             span:nth-child(2) {
                 position: absolute;
-                font-size: 20px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                font-size: 16px;
+                line-height: 25px;
                 left: 45px;
+            }
+        }
+    }
+}
+.suggest {
+    height: 85vh;
+    background-color: #fff;
+
+    .card {
+        padding-top: 15px;
+        height: 35px;
+        background-color: #fff;
+
+        .icon {
+            position: absolute;
+            left: 10px;
+            line-height: 35px;
+            font-size: 25px;
+            color: rgb(143, 140, 140);
+        }
+
+        span:nth-child(2) {
+            position: absolute;
+            left: 45px;
+            width: 85%;
+            line-height: 35px;
+            border-bottom: #eee solid 1px;
+            font-size: 15px;
+        }
+    }
+}
+.result {
+    .top {
+        display: flex;
+        padding-top: 10px;
+        height: 40px;
+        background-color: #fff;
+
+        span:nth-child(2) {
+            margin-left: 15px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+    }
+    .listResult {
+        .cardResult {
+            position: relative;
+            padding-top: 15px;
+            height: 80px;
+
+            .cardImage {
+                position: absolute;
+                margin-left: 15px;
+            }
+
+            div:nth-child(2) {
+                position: absolute;
+                left: 90px;
+                top: 25px;
+                width: 160px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                font-size: 13px;
+            }
+
+            span:nth-child(3) {
+                position: absolute;
+                left: 90px;
+                top: 48px;
+                width: 110px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                font-size: 10px;
+                color: rgb(122, 119, 119);
+            }
+
+            span:nth-child(4) {
+                position: absolute;
+                left: 80px;
+                top: 38px;
+                width: 110px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                font-size: 10px;
+                color: rgb(122, 119, 119);
+            }
+
+            .play-circle-o {
+                position: absolute;
+                top: 10px;
+                right: 55px;
+                color: rgb(122, 119, 119);
+            }
+
+            .more-o {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                color: rgb(122, 119, 119);
             }
         }
     }

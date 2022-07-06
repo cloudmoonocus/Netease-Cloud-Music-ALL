@@ -1,5 +1,6 @@
 <template>
-    <Popup v-model:show="show" position="bottom" :style="{ height: '60%' }" round style="background-color: #fff;">
+    <Popup v-model:show="listShow" position="bottom" :style="{ height: '60%' }" @click-overlay="closeList" round
+        style="background-color: #fff;">
         <NavBar>
             <template #left>
                 <span>当前播放</span>
@@ -14,9 +15,25 @@
 
 <script setup>
 import { Popup, NavBar, Icon } from 'vant';
-import { ref } from 'vue';
-const show = ref(true)
+import { ref, watch } from 'vue';
 
+const listShow = ref(false);
+
+const props = defineProps({
+    show: Boolean
+})
+
+const emits = defineEmits(['changeShow'])
+
+watch(props, () => {
+    listShow.value = props.show;
+})
+
+// 点击遮罩层关闭
+function closeList() {
+    listShow.value = false;
+    emits('changeShow', listShow.value);
+}
 </script>
 
 <style lang="less" scoped>
