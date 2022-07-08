@@ -8,14 +8,23 @@
             </div>
             <!-- 第二层-播放全部- -->
             <div class="second">
-                <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
+                <Icon
+                    name="play-circle"
+                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
+                />
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
             <div class="third">
                 <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic">
-                    <van-image width="55" height="55" :src="dailyRecMusics.al.picUrl" :alt="dailyRecMusics.name"
-                        class="cardImage" radius="10">
+                    <van-image
+                        width="55"
+                        height="55"
+                        :src="dailyRecMusics.al.picUrl"
+                        :alt="dailyRecMusics.name"
+                        class="cardImage"
+                        radius="10"
+                    >
                         <template v-slot:loading>
                             <van-loading type="spinner" size="20" />
                         </template>
@@ -45,7 +54,6 @@ setTimeout(() => {
     outShow.value = false;
     inShow.value = true;
 }, 200);
-
 </script>
 
 <style lang="less" scoped>
@@ -75,6 +83,7 @@ setTimeout(() => {
 .second {
     display: flex;
     margin-top: 10px;
+    height: 30px;
 
     span:nth-child(2) {
         margin-left: 15px;

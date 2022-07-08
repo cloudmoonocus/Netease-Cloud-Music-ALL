@@ -1,5 +1,11 @@
 <template>
-    <Search v-model.trim="searchValue" placeholder="请输入您要搜索的内容" shape="round" clearable @search="onSearch" />
+    <Search
+        v-model.trim="searchValue"
+        placeholder="请输入您要搜索的内容"
+        shape="round"
+        clearable
+        @search="onSearch"
+    />
     <!-- 热搜 -->
     <div class="hot" v-show="hotShow">
         <div class="first">
@@ -16,7 +22,12 @@
     </div>
     <!-- 搜索建议 -->
     <div class="suggest" v-show="suggestShow">
-        <div class="card" v-for="value in searchData.searchSuggest.allMatch">
+        <div
+            class="card"
+            v-for="value in searchData.searchSuggest.allMatch"
+            :key="value.feature"
+            @click="inputSuggest(value.keyword)"
+        >
             <Icon name="search" class="icon" />
             <span>{{ value.keyword }}</span>
         </div>
@@ -24,12 +35,24 @@
     <!-- 搜索结果 -->
     <div class="result" v-show="resultShow">
         <div class="top">
-            <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
+            <Icon
+                name="play-circle"
+                style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
+            />
             <span>播放全部</span>
         </div>
         <div class="listResult">
             <div class="cardResult" v-for="value in searchData.result" style="background-color: #fff">
-                <van-image :src="value.al.picUrl" :alt="value.name" width="55" height="55" radius="10" class="cardImage" fit="cover" position="center">
+                <van-image
+                    :src="value.al.picUrl"
+                    :alt="value.name"
+                    width="55"
+                    height="55"
+                    radius="10"
+                    class="cardImage"
+                    fit="cover"
+                    position="center"
+                >
                     <template v-slot:loading>
                         <van-loading type="spinner" size="20" />
                     </template>
@@ -77,13 +100,25 @@ function debounce(fn, arg) {
         }, 1000);
     };
 }
+function getSuggest() {
+    searchData.getSearchSuggest(searchValue.value);
+}
 // 获取搜索建议
 watch(searchValue, () => {
     if (searchValue.value) {
-        const fun = debounce(searchData.getSearchSuggest, searchValue.value);
+        const fun = debounce(getSuggest);
         fun();
     }
 });
+function inputSuggest(value) {
+    searchValue.value = value;
+    setTimeout(() => {
+        hotShow.value = false;
+        suggestShow.value = false;
+        resultShow.value = true;
+        searchData.getSearchResult(searchValue.value);
+    }, 1200);
+}
 
 // 获取搜索结果
 const resultShow = ref(false);

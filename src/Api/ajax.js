@@ -1,6 +1,7 @@
 import axios from 'axios';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { Notify } from 'vant';
 
 const requests = axios.create({
     baseURL: 'https://neteasecloudmusic-cloudmoonocus.vercel.app/',
@@ -27,7 +28,8 @@ requests.interceptors.response.use(
     },
     (error) => {
         // 响应失败的回调函数
-        return Promise.reject(new Error('faile'));
+        Notify({ type: 'danger', message: '请求失败！' });
+        return Promise.reject(new Error('请求失败！'));
     }
 );
 

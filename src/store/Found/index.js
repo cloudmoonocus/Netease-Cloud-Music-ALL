@@ -18,6 +18,7 @@ export const found = defineStore('found', {
     state: () => {
         return {
             bannerImage: [],
+            dailyListFound: [],
             dailyList: [],
             dailyRcMusic: [],
             newMusic: [],
@@ -61,6 +62,14 @@ export const found = defineStore('found', {
             const dailyResult = await reqDailyList();
             if (dailyResult.code === 200) {
                 this.dailyList = dailyResult.recommend;
+                if (this.dailyList.length < 6) {
+                    this.dailyListFound = this.dailyList;
+                    this.dailyListFound.splice(3);
+                } else {
+                    for (let index = 0; index < 6; index++) {
+                        this.dailyListFound[index] = this.dailyList[index];
+                    }
+                }
             }
         },
         // 推荐歌曲

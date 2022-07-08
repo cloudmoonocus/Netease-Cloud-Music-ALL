@@ -3,7 +3,7 @@
     <Sticky :offset-top="0" v-if="$route.meta.activeHeader">
         <Nav-bar :title="title">
             <template #left>
-                <Icon @click="show = true;" name="wap-nav" size="25" style="color: #e60026" />
+                <Icon @click="show = true" name="wap-nav" size="25" style="color: #e60026" />
             </template>
             <template #right>
                 <Icon name="search" size="25" style="color: #e60026" @click="$router.push('/search')" />
@@ -11,11 +11,22 @@
         </Nav-bar>
     </Sticky>
     <!-- 侧边栏 -->
-    <Popup v-model:show="show" position="left" :style="{ height: '100%', width: '80%', float: 'left' }"
-        class="van-popup">
+    <Popup
+        v-model:show="show"
+        position="left"
+        :style="{ height: '100%', width: '80%', float: 'left' }"
+        class="van-popup"
+    >
         <div class="headDiv" @click="goSignIn">
-            <van-image round width="35px" height="35px" :src="avatarUrl" fit="cover" position="left"
-                class="van-image" />
+            <van-image
+                round
+                width="35px"
+                height="35px"
+                :src="avatarUrl"
+                fit="cover"
+                position="left"
+                class="van-image"
+            />
             <span class="headSpan">{{ nickname }}</span>
             <Icon name="arrow" class="head-van-icon" />
         </div>
@@ -96,17 +107,17 @@ onMounted(async () => {
         nickname.value = stateResult.data.profile.nickname;
         avatarUrl.value = stateResult.data.profile.avatarUrl;
     }
-})
+});
 // 跳转登录界面
 function goSignIn() {
     if (localStorage.getItem('cookie')) {
         Dialog.alert({
             message: '💖💖未制作个人主页💖💖',
             theme: 'round-button',
-        })
+        });
     } else {
         router.push('/index');
-        show = false;
+        show.value = false;
     }
 }
 // 控制开关夜间模式（样式作用，无任何作用）
@@ -119,7 +130,6 @@ async function logOut() {
         Toast.success('退出成功');
     }
 }
-
 </script>
 
 <style lang="less" scoped>
