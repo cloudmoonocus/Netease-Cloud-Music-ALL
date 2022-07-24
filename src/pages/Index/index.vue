@@ -1,10 +1,14 @@
 <template>
-    <!-- 登录只做了手机号登录 -->
+    <!-- 登录使用二维码登录，手机号登录可能会显示登录有风险 -->
     <router-view />
     <!-- 登陆主界面 -->
     <div class="out" v-if="$route.path == '/index'">
         <i class="iconfont icon-wangyiyunyinyueclick logo"></i>
         <div class="bottom">
+            <div class="qr" @click="$router.push('/index/qrsignin')">
+                <Icon name="enlarge" class="first" />
+                <div>二维码登录</div>
+            </div>
             <div class="phone" @click="$router.push('/index/phonesignin')">
                 <Icon name="phone-circle" class="first" />
                 <div>手机登录</div>
@@ -18,16 +22,16 @@
 </template>
 
 <script setup>
-import { Icon } from 'vant'
-import { reqFriendsSignIn } from '@/Api'
+import { Icon } from 'vant';
+import { reqFriendsSignIn } from '@/Api';
 import router from '@/routers';
 
 // 游客登录
 async function friendsSignIn() {
     let friendsSignResult = await reqFriendsSignIn();
     if (friendsSignResult.code === 200) {
-        router.replace('/found')
-        localStorage.setItem('cookie', friendsSignResult.cookie)
+        router.replace('/found');
+        localStorage.setItem('cookie', friendsSignResult.cookie);
     }
 }
 </script>
@@ -60,6 +64,17 @@ async function friendsSignIn() {
         font-size: 45px;
         color: #fff;
 
+        .qr {
+            .first {
+                margin-left: 50%;
+                transform: translateX(-50%);
+            }
+
+            div:nth-child(2) {
+                font-size: 15px;
+            }
+        }
+
         .phone {
             .first {
                 margin-left: 50%;
@@ -82,6 +97,5 @@ async function friendsSignIn() {
             }
         }
     }
-
 }
 </style>

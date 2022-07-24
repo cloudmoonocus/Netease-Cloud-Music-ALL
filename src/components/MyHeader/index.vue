@@ -128,6 +128,8 @@ async function logOut() {
     if (logOutResult.code === 200) {
         localStorage.removeItem('cookie');
         Toast.success('退出成功');
+        show.value = false;
+        router.push('/index');
     }
 }
 </script>

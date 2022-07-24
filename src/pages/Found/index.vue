@@ -35,7 +35,7 @@
                         class="vanGridItem"
                         v-for="dailyLists in foundData.dailyListFound"
                         :key="dailyLists.id"
-                        @click.stop="changeAlbumShow"
+                        @click.stop="changeAlbumShow(dailyLists.id)"
                     >
                         <van-image class="vanImage" radius="5" :src="dailyLists.picUrl">
                             <template v-slot:loading>
@@ -169,6 +169,7 @@ import Tip from '@/components/Tip';
 import AlbumDetail from '@/components/AlbumDetail';
 import { ref, watch } from 'vue';
 import { found } from '@/store/Found';
+import { getAlbumList } from '@/plugins/ClickAlbum';
 
 const foundData = found();
 
@@ -271,7 +272,8 @@ foundData.getRankingList();
 
 const albumShow = ref(false);
 // 展示歌单详情
-function changeAlbumShow() {
+function changeAlbumShow(id) {
+    getAlbumList(id);
     albumShow.value = true;
 }
 function changeAlbumOutShow(value) {

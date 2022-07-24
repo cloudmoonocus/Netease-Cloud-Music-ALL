@@ -5,6 +5,27 @@ let timeNow = Date.now();
 
 // *登录相关API
 // #region
+// !获取二维码key
+export const reqQrKey = () =>
+    requests({
+        url: `/login/qr/key`,
+        method: 'get',
+        withCredentials: true,
+    });
+// !二维码生成接口
+export const reqQrCreateImg = (key) =>
+    requests({
+        url: `/login/qr/create?key=${key}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// !检查二维码是否过期
+export const reqQrTime = (key) =>
+    requests({
+        url: `/login/qr/check?key=${key}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
 // !登录(验证码)
 export const reqSignIn = (phone) =>
     requests({
@@ -292,6 +313,14 @@ export const reqSearchResult = (keyWord) =>
 export const reqMusicDetail = (id) =>
     requests({
         url: `/song/detail?ids=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+
+// *!获取歌单歌曲
+export const reqAlbumDetail = (id) =>
+    requests({
+        url: `/playlist/track/all?id=${id}&limit=30&timestamp=${timeNow}`,
         method: 'post',
         withCredentials: true,
     });

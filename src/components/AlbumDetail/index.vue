@@ -49,13 +49,13 @@
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
-            <div class="musicList">
-                <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic">
+            <div class="musicList" v-if="musicListShow">
+                <div class="card" v-for="data in listData.albumlist">
                     <van-image
                         width="55"
                         height="55"
-                        :src="dailyRecMusics.al.picUrl"
-                        :alt="dailyRecMusics.name"
+                        :src="data.al.picUrl"
+                        :alt="data.name"
                         class="cardImage"
                         radius="10"
                     >
@@ -63,8 +63,8 @@
                             <van-loading type="spinner" size="20" />
                         </template>
                     </van-image>
-                    <div>{{ dailyRecMusics.name }}</div>
-                    <span>{{ dailyRecMusics.ar[0].name }}</span>
+                    <div>{{ data.name }}</div>
+                    <span>{{ data.ar[0].name }}</span>
                     <Icon name="more-o" class="more-o" />
                 </div>
             </div>
@@ -76,11 +76,11 @@
 import { Popup, NavBar, Icon } from 'vant';
 import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
-import { found } from '@/store/Found';
-const foundData = found();
-foundData.getDailyRcMusic();
+import list from '@/store/List';
+const listData = list();
 
 const albumShow = ref(false);
+const musicListShow = ref(false);
 
 const props = defineProps({
     show: Boolean,
@@ -91,6 +91,13 @@ const emits = defineEmits(['changeAlbumInShow']);
 watch(props, () => {
     albumShow.value = props.show;
 });
+
+watch(
+    () => listData.albumlist,
+    () => {
+        musicListShow.value = true;
+    }
+);
 
 // 点击摁钮关闭
 function closeAlbumDetail() {

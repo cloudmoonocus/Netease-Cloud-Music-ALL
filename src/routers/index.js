@@ -222,13 +222,20 @@ const router = createRouter({
                     name: 'phonesignin',
                     path: 'phonesignin',
                     component: () => import('@/pages/Index/PhoneSignIn'),
-                    meta: { title: '登录', show: false, activeHeader: false },
+                    meta: { title: '手机号登录', show: false, activeHeader: false },
+                },
+                {
+                    name: 'qrsignin',
+                    path: 'qrsignin',
+                    component: () => import('@/pages/Index/QrSignin'),
+                    meta: { title: '二维码登录', show: false, activeHeader: false },
                 },
             ],
             // 独享路由守卫
             beforeEnter: (to, from, next) => {
                 if (localStorage.getItem('cookie')) {
                     Toast.fail('您已经登录');
+                    router.replace('/found');
                 } else {
                     next();
                 }
