@@ -7,6 +7,7 @@
         transition-appear
         close-on-popstate
         class="popup"
+        v-if="musicListShow"
     >
         <div class="outTop">
             <NavBar left-arrow @click-left="closeAlbumDetail" class="nav">
@@ -16,29 +17,38 @@
                 </template>
             </NavBar>
             <div class="top">
-                <img
-                    src="https://p2.music.126.net/yRM8cp2DVTNOZPZpoWe98g==/109951164444465905.jpg?param=140y140"
-                    alt=""
-                />
+                <img :src="listData.albumInfor.coverImgUrl" :alt="listData.albumInfor.name" />
                 <div class="right">
-                    <div>【翻唱】好听的歌都没有完整版</div>
+                    <div>{{ listData.albumInfor.name }}</div>
                     <div>
                         <img
-                            src="https://p1.music.126.net/Zsomx4T9sIcmHbUhUoLFYg==/109951167480093327.jpg?param=180y180"
-                            alt=""
+                            :src="listData.albumInfor.creator.avatarUrl"
+                            :alt="listData.albumInfor.creator.nickname"
                         />
-                        <span>氟西汀终究还是没了丶</span>
+                        <span>{{ listData.albumInfor.creator.nickname }}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="list">
             <div class="middle">
-                <div><Icon name="shop-collect-o" class="iconMiddle" /><span>8242</span></div>
+                <div>
+                    <Icon name="shop-collect-o" class="iconMiddle" /><span>{{
+                        formatNumber(listData.albumInfor.subscribedCount)
+                    }}</span>
+                </div>
                 <span>|</span>
-                <div><Icon name="chat-o" class="iconMiddle" /><span>8242</span></div>
+                <div>
+                    <Icon name="chat-o" class="iconMiddle" /><span>{{
+                        formatNumber(listData.albumInfor.commentCount)
+                    }}</span>
+                </div>
                 <span>|</span>
-                <div><Icon name="share-o" class="iconMiddle" /><span>8242</span></div>
+                <div>
+                    <Icon name="share-o" class="iconMiddle" /><span>{{
+                        formatNumber(listData.albumInfor.shareCount)
+                    }}</span>
+                </div>
             </div>
             <!-- 播放全部 -->
             <div class="playAll">
@@ -49,7 +59,7 @@
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
-            <div class="musicList" v-if="musicListShow">
+            <div class="musicList">
                 <div class="card" v-for="data in listData.albumlist">
                     <van-image
                         width="55"
@@ -76,6 +86,7 @@
 import { Popup, NavBar, Icon } from 'vant';
 import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
+import { formatNumber } from '@/plugins/DigitalConverter';
 import list from '@/store/List';
 const listData = list();
 
@@ -195,7 +206,7 @@ function closeAlbumDetail() {
             background-color: #fff;
             box-shadow: 0px 2px 10px #ccc;
             line-height: 30px;
-            font-size: 15px;
+            font-size: 12px;
 
             .iconMiddle {
                 margin-right: 5px;
@@ -251,7 +262,7 @@ function closeAlbumDetail() {
                     -webkit-line-clamp: 1;
                     -webkit-box-orient: vertical;
                     font-size: 10px;
-                    color: rgb(122, 119, 119);
+                    color: rgb(161, 159, 159);
                 }
 
                 span:nth-child(4) {

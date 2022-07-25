@@ -293,14 +293,10 @@ function changeAlbumOutShow(value) {
 .swiperIn {
     margin-left: 50%;
     transform: translate(-50%);
-    width: 100%;
-    width: 340px;
-}
-
-.swiperIn {
-    width: 340px;
+    width: 98%;
     height: 140px;
     border-radius: 10px;
+    border: #fff solid 1px;
 }
 
 .grid {

@@ -317,6 +317,13 @@ export const reqMusicDetail = (id) =>
         withCredentials: true,
     });
 
+// *!获取歌单详情
+export const reqAlbumInfor = (id) =>
+    requests({
+        url: `/playlist/detail?id=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
 // *!获取歌单歌曲
 export const reqAlbumDetail = (id) =>
     requests({

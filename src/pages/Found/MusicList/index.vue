@@ -6,7 +6,12 @@
             <Tab title="精品">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityList">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityList"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -23,7 +28,12 @@
             <Tab title="华语">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityChina">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityChina"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -40,7 +50,12 @@
             <Tab title="流行">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityPop">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityPop"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -57,7 +72,12 @@
             <Tab title="说唱">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityRap">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityRap"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -74,7 +94,12 @@
             <Tab title="电子">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityEle">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityEle"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -91,7 +116,12 @@
             <Tab title="摇滚">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityRock">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityRock"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -108,7 +138,12 @@
             <Tab title="古风">
                 <div class="out">
                     <!-- 歌单 -->
-                    <div class="card" v-for="value in foundData.highQulityAncient">
+                    <div
+                        class="card"
+                        v-for="value in foundData.highQulityAncient"
+                        @click.stop="changeAlbumShow(value.id)"
+                        :key="value.id"
+                    >
                         <van-image :alt="value.name" :src="value.coverImgUrl" class="cardImage" radius="13">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -123,30 +158,45 @@
                 </div>
             </Tab>
         </Tabs>
+        <AlbumDetail :show="albumShow" @changeAlbumInShow="changeAlbumOutShow" />
     </div>
 </template>
 
 <script setup>
 import { Icon, Tab, Tabs } from 'vant';
 import { Image as VanImage } from 'vant';
-import { formatNumber } from '@/plugins/DigitalConverter'
-import { found } from "@/store/Found";
+import { formatNumber } from '@/plugins/DigitalConverter';
+import AlbumDetail from '@/components/AlbumDetail';
+import { getAlbumList } from '@/plugins/ClickAlbum';
+import { found } from '@/store/Found';
+import { ref } from 'vue';
+
 const foundData = found();
 
+const albumShow = ref(false);
+// 展示歌单详情
+function changeAlbumShow(id) {
+    getAlbumList(id);
+    albumShow.value = true;
+}
+function changeAlbumOutShow(value) {
+    albumShow.value = value;
+}
+
 // 精品
-foundData.getHighQulity('', 99)
+foundData.getHighQulity('', 99);
 // 华语
-foundData.getHighQulity('华语', 99)
+foundData.getHighQulity('华语', 99);
 // 流行
-foundData.getHighQulity('流行', 99)
+foundData.getHighQulity('流行', 99);
 // 说唱
-foundData.getHighQulity('说唱', 99)
+foundData.getHighQulity('说唱', 99);
 // 电子
-foundData.getHighQulity('电子', 99)
+foundData.getHighQulity('电子', 99);
 // 摇滚
-foundData.getHighQulity('摇滚', 99)
+foundData.getHighQulity('摇滚', 99);
 // 古风
-foundData.getHighQulity('古风', 99)
+foundData.getHighQulity('古风', 99);
 </script>
 
 <style lang="less" scoped>
