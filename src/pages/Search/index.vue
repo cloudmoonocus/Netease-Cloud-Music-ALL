@@ -1,16 +1,12 @@
 <template>
-    <Search
-        v-model.trim="searchValue"
-        placeholder="请输入您要搜索的内容"
-        shape="round"
-        clearable
-        @search="onSearch"
-    />
+    <Search v-model.trim="searchValue" placeholder="请输入您要搜索的内容" shape="round" clearable @search="onSearch" />
     <!-- 热搜 -->
     <div class="hot" v-show="hotShow">
         <div class="first">
             <span>热搜榜</span>
-            <span> <Icon name="play-circle" /> 播放 </span>
+            <span>
+                <Icon name="play-circle" /> 播放
+            </span>
         </div>
         <Divider :hairline="false" />
         <div class="list">
@@ -22,12 +18,8 @@
     </div>
     <!-- 搜索建议 -->
     <div class="suggest" v-show="suggestShow">
-        <div
-            class="card"
-            v-for="value in searchData.searchSuggest.allMatch"
-            :key="value.feature"
-            @click="inputSuggest(value.keyword)"
-        >
+        <div class="card" v-for="(value, index) in searchData.searchSuggest.allMatch" :key="index"
+            @click="inputSuggest(value.keyword)">
             <Icon name="search" class="icon" />
             <span>{{ value.keyword }}</span>
         </div>
@@ -35,24 +27,14 @@
     <!-- 搜索结果 -->
     <div class="result" v-show="resultShow">
         <div class="top">
-            <Icon
-                name="play-circle"
-                style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
-            />
+            <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px" />
             <span>播放全部</span>
         </div>
         <div class="listResult">
-            <div class="cardResult" v-for="value in searchData.result" style="background-color: #fff">
-                <van-image
-                    :src="value.al.picUrl"
-                    :alt="value.name"
-                    width="55"
-                    height="55"
-                    radius="10"
-                    class="cardImage"
-                    fit="cover"
-                    position="center"
-                >
+            <div class="cardResult" v-for="(value, index) in searchData.result" :key="value.id"
+                style="background-color: #fff">
+                <van-image :src="value.al.picUrl" :alt="value.name" width="55" height="55" radius="10" class="cardImage"
+                    fit="cover" position="center">
                     <template v-slot:loading>
                         <van-loading type="spinner" size="20" />
                     </template>
@@ -60,9 +42,10 @@
                 <div>{{ value.name }}</div>
                 <span>{{ value.ar[0].name }}</span>
                 <Icon name="play-circle-o" class="play-circle-o" />
-                <Icon name="more-o" class="more-o" />
+                <Icon name="more-o" class="more-o" @click="popupShow(value.id)" />
             </div>
         </div>
+        <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
     </div>
 </template>
 
@@ -70,6 +53,7 @@
 import { Search, Icon, Divider } from 'vant';
 import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
+import MusicOperate from '@/components/MusicOperatePopup'
 import search from '@/store/Search';
 const searchData = search();
 
@@ -130,6 +114,19 @@ function onSearch() {
 }
 // 获取热搜
 searchData.getHotSearch();
+
+const popupShowVal = ref(false);
+const popupOutShow = ref(false);
+const musicId = ref();
+function popupShow(id) {
+    popupShowVal.value = true;
+    musicId.value = id;
+    popupOutShow.value = true;
+}
+function closeOutPopup() {
+    popupShowVal.value = false;
+    popupOutShow.value = false;
+}
 </script>
 
 <style lang="less" scoped>
@@ -197,6 +194,7 @@ searchData.getHotSearch();
         }
     }
 }
+
 .suggest {
     height: 85vh;
     background-color: #fff;
@@ -224,6 +222,7 @@ searchData.getHotSearch();
         }
     }
 }
+
 .result {
     .top {
         display: flex;
@@ -239,6 +238,7 @@ searchData.getHotSearch();
             font-weight: 700;
         }
     }
+
     .listResult {
         .cardResult {
             position: relative;

@@ -4,7 +4,8 @@
         <div v-show="inShow">
             <div class="first"></div>
             <div class="out">
-                <div class="card" v-for="value in foundData.newAirtistMusic" style="background-color: #fff;">
+                <div class="card" v-for="value in foundData.newAirtistMusic" :key="value.songLists[0].id"
+                    style="background-color: #fff;">
                     <van-image :src="value.blockTitle.imgUrl" :alt="value.blockTitle.resourceName" width="55"
                         height="55" radius="10" class="cardImage" fit="cover" position="center">
                         <template v-slot:loading>
@@ -14,9 +15,10 @@
                     <div>{{ value.blockTitle.resourceName }}</div>
                     <span>{{ value.blockTitle.artistName }}</span>
                     <Icon name="play-circle-o" class="play-circle-o" />
-                    <Icon name="more-o" class="more-o" />
+                    <Icon name="more-o" class="more-o" @click="popupShow(value.songLists[0].id)" />
                 </div>
             </div>
+            <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
         </div>
     </transition>
 </template>
@@ -26,6 +28,7 @@ import { Icon } from 'vant';
 import { Image as VanImage } from 'vant';
 import { found } from '@/store/Found';
 import { ref, watch } from 'vue';
+import MusicOperate from '@/components/MusicOperatePopup'
 const foundData = found();
 
 const outShow = ref(true);
@@ -39,6 +42,19 @@ watch(() => foundData.newAirtistMusic, () => {
 })
 
 foundData.getNewAirtistMusic();
+
+const popupShowVal = ref(false);
+const popupOutShow = ref(false);
+const musicId = ref();
+function popupShow(id) {
+    popupShowVal.value = true;
+    musicId.value = id;
+    popupOutShow.value = true;
+}
+function closeOutPopup() {
+    popupShowVal.value = false;
+    popupOutShow.value = false;
+}
 </script>
 
 <style lang="less" scoped>

@@ -8,23 +8,15 @@
             </div>
             <!-- 第二层-播放全部- -->
             <div class="second">
-                <Icon
-                    name="play-circle"
-                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
-                />
+                <Icon name="play-circle"
+                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px" />
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
             <div class="third">
-                <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic">
-                    <van-image
-                        width="55"
-                        height="55"
-                        :src="dailyRecMusics.al.picUrl"
-                        :alt="dailyRecMusics.name"
-                        class="cardImage"
-                        radius="10"
-                    >
+                <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic" :key="dailyRecMusics.id">
+                    <van-image width="55" height="55" :src="dailyRecMusics.al.picUrl" :alt="dailyRecMusics.name"
+                        class="cardImage" radius="10">
                         <template v-slot:loading>
                             <van-loading type="spinner" size="20" />
                         </template>
@@ -32,8 +24,9 @@
                     <div>{{ dailyRecMusics.name }}</div>
                     <span>{{ dailyRecMusics.ar[0].name }}</span>
                     <Icon name="play-circle-o" class="play-circle-o" />
-                    <Icon name="more-o" class="more-o" />
+                    <Icon name="more-o" class="more-o" @click="popupShow(dailyRecMusics.id)" />
                 </div>
+                <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
             </div>
         </div>
     </transition>
@@ -41,9 +34,11 @@
 
 <script setup>
 import { Icon } from 'vant';
-import { found } from '@/store/Found';
-import { ref } from 'vue';
 import { Image as VanImage } from 'vant';
+import { ref } from 'vue';
+import { found } from '@/store/Found';
+import MusicOperate from '@/components/MusicOperatePopup'
+
 
 const outShow = ref(true);
 const inShow = ref(false);
@@ -54,6 +49,19 @@ setTimeout(() => {
     outShow.value = false;
     inShow.value = true;
 }, 200);
+
+const popupShowVal = ref(false);
+const popupOutShow = ref(false);
+const musicId = ref();
+function popupShow(id) {
+    popupShowVal.value = true;
+    musicId.value = id;
+    popupOutShow.value = true;
+}
+function closeOutPopup() {
+    popupShowVal.value = false;
+    popupOutShow.value = false;
+}
 </script>
 
 <style lang="less" scoped>

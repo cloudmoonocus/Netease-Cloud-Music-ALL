@@ -14,7 +14,7 @@
                                 <div>{{ value.data.name }}</div>
                                 <div>{{ value.data.ar[0].name }} - {{ value.data.al.name }}</div>
                             </div>
-                            <Icon class="rcIcon" name="ellipsis" />
+                            <Icon class="rcIcon" name="ellipsis" @click="popupShow(value.resourceId)" />
                         </div>
                     </div>
                 </Tab>
@@ -35,16 +35,32 @@
                 </Tab>
             </Tabs>
         </div>
+        <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
     </div>
 </template>
 
 <script setup>
 import { Tab, Tabs, Icon } from 'vant';
+import MusicOperate from '@/components/MusicOperatePopup'
 import myindex from '@/store/MyIndex';
+import { ref } from 'vue';
 const myindexData = myindex();
 
 // 获取最近播放歌曲
 myindexData.getRecentSong();
+
+const popupShowVal = ref(false);
+const popupOutShow = ref(false);
+const musicId = ref();
+function popupShow(id) {
+    popupShowVal.value = true;
+    musicId.value = id;
+    popupOutShow.value = true;
+}
+function closeOutPopup() {
+    popupShowVal.value = false;
+    popupOutShow.value = false;
+}
 </script>
 
 <style lang="less" scoped>

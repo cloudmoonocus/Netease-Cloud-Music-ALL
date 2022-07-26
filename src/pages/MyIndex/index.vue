@@ -7,13 +7,8 @@
             <div v-if="Object.keys(myindexData.userInfor).length">
                 <!-- 主页头部 -->
                 <div class="myHead">
-                    <van-image
-                        :src="myindexData.userInfor.profile.avatarUrl"
-                        radius="50"
-                        height="75"
-                        width="75"
-                        class="headImage"
-                    />
+                    <van-image :src="myindexData.userInfor.profile.avatarUrl" radius="50" height="75" width="75"
+                        class="headImage" />
                     <div class="headName">{{ myindexData.userInfor.profile.nickname }}</div>
                     <div class="headInfor">
                         {{ myindexData.userInfor.followNum }} 关注 | {{ myindexData.userInfor.fansNum }} 粉丝
@@ -23,14 +18,8 @@
                 <!-- 功能列表 -->
                 <div class="second">
                     <Grid :gutter="5" class="grid" icon-size="25px" column-num="4">
-                        <Grid-item
-                            v-for="value in grids"
-                            :key="value.id"
-                            :icon="value.icon"
-                            :text="value.text"
-                            :to="value.path"
-                            :class="{ gridIn: value.show, gridInNO: !value.show }"
-                        />
+                        <Grid-item v-for="value in grids" :key="value.id" :icon="value.icon" :text="value.text"
+                            :to="value.path" :class="{ gridIn: value.show, gridInNO: !value.show }" />
                     </Grid>
                 </div>
                 <!-- 喜欢的音乐 -->
@@ -47,17 +36,8 @@
                     </div>
                 </div>
                 <!-- 创建歌单/收藏歌单 -->
-                <Tabs
-                    v-if="judge"
-                    style="margin-top: 5px"
-                    scrollspy
-                    sticky
-                    background="#eee"
-                    line-height="8px"
-                    :lazy-render="false"
-                    offset-top="45px"
-                    ref="tabs"
-                >
+                <Tabs v-if="judge" style="margin-top: 5px" scrollspy sticky background="#eee" line-height="8px"
+                    :lazy-render="false" offset-top="45px" ref="tabs">
                     <Tab title="创建歌单">
                         <!-- 创建歌单 -->
                         <div class="fourth">
@@ -67,17 +47,13 @@
                             </div>
                             <div>
                                 <!-- 歌单 -->
-                                <div
-                                    class="card"
-                                    v-for="value in myindexData.likeListCreate"
-                                    @click.stop="changeAlbumShow(value.id)"
-                                    :key="value.id"
-                                >
+                                <div class="card" v-for="value in myindexData.likeListCreate"
+                                    @click.stop="changeAlbumShow(value.id)" :key="value.id">
                                     <img :src="value.coverImgUrl" :alt="value.name" />
                                     <div>{{ value.name }}</div>
                                     <div>{{ value.trackCount }}首</div>
                                     <div>
-                                        <Icon name="more-o" @click="isMoreShow(value.name, value.id)" />
+                                        <Icon name="more-o" @click.stop="isMoreShow(value.name, value.id)" />
                                     </div>
                                 </div>
                             </div>
@@ -91,17 +67,13 @@
                             </div>
                             <div>
                                 <!-- 歌单 -->
-                                <div
-                                    class="card"
-                                    v-for="value in myindexData.likeListCollect"
-                                    @click.stop="changeAlbumShow(value.id)"
-                                    :key="value.id"
-                                >
+                                <div class="card" v-for="value in myindexData.likeListCollect"
+                                    @click.stop="changeAlbumShow(value.id)" :key="value.id">
                                     <img :src="value.coverImgUrl" :alt="value.name" />
                                     <div>{{ value.name }}</div>
                                     <div>{{ value.trackCount }}首</div>
                                     <div>
-                                        <Icon name="more-o" @click="isMoreShow(value.name, value.id)" />
+                                        <Icon name="more-o" @click.stop="isMoreShow(value.name, value.id)" />
                                     </div>
                                 </div>
                             </div>
@@ -112,70 +84,33 @@
                 <!-- 创建歌单弹出层 -->
                 <Action-sheet v-model:show="createShow" title="创建音乐歌单">
                     <Cell-group inset>
-                        <Field
-                            v-model.trim="newMusicList"
-                            placeholder="输入新建歌单标题名"
-                            maxlength="40"
-                            clearable
-                            required
-                            autofocus
-                        />
+                        <Field v-model.trim="newMusicList" placeholder="输入新建歌单标题名" maxlength="40" clearable required
+                            autofocus />
                         <Checkbox-group v-model="checked">
                             <!-- 共享歌单需要会员，于是直接禁用了 -->
-                            <Checkbox
-                                name="shareList"
-                                class="checked"
-                                checked-color="#e60026"
-                                disabled
-                                style="text-decoration: line-through"
-                                >设置为共享歌单（和好友一起管理）
+                            <Checkbox name="shareList" class="checked" checked-color="#e60026" disabled
+                                style="text-decoration: line-through">设置为共享歌单（和好友一起管理）
                                 <Tag round type="danger">限免30天</Tag>
                             </Checkbox>
-                            <Checkbox :name="10" class="checked" checked-color="#e60026"
-                                >设置为私密歌单</Checkbox
-                            >
+                            <Checkbox :name="10" class="checked" checked-color="#e60026">设置为私密歌单</Checkbox>
                         </Checkbox-group>
-                        <Button
-                            round
-                            type="primary"
-                            size="large"
-                            class="submitList"
-                            color="#e60026"
-                            @click="createList"
-                            >完成创建</Button
-                        >
+                        <Button round type="primary" size="large" class="submitList" color="#e60026"
+                            @click="createList">完成创建</Button>
                     </Cell-group>
                 </Action-sheet>
                 <!-- 歌单操作 -->
                 <Action-sheet v-model:show="moreShow" :title="moreName">
-                    <Button
-                        size="large"
-                        color="#fff"
-                        style="color: #000"
-                        icon="share-o"
-                        type="primary"
-                        @click="isShare"
-                    >
+                    <Button size="large" color="#fff" style="color: #000" icon="share-o" type="primary"
+                        @click="isShare">
                         分享
                     </Button>
-                    <Button
-                        size="large"
-                        color="#fff"
-                        style="color: #000; margin-bottom: 10px"
-                        icon="delete-o"
-                        type="primary"
-                        @click="deleteList"
-                    >
+                    <Button size="large" color="#fff" style="color: #000; margin-bottom: 10px" icon="delete-o"
+                        type="primary" @click="deleteList">
                         删除
                     </Button>
                 </Action-sheet>
                 <!-- 分享弹出层 -->
-                <Share-sheet
-                    v-model:show="showShare"
-                    title="立即分享"
-                    :options="options"
-                    style="background-color: #fff"
-                />
+                <Share-sheet v-model:show="showShare" title="立即分享" :options="options" style="background-color: #fff" />
                 <!-- 底部 -->
                 <Tip />
                 <!-- 防止底部遮挡 -->

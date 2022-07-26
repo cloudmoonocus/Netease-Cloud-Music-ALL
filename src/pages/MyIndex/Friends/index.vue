@@ -54,7 +54,6 @@ import { nextTick, ref } from 'vue';
 const myindexData = myindex();
 
 const judge = ref(true);
-console.error(judge.value);
 
 // 关注/取消关注
 async function follow(id) {

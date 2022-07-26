@@ -1,14 +1,6 @@
 <template>
-    <Popup
-        v-model:show="albumShow"
-        :style="{ height: '100%', width: '100%', backgroundColor: '#fff' }"
-        duration="0.1"
-        :overlay="false"
-        transition-appear
-        close-on-popstate
-        class="popup"
-        v-if="musicListShow"
-    >
+    <Popup v-model:show="albumShow" :style="{ height: '100%', width: '100%', backgroundColor: '#fff' }" duration="0.1"
+        :overlay="false" transition-appear close-on-popstate class="popup" v-if="musicListShow">
         <div class="outTop">
             <NavBar left-arrow @click-left="closeAlbumDetail" class="nav">
                 <template #left>
@@ -21,10 +13,7 @@
                 <div class="right">
                     <div>{{ listData.albumInfor.name }}</div>
                     <div>
-                        <img
-                            :src="listData.albumInfor.creator.avatarUrl"
-                            :alt="listData.albumInfor.creator.nickname"
-                        />
+                        <img :src="listData.albumInfor.creator.avatarUrl" :alt="listData.albumInfor.creator.nickname" />
                         <span>{{ listData.albumInfor.creator.nickname }}</span>
                     </div>
                 </div>
@@ -34,50 +23,43 @@
             <div class="middle">
                 <div>
                     <Icon name="shop-collect-o" class="iconMiddle" /><span>{{
-                        formatNumber(listData.albumInfor.subscribedCount)
+                            formatNumber(listData.albumInfor.subscribedCount)
                     }}</span>
                 </div>
                 <span>|</span>
                 <div>
                     <Icon name="chat-o" class="iconMiddle" /><span>{{
-                        formatNumber(listData.albumInfor.commentCount)
+                            formatNumber(listData.albumInfor.commentCount)
                     }}</span>
                 </div>
                 <span>|</span>
                 <div>
                     <Icon name="share-o" class="iconMiddle" /><span>{{
-                        formatNumber(listData.albumInfor.shareCount)
+                            formatNumber(listData.albumInfor.shareCount)
                     }}</span>
                 </div>
             </div>
             <!-- 播放全部 -->
             <div class="playAll">
-                <Icon
-                    name="play-circle"
-                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
-                />
+                <Icon name="play-circle"
+                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px" />
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
             <div class="musicList">
-                <div class="card" v-for="data in listData.albumlist">
-                    <van-image
-                        width="55"
-                        height="55"
-                        :src="data.al.picUrl"
-                        :alt="data.name"
-                        class="cardImage"
-                        radius="10"
-                    >
+                <div class="card" v-for="data in listData.albumlist" :key="data.id">
+                    <van-image width="55" height="55" :src="data.al.picUrl" :alt="data.name" class="cardImage"
+                        radius="10">
                         <template v-slot:loading>
                             <van-loading type="spinner" size="20" />
                         </template>
                     </van-image>
                     <div>{{ data.name }}</div>
                     <span>{{ data.ar[0].name }}</span>
-                    <Icon name="more-o" class="more-o" />
+                    <Icon name="more-o" class="more-o" @click="popupShow(data.id)" />
                 </div>
             </div>
+            <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
         </div>
     </Popup>
 </template>
@@ -87,11 +69,13 @@ import { Popup, NavBar, Icon } from 'vant';
 import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
 import { formatNumber } from '@/plugins/DigitalConverter';
+import MusicOperate from '@/components/MusicOperatePopup'
 import list from '@/store/List';
 const listData = list();
 
 const albumShow = ref(false);
 const musicListShow = ref(false);
+const backgroundImage = ref();
 
 const props = defineProps({
     show: Boolean,
@@ -106,6 +90,7 @@ watch(props, () => {
 watch(
     () => listData.albumlist,
     () => {
+        backgroundImage.value = 'url(' + listData.albumInfor.coverImgUrl + ')';
         musicListShow.value = true;
     }
 );
@@ -114,6 +99,19 @@ watch(
 function closeAlbumDetail() {
     albumShow.value = false;
     emits('changeAlbumInShow', albumShow.value);
+}
+
+const popupShowVal = ref(false);
+const popupOutShow = ref(false);
+const musicId = ref();
+function popupShow(id) {
+    popupShowVal.value = true;
+    musicId.value = id;
+    popupOutShow.value = true;
+}
+function closeOutPopup() {
+    popupShowVal.value = false;
+    popupOutShow.value = false;
 }
 </script>
 
@@ -127,6 +125,7 @@ function closeAlbumDetail() {
             background-color: rgba(0, 0, 0, 0);
             border-bottom: none;
         }
+
         &::after {
             position: absolute;
             height: 30%;
@@ -134,11 +133,12 @@ function closeAlbumDetail() {
             border-radius: 0 0 35px 35px;
             top: 0;
             z-index: -1;
-            background: url(https://p2.music.126.net/yRM8cp2DVTNOZPZpoWe98g==/109951164444465905.jpg?param=140y140);
+            background: v-bind(backgroundImage);
             background-size: cover;
             content: '';
             filter: blur(10px);
         }
+
         .top {
             width: 90%;
             height: 100px;
@@ -157,12 +157,18 @@ function closeAlbumDetail() {
                 width: 67%;
                 padding-top: 13px;
                 margin-left: 3%;
+
                 div:nth-child(1) {
                     letter-spacing: 3px;
                     font-size: 15px;
                     font-weight: 400;
                     color: #fff;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
                 }
+
                 div:nth-child(2) {
                     height: 25px;
                     margin-top: 10px;
@@ -212,6 +218,7 @@ function closeAlbumDetail() {
                 margin-right: 5px;
             }
         }
+
         .playAll {
             display: flex;
             margin-top: 35px;
