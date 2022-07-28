@@ -59,9 +59,9 @@
                     <Icon name="more-o" class="more-o" @click="popupShow(data.id)" />
                 </div>
             </div>
-            <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
         </div>
     </Popup>
+    <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
 </template>
 
 <script setup>
