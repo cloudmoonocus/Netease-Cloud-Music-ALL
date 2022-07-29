@@ -4,11 +4,11 @@
             <MusicPlayer />
         </Sticky>
         <Tabbar fixed v-model="active" active-color="#ee0a24" inactive-color="#000">
-            <Tabbar-item replace to="/found" icon="music">发现</Tabbar-item>
-            <Tabbar-item replace to="/podcast" icon="audio">播客</Tabbar-item>
-            <Tabbar-item replace to="/myindex" icon="manager">我的</Tabbar-item>
-            <Tabbar-item replace to="/attention" icon="like">关注</Tabbar-item>
-            <Tabbar-item replace to="/cloudsquare" icon="shop">云村</Tabbar-item>
+            <TabbarItem replace to="/found" icon="music">发现</TabbarItem>
+            <TabbarItem replace to="/podcast" icon="audio">播客</TabbarItem>
+            <TabbarItem replace to="/myindex" icon="manager">我的</TabbarItem>
+            <TabbarItem replace to="/attention" icon="like">关注</TabbarItem>
+            <TabbarItem replace to="/cloudsquare" icon="shop">云村</TabbarItem>
         </Tabbar>
     </div>
 </template>

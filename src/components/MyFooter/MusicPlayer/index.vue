@@ -1,10 +1,10 @@
 <template>
     <div class="playerOut" @click="showMusicDetail">
-        <div class="leftImage leftAnimate">
-            <img src="http://p1.music.126.net/JnQmWLPgIh97PZnBtpPKOA==/109951164274045767.jpg?param=140y140" />
+        <div :class="{ leftImage: true, leftAnimate: animationClass, animatePause: !animationClass }">
+            <img :src="onplayingData.playNow.imageUrl" />
         </div>
         <div class="name">
-            <span>xxxxxxxxxxxxxx</span>
+            <span>{{ onplayingData.playNow.title }}</span>
         </div>
         <div class="pause" @click.stop="musicPause">
             <Circle v-model:current-rate="currentRate" :stroke-width="50" size="30px" color="#000" layer-color="#eee"
@@ -23,10 +23,20 @@ import { Circle, Icon } from 'vant'
 import { ref } from 'vue';
 import MusicDetail from '@/components/MyFooter/MusicPlayer/MusicDetail'
 import MusicList from '@/components/MyFooter/MusicPlayer/MusicList'
+import onplaying from '@/store/OnPlaying';
+const onplayingData = onplaying();
 
 const currentRate = ref(0);
 const detailShow = ref(false);
 const listShow = ref(false);
+
+onplayingData.judageNow();
+const animationClass = ref(false);
+if (onplayingData.playNow.id === 0) {
+    animationClass.value = false;
+} else {
+    animationClass.value = true;
+}
 
 // 展示歌曲详情页
 function showMusicDetail() {
@@ -103,8 +113,13 @@ function changeListShow(value) {
         display: inline-block;
         position: absolute;
         line-height: 50px;
-        font-size: 20px;
+        font-size: 14px;
         left: 60px;
+        width: 200px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
 
     .pause {
