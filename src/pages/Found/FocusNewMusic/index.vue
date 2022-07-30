@@ -6,19 +6,21 @@
             <div class="out">
                 <div class="card" v-for="value in foundData.newAirtistMusic" :key="value.songLists[0].id"
                     style="background-color: #fff;">
-                    <van-image :src="value.blockTitle.imgUrl" :alt="value.blockTitle.resourceName" width="55"
+                    <van-image :src="value.songLists[0].al.picUrl" :alt="value.songLists[0].al.name" width="55"
                         height="55" radius="10" class="cardImage" fit="cover" position="center">
                         <template v-slot:loading>
                             <van-loading type="spinner" size="20" />
                         </template>
                     </van-image>
-                    <div>{{ value.blockTitle.resourceName }}</div>
+                    <div>{{ value.songLists[0].al.name }}</div>
                     <span>{{ value.blockTitle.artistName }}</span>
-                    <Icon name="play-circle-o" class="play-circle-o" />
-                    <Icon name="more-o" class="more-o" @click="popupShow(value.songLists[0].id)" />
+                    <Icon name="play-circle-o" class="play-circle-o"
+                        @click="playMusic(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name)" />
+                    <Icon name="more-o" class="more-o"
+                        @click="popupShow(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name)" />
                 </div>
             </div>
-            <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
+            <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
         </div>
     </transition>
 </template>
@@ -28,7 +30,9 @@ import { Icon } from 'vant';
 import { Image as VanImage } from 'vant';
 import { found } from '@/store/Found';
 import { ref, watch } from 'vue';
-import MusicOperate from '@/components/MusicOperatePopup'
+import MusicOperate from '@/components/MusicOperatePopup';
+import { play } from '@/plugins/play';
+
 const foundData = found();
 
 const outShow = ref(true);
@@ -45,15 +49,22 @@ foundData.getNewAirtistMusic();
 
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
-const musicId = ref();
-function popupShow(id) {
+const musicData = ref();
+
+function popupShow(id, url, title) {
     popupShowVal.value = true;
-    musicId.value = id;
+    musicData.value = { id, url, title };
     popupOutShow.value = true;
 }
+
 function closeOutPopup() {
     popupShowVal.value = false;
     popupOutShow.value = false;
+}
+
+// 播放音乐
+function playMusic(id, imageUrl, title) {
+    play(id, imageUrl, title);
 }
 </script>
 

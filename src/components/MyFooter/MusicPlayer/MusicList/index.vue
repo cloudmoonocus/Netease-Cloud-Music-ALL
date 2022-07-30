@@ -1,6 +1,6 @@
 <template>
     <Popup v-model:show="listShow" position="bottom" :style="{ height: '60%' }" @click-overlay="closeList" round
-        style="background-color: #fff;">
+        style="background-color: #fff;" close-on-popstate>
         <NavBar>
             <template #left>
                 <span>当前播放</span>

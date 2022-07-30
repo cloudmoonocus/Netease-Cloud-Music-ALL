@@ -41,8 +41,8 @@
             </div>
             <!-- 播放全部 -->
             <div class="playAll">
-                <Icon name="play-circle"
-                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px" />
+                <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
+                    @click="playMusicAll" />
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
@@ -56,12 +56,12 @@
                     </van-image>
                     <div>{{ data.name }}</div>
                     <span>{{ data.ar[0].name }}</span>
-                    <Icon name="more-o" class="more-o" @click="popupShow(data.id)" />
+                    <Icon name="more-o" class="more-o" @click="popupShow(data.id, data.al.picUrl, data.name)" />
                 </div>
             </div>
         </div>
     </Popup>
-    <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
+    <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
 </template>
 
 <script setup>
@@ -70,6 +70,7 @@ import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
 import { formatNumber } from '@/plugins/DigitalConverter';
 import MusicOperate from '@/components/MusicOperatePopup'
+import { playAll } from '@/plugins/playAll'
 import list from '@/store/List';
 const listData = list();
 
@@ -103,15 +104,20 @@ function closeAlbumDetail() {
 
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
-const musicId = ref();
-function popupShow(id) {
+const musicData = ref();
+function popupShow(id, url, title) {
     popupShowVal.value = true;
-    musicId.value = id;
+    musicData.value = { id, url, title };
     popupOutShow.value = true;
 }
 function closeOutPopup() {
     popupShowVal.value = false;
     popupOutShow.value = false;
+}
+
+// 播放全部音乐
+function playMusicAll() {
+    playAll(listData.albumlist);
 }
 </script>
 

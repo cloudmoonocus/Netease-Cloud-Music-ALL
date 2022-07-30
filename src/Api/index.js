@@ -179,14 +179,14 @@ export const reqDjBanner = () =>
         url: `/dj/banner`,
         method: 'get',
         withCredentials: true,
-    })
+    });
 // !猜你喜欢
 export const reqDjRecom = () =>
     requests({
         url: `/dj/personalize/recommend`,
         method: 'get',
         withCredentials: true,
-    })
+    });
 // #endregion
 
 // *我的页API
@@ -197,7 +197,7 @@ export const reqUserInfor = () =>
         url: `/user/account`,
         method: 'get',
         withCredentials: true,
-    })
+    });
 // !关注列表
 export const reqFollowList = (id) =>
     requests({
@@ -218,7 +218,7 @@ export const reqUserLV = () =>
         url: `/user/level`,
         method: 'get',
         withCredentials: true,
-    })
+    });
 // !最近播放歌曲
 export const reqRencentSong = () =>
     requests({
@@ -328,6 +328,20 @@ export const reqAlbumInfor = (id) =>
 export const reqAlbumDetail = (id) =>
     requests({
         url: `/playlist/track/all?id=${id}&limit=30&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// *!获取歌曲Url
+export const reqMusicUrl = (id) =>
+    requests({
+        url: `/song/url?id=${id}&timestamp=${timeNow}`,
+        method: 'post',
+        withCredentials: true,
+    });
+// *!获取歌词
+export const reqMusicLyric = (id) =>
+    requests({
+        url: `/lyric?id=${id}&timestamp=${timeNow}`,
         method: 'post',
         withCredentials: true,
     });

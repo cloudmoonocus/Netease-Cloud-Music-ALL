@@ -8,8 +8,8 @@
             </div>
             <!-- 第二层-播放全部- -->
             <div class="second">
-                <Icon name="play-circle"
-                    style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px" />
+                <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
+                    @click="playMusicAll" />
                 <span>播放全部</span>
             </div>
             <!-- 歌曲列表 -->
@@ -23,11 +23,13 @@
                     </van-image>
                     <div>{{ dailyRecMusics.name }}</div>
                     <span>{{ dailyRecMusics.ar[0].name }}</span>
-                    <Icon name="play-circle-o" class="play-circle-o" />
-                    <Icon name="more-o" class="more-o" @click="popupShow(dailyRecMusics.id)" />
+                    <Icon name="play-circle-o" class="play-circle-o"
+                        @click="playMusic(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name)" />
+                    <Icon name="more-o" class="more-o"
+                        @click="popupShow(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name)" />
                 </div>
-                <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
             </div>
+            <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
         </div>
     </transition>
 </template>
@@ -38,7 +40,8 @@ import { Image as VanImage } from 'vant';
 import { ref } from 'vue';
 import { found } from '@/store/Found';
 import MusicOperate from '@/components/MusicOperatePopup'
-
+import { playAll } from '@/plugins/playAll'
+import { play } from '@/plugins/play'
 
 const outShow = ref(true);
 const inShow = ref(false);
@@ -52,15 +55,24 @@ setTimeout(() => {
 
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
-const musicId = ref();
-function popupShow(id) {
+const musicData = ref();
+function popupShow(id, url, title) {
     popupShowVal.value = true;
-    musicId.value = id;
+    musicData.value = { id, url, title };
     popupOutShow.value = true;
 }
 function closeOutPopup() {
     popupShowVal.value = false;
     popupOutShow.value = false;
+}
+
+// 播放全部音乐
+function playMusicAll() {
+    playAll(foundData.dailyRcMusic);
+}
+// 播放音乐
+function playMusic(id, imageUrl, title) {
+    play(id, imageUrl, title);
 }
 </script>
 

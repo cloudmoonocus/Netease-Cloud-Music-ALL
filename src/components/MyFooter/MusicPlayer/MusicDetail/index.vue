@@ -1,5 +1,6 @@
 <template>
-    <Popup v-model:show="detailShow" position="bottom" :style="{ height: '100%' }" style="background-color:#eef3f7;">
+    <Popup v-model:show="detailShow" position="bottom" :style="{ height: '100%' }" style="background-color:#eef3f7;"
+        close-on-popstate>
         <NavBar title="标题" arrow-down @click-left="closeDetail" style="background-color: #eef3f7;">
             <template #left>
                 <Icon name="arrow-down" size="25" color="#000" />

@@ -32,6 +32,7 @@ const listShow = ref(false);
 
 onplayingData.judageNow();
 const animationClass = ref(false);
+
 if (onplayingData.playNow.id === 0) {
     animationClass.value = false;
 } else {
