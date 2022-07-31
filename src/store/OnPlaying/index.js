@@ -35,6 +35,10 @@ export default defineStore('onplaying', {
                 });
                 this.playNow = newArray[0];
             }
+            const playnow = this.playNow;
+            const playlist = this.playList;
+            let localData = { playnow, playlist };
+            localStorage.setItem('localPlayer', JSON.stringify(localData));
         },
     },
     getters: {},

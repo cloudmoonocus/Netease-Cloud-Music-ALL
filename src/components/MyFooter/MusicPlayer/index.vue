@@ -30,7 +30,6 @@ const currentRate = ref(0);
 const detailShow = ref(false);
 const listShow = ref(false);
 
-onplayingData.judageNow();
 const animationClass = ref(false);
 
 if (onplayingData.playNow.id === 0) {

@@ -8,6 +8,7 @@ export function playAll(data) {
     Toast.loading({
         message: '添加中...',
         forbidClick: true,
+        duration: 0,
     });
     var num = 0;
     data.map(async (m) => {
@@ -25,7 +26,7 @@ export function playAll(data) {
             }
             return { minute, second, millisecond, lyric };
         });
-        let data = {
+        let musicData = {
             playNow: false,
             index: num,
             id: m.id,
@@ -34,12 +35,22 @@ export function playAll(data) {
             musicUrl: urlResult.data[0].url,
             lyricDetail: [newLyricArray],
         };
-        onplayingData.playList.push(data);
+        onplayingData.playList.push(musicData);
+        if (musicData.index === 0) {
+            musicData.playNow = true;
+        }
         num++;
+        judage(data.length, ++num);
     });
-    Notify({
-        message: '添加成功',
-        type: 'success',
-    });
-    onplayingData.judageNow();
+
+    function judage(length, num) {
+        if (length === num) {
+            onplayingData.judageNow();
+            Notify({
+                message: '添加成功',
+                type: 'success',
+            });
+            Toast.clear();
+        }
+    }
 }

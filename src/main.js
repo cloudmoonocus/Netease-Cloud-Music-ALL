@@ -6,8 +6,9 @@ import './assets/icons/iconfont.css';
 import { createPinia } from 'pinia';
 import { Lazyload, Loading } from 'vant';
 import MyLoading from '@/components/Loading';
-import MyEmpty from '@/components/MyEmpty'
-import MusicList from "@/components/MusicList";
+import MyEmpty from '@/components/MyEmpty';
+import MusicList from '@/components/MusicList';
+import onplaying from './store/OnPlaying';
 
 const app = createApp(App);
 
@@ -21,6 +22,11 @@ app.use(Lazyload);
 app.use(Loading);
 
 app.mount('#app');
+
+const onplayingData = onplaying();
+onplayingData.playList = JSON.parse(localStorage.getItem('localPlayer')).playlist;
+onplayingData.playNow = JSON.parse(localStorage.getItem('localPlayer')).playnow;
+onplayingData.judageNow();
 
 // 火山引擎监控
 import browserClient from '@apmplus/web';
