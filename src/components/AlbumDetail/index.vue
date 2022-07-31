@@ -56,7 +56,8 @@
                     </van-image>
                     <div>{{ data.name }}</div>
                     <span>{{ data.ar[0].name }}</span>
-                    <Icon name="more-o" class="more-o" @click="popupShow(data.id, data.al.picUrl, data.name)" />
+                    <Icon name="more-o" class="more-o"
+                        @click="popupShow(data.id, data.al.picUrl, data.name, data.ar[0].name)" />
                 </div>
             </div>
         </div>
@@ -105,9 +106,9 @@ function closeAlbumDetail() {
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
 const musicData = ref();
-function popupShow(id, url, title) {
+function popupShow(id, url, title, author) {
     popupShowVal.value = true;
-    musicData.value = { id, url, title };
+    musicData.value = { id, url, title, author };
     popupOutShow.value = true;
 }
 function closeOutPopup() {

@@ -1,9 +1,10 @@
 <template>
-    <div v-if="$route.meta.show">
-        <Sticky :offset-bottom="49" position="bottom">
+    <div>
+        <Sticky :offset-bottom="$route.meta.show ? 49 : 0" position="bottom" v-show="$route.meta.playerShow"
+            style="z-index: 99;">
             <MusicPlayer />
         </Sticky>
-        <Tabbar fixed v-model="active" active-color="#ee0a24" inactive-color="#000">
+        <Tabbar fixed v-model="active" active-color="#ee0a24" inactive-color="#000" v-show="$route.meta.show">
             <TabbarItem replace to="/found" icon="music">发现</TabbarItem>
             <TabbarItem replace to="/podcast" icon="audio">播客</TabbarItem>
             <TabbarItem replace to="/myindex" icon="manager">我的</TabbarItem>

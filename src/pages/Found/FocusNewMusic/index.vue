@@ -15,9 +15,9 @@
                     <div>{{ value.songLists[0].al.name }}</div>
                     <span>{{ value.blockTitle.artistName }}</span>
                     <Icon name="play-circle-o" class="play-circle-o"
-                        @click="playMusic(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name)" />
+                        @click="playMusic(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name, value.ar[0].name)" />
                     <Icon name="more-o" class="more-o"
-                        @click="popupShow(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name)" />
+                        @click="popupShow(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name, value.ar[0].name)" />
                 </div>
             </div>
             <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
@@ -51,9 +51,9 @@ const popupShowVal = ref(false);
 const popupOutShow = ref(false);
 const musicData = ref();
 
-function popupShow(id, url, title) {
+function popupShow(id, url, title, author) {
     popupShowVal.value = true;
-    musicData.value = { id, url, title };
+    musicData.value = { id, url, title, author };
     popupOutShow.value = true;
 }
 

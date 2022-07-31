@@ -5,6 +5,8 @@
         </div>
         <div class="name">
             <span>{{ onplayingData.playNow.title }}</span>
+            <span v-if="onplayingData.playNow.id != 0" style="margin-left: 10px;">- {{ onplayingData.playNow.author
+            }}</span>
         </div>
         <div class="pause" @click.stop="musicPause">
             <Circle v-model:current-rate="currentRate" :stroke-width="50" size="30px" color="#000" layer-color="#eee"
@@ -20,7 +22,7 @@
 
 <script setup>
 import { Circle, Icon } from 'vant'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import MusicDetail from '@/components/MyFooter/MusicPlayer/MusicDetail'
 import MusicList from '@/components/MyFooter/MusicPlayer/MusicList'
 import onplaying from '@/store/OnPlaying';
@@ -32,11 +34,13 @@ const listShow = ref(false);
 
 const animationClass = ref(false);
 
-if (onplayingData.playNow.id === 0) {
-    animationClass.value = false;
-} else {
-    animationClass.value = true;
-}
+watch(() => onplayingData.playNow.play, () => {
+    if (onplayingData.playNow.play === true) {
+        animationClass.value = true;
+    } else {
+        animationClass.value = false;
+    }
+})
 
 // 展示歌曲详情页
 function showMusicDetail() {
@@ -64,7 +68,9 @@ function changeListShow(value) {
 .playerOut {
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 55px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     background-color: #fff;
 
     .leftImage {
@@ -115,7 +121,7 @@ function changeListShow(value) {
         line-height: 50px;
         font-size: 14px;
         left: 60px;
-        width: 200px;
+        max-width: 200px;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;

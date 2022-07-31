@@ -24,9 +24,9 @@
                     <div>{{ dailyRecMusics.name }}</div>
                     <span>{{ dailyRecMusics.ar[0].name }}</span>
                     <Icon name="play-circle-o" class="play-circle-o"
-                        @click="playMusic(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name)" />
+                        @click="playMusic(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name, dailyRecMusics.ar[0].name)" />
                     <Icon name="more-o" class="more-o"
-                        @click="popupShow(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name)" />
+                        @click="popupShow(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name, dailyRecMusics.ar[0].name)" />
                 </div>
             </div>
             <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
@@ -56,9 +56,9 @@ setTimeout(() => {
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
 const musicData = ref();
-function popupShow(id, url, title) {
+function popupShow(id, url, title, author) {
     popupShowVal.value = true;
-    musicData.value = { id, url, title };
+    musicData.value = { id, url, title, author };
     popupOutShow.value = true;
 }
 function closeOutPopup() {
@@ -71,8 +71,8 @@ function playMusicAll() {
     playAll(foundData.dailyRcMusic);
 }
 // 播放音乐
-function playMusic(id, imageUrl, title) {
-    play(id, imageUrl, title);
+function playMusic(id, imageUrl, title, author) {
+    play(id, imageUrl, title, author);
 }
 </script>
 

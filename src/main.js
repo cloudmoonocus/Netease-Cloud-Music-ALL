@@ -24,9 +24,14 @@ app.use(Loading);
 app.mount('#app');
 
 const onplayingData = onplaying();
-onplayingData.playList = JSON.parse(localStorage.getItem('localPlayer')).playlist;
-onplayingData.playNow = JSON.parse(localStorage.getItem('localPlayer')).playnow;
-onplayingData.judageNow();
+if (JSON.parse(localStorage.getItem('localPlayer'))) {
+    onplayingData.playList = JSON.parse(localStorage.getItem('localPlayer')).playlist;
+    onplayingData.playNow = JSON.parse(localStorage.getItem('localPlayer')).playnow;
+    // onplayingData.playNow.play = false;
+    onplayingData.judageNow();
+} else {
+    onplayingData.judageNow();
+}
 
 // 火山引擎监控
 import browserClient from '@apmplus/web';

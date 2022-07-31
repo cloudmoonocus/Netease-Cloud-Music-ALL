@@ -34,8 +34,9 @@ async function nextPlay() {
     const urlResult = await reqMusicUrl(props.data.id)
     // 获取点击歌曲的歌词
     const lyricResult = await reqMusicLyric(props.data.id)
+    let data = {};
     if (urlResult.code === 200) {
-        let newLyricArray = lyricResult.lrc.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
+        let newLyricArray = lyricResult.lrc.lyric.split(/[(\r\n)\r\n]+/).map((item) => {
             let minute = item.slice(1, 3);
             let second = item.slice(4, 6);
             let millisecond = item.slice(7, 10);
@@ -48,19 +49,42 @@ async function nextPlay() {
 
             return { minute, second, millisecond, lyric }
         })
-        let data = {
-            playNow: false,
-            index: null,
-            id: props.data.id,
-            imageUrl: props.data.url,
-            title: props.data.title,
-            musicUrl: urlResult.data[0].url,
-            lyricDetail: [newLyricArray],
+        if (onplayingData.playList.length) {
+            let newPlayList = onplayingData.playList.map((m) => {
+                if (m.index > onplayingData.playNow.index) {
+                    m.index++;
+                }
+                return m;
+            })
+            onplayingData.playList = newPlayList;
+            data = {
+                play: false,
+                playNow: false,
+                index: (onplayingData.playNow.index + 1),
+                id: props.data.id,
+                imageUrl: props.data.url,
+                title: props.data.title,
+                author: props.data.author,
+                musicUrl: urlResult.data[0].url,
+                lyricDetail: [newLyricArray],
+            }
+        } else {
+            data = {
+                play: true,
+                playNow: true,
+                index: 0,
+                id: props.data.id,
+                imageUrl: props.data.url,
+                title: props.data.title,
+                author: props.data.author,
+                musicUrl: urlResult.data[0].url,
+                lyricDetail: [newLyricArray],
+            }
         }
-        onplayingData.playList.push(data);
-        onplayingData.judageNow();
-        emits('closePopup');
     }
+    onplayingData.playList.push(data);
+    onplayingData.judageNow();
+    emits('closePopup');
 }
 </script>
 

@@ -14,7 +14,7 @@ export function playAll(data) {
     data.map(async (m) => {
         let urlResult = await reqMusicUrl(m.id);
         let lyricResult = await reqMusicLyric(m.id);
-        let newLyricArray = lyricResult.lrc.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
+        let newLyricArray = lyricResult.lrc.lyric.split(/[(\r\n)\r\n]+/).map((item) => {
             let minute = item.slice(1, 3);
             let second = item.slice(4, 6);
             let millisecond = item.slice(7, 10);
@@ -27,24 +27,27 @@ export function playAll(data) {
             return { minute, second, millisecond, lyric };
         });
         let musicData = {
+            play: false,
             playNow: false,
             index: num,
             id: m.id,
             imageUrl: m.al.picUrl,
             title: m.al.name,
+            author: m.ar[0].name,
             musicUrl: urlResult.data[0].url,
             lyricDetail: [newLyricArray],
         };
         onplayingData.playList.push(musicData);
         if (musicData.index === 0) {
             musicData.playNow = true;
+            musicData.play = true;
         }
         num++;
-        judage(data.length, ++num);
+        judage(data.length, num);
     });
 
     function judage(length, num) {
-        if (length === num) {
+        if (length === ++num) {
             onplayingData.judageNow();
             Notify({
                 message: '添加成功',
