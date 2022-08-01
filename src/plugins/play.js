@@ -28,11 +28,15 @@ export async function play(id, imageUrl, title, author) {
         });
         let data = {};
         if (onplayingData.playList.length) {
-            let newPlayList = onplayingData.playList.map((m) => {
-                m.index++;
-                return m;
-            });
-            onplayingData.playList = newPlayList;
+            for (let index = 0; index < onplayingData.playList.length; index++) {
+                onplayingData.playList[index].index++;
+                if (onplayingData.playList[index].id === id) {
+                    onplayingData.playList.splice(index, 1);
+                    for (let index2 = index; index2 < onplayingData.playList.length; index2++) {
+                        onplayingData.playList[index2].index--;
+                    }
+                }
+            }
             data = {
                 play: true,
                 playNow: true,
@@ -57,6 +61,7 @@ export async function play(id, imageUrl, title, author) {
                 lyricDetail: [newLyricArray],
             };
         }
+        console.log(data);
         onplayingData.playList.push(data);
         onplayingData.judageNow();
     }

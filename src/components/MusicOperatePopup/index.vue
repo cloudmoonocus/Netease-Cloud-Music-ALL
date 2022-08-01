@@ -50,23 +50,31 @@ async function nextPlay() {
             return { minute, second, millisecond, lyric }
         })
         if (onplayingData.playList.length) {
-            let newPlayList = onplayingData.playList.map((m) => {
-                if (m.index > onplayingData.playNow.index) {
-                    m.index++;
+            if (props.data.id === onplayingData.playList[onplayingData.playNow.index + 1].id) {
+            } else {
+                for (let index = 0; index < onplayingData.playList.length; index++) {
+                    if (onplayingData.playList[index].index > onplayingData.playNow.index) {
+                        onplayingData.playList[index].index++;
+                    }
+                    if (onplayingData.playList[index].id === props.data.id) {
+                        onplayingData.playList.splice(index, 1);
+                        for (let index2 = index; index2 < onplayingData.playList.length; index2++) {
+                            onplayingData.playList[index2].index--;
+                        }
+                    }
                 }
-                return m;
-            })
-            onplayingData.playList = newPlayList;
-            data = {
-                play: false,
-                playNow: false,
-                index: (onplayingData.playNow.index + 1),
-                id: props.data.id,
-                imageUrl: props.data.url,
-                title: props.data.title,
-                author: props.data.author,
-                musicUrl: urlResult.data[0].url,
-                lyricDetail: [newLyricArray],
+                data = {
+                    play: false,
+                    playNow: false,
+                    index: (onplayingData.playNow.index + 1),
+                    id: props.data.id,
+                    imageUrl: props.data.url,
+                    title: props.data.title,
+                    author: props.data.author,
+                    musicUrl: urlResult.data[0].url,
+                    lyricDetail: [newLyricArray],
+                }
+                onplayingData.playList.push(data);
             }
         } else {
             data = {
@@ -80,9 +88,9 @@ async function nextPlay() {
                 musicUrl: urlResult.data[0].url,
                 lyricDetail: [newLyricArray],
             }
+            onplayingData.playList.push(data);
         }
     }
-    onplayingData.playList.push(data);
     onplayingData.judageNow();
     emits('closePopup');
 }
