@@ -14,14 +14,8 @@
             <!-- 功能列表 -->
             <div>
                 <Grid :gutter="5" class="grid" icon-size="25px" column-num="4">
-                    <Grid-item
-                        v-for="value in grids"
-                        :key="value.id"
-                        :icon="value.icon"
-                        :text="value.text"
-                        :to="value.path"
-                        class="gridIn"
-                    />
+                    <Grid-item v-for="value in grids" :key="value.id" :icon="value.icon" :text="value.text"
+                        :to="value.path" class="gridIn" />
                 </Grid>
             </div>
             <!-- 推荐歌单 -->
@@ -31,12 +25,8 @@
                     <a class="more" @click="$router.push('/found/musiclist')">更多 ></a>
                 </div>
                 <Grid :border="false" :column-num="3" class="vanGridItemParent" :center="false">
-                    <GridItem
-                        class="vanGridItem"
-                        v-for="dailyLists in foundData.dailyListFound"
-                        :key="dailyLists.id"
-                        @click.stop="changeAlbumShow(dailyLists.id)"
-                    >
+                    <GridItem class="vanGridItem" v-for="dailyLists in foundData.dailyListFound" :key="dailyLists.id"
+                        @click.stop="changeAlbumShow(dailyLists.id)">
                         <van-image class="vanImage" radius="5" :src="dailyLists.picUrl">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
@@ -51,74 +41,36 @@
             <div class="rec2">
                 <div>
                     <span class="recommention">推荐歌曲</span>
-                    <a class="more2" @click="$router.push('/found/dailyrecommendation')"
-                        >播放
+                    <a class="more2" @click="$router.push('/found/dailyrecommendation')">播放
                         <Icon name="play-circle-o" />
                     </a>
                 </div>
                 <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
                     <!-- 通过splice方法控制循环的长度 -->
-                    <Grid-item
-                        v-for="dailyRcMusics in foundData.dailyRcMusic.splice(0, 4)"
-                        :key="dailyRcMusics.al.id"
-                        :icon="dailyRcMusics.al.picUrl"
-                        :text="dailyRcMusics.name"
-                        class="indent"
-                    />
+                    <Grid-item v-for="dailyRcMusics in foundData.dailyRcMusic.splice(0, 4)" :key="dailyRcMusics.al.id"
+                        :icon="dailyRcMusics.al.picUrl" :text="dailyRcMusics.name" class="indent" />
                 </Grid>
             </div>
             <!-- 新歌 新碟 数字专辑 -->
             <div class="rec3">
                 <Tabs v-model:active="active" swipeable :lazy-render="false" ref="tabs">
                     <Tab title="新歌">
-                        <Grid
-                            :column-num="1"
-                            direction="horizontal"
-                            class="vanGrid"
-                            :center="false"
-                            icon-size="35"
-                        >
-                            <Grid-item
-                                v-for="newMusics in foundData.newMusic.slice(0, 5)"
-                                :key="newMusics.album.id"
-                                :icon="newMusics.album.picUrl"
-                                :text="newMusics.name"
-                                class="indent"
-                            />
+                        <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
+                            <Grid-item v-for="newMusics in foundData.newMusic.slice(0, 5)" :key="newMusics.album.id"
+                                :icon="newMusics.album.picUrl" :text="newMusics.name" class="indent" />
                         </Grid>
                     </Tab>
                     <Tab title="新碟">
-                        <Grid
-                            :column-num="1"
-                            direction="horizontal"
-                            class="vanGrid"
-                            :center="false"
-                            icon-size="35"
-                        >
-                            <Grid-item
-                                v-for="newAlbum in foundData.newAlbum.slice(0, 5)"
-                                :key="newAlbum.id"
-                                :icon="newAlbum.picUrl"
-                                :text="newAlbum.name"
-                                class="indent"
-                            />
+                        <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
+                            <Grid-item v-for="newAlbum in foundData.newAlbum.slice(0, 5)" :key="newAlbum.id"
+                                :icon="newAlbum.picUrl" :text="newAlbum.name" class="indent" />
                         </Grid>
                     </Tab>
                     <Tab title="数字专辑">
-                        <Grid
-                            :column-num="1"
-                            direction="horizontal"
-                            class="vanGrid"
-                            :center="false"
-                            icon-size="35"
-                        >
-                            <Grid-item
-                                v-for="newDigitalAlbum in foundData.newDigitalAlbum.slice(0, 5)"
-                                :key="newDigitalAlbum.albumId"
-                                :icon="newDigitalAlbum.coverUrl"
-                                :text="newDigitalAlbum.albumName"
-                                class="indent"
-                            />
+                        <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
+                            <Grid-item v-for="newDigitalAlbum in foundData.newDigitalAlbum.slice(0, 5)"
+                                :key="newDigitalAlbum.albumId" :icon="newDigitalAlbum.coverUrl"
+                                :text="newDigitalAlbum.albumName" class="indent" />
                         </Grid>
                     </Tab>
                 </Tabs>
@@ -130,13 +82,8 @@
                     <a class="more" @click="$router.push('/found/rankinglist')">更多 ></a>
                 </div>
                 <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                    <Grid-item
-                        v-for="rankingLists in foundData.rankingList.slice(0, 5)"
-                        :key="rankingLists.rank"
-                        :icon="rankingLists.coverUrl"
-                        :text="rankingLists.albumName"
-                        class="indent"
-                    />
+                    <Grid-item v-for="rankingLists in foundData.rankingList.slice(0, 5)" :key="rankingLists.rank"
+                        :icon="rankingLists.coverUrl" :text="rankingLists.albumName" class="indent" />
                 </Grid>
             </div>
             <!-- 热门话题 -->
@@ -145,13 +92,8 @@
                     <span class="recommention">热门话题</span>
                 </div>
                 <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                    <Grid-item
-                        v-for="hotTopics in foundData.hotTopic"
-                        :key="hotTopics.actId"
-                        :icon="hotTopics.sharePicUrl"
-                        :text="hotTopics.title"
-                        class="indent"
-                    />
+                    <Grid-item v-for="hotTopics in foundData.hotTopic" :key="hotTopics.actId"
+                        :icon="hotTopics.sharePicUrl" :text="hotTopics.title" class="indent" />
                 </Grid>
             </div>
             <!-- 底部 -->
@@ -170,6 +112,9 @@ import AlbumDetail from '@/components/AlbumDetail';
 import { ref, watch } from 'vue';
 import { found } from '@/store/Found';
 import { getAlbumList } from '@/plugins/ClickAlbum';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const foundData = found();
 
@@ -184,7 +129,7 @@ const inShow = ref(false);
 watch(
     () => foundData.rankingList,
     () => {
-        if (foundData.rankingList.length) {
+        if (foundData.rankingList.length && route.path == '/found') {
             outShow.value = false;
             inShow.value = true;
             // 重绘标签栏底部颜色和轮播图位置

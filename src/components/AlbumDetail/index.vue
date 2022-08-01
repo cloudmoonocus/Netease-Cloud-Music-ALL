@@ -47,7 +47,8 @@
             </div>
             <!-- 歌曲列表 -->
             <div class="musicList">
-                <div class="card" v-for="data in listData.albumlist" :key="data.id">
+                <div class="card" v-for="data in listData.albumlist" :key="data.id"
+                    @click="playMusic(data.id, data.al.picUrl, data.name, data.ar[0].name)">
                     <van-image width="55" height="55" :src="data.al.picUrl" :alt="data.name" class="cardImage"
                         radius="10">
                         <template v-slot:loading>
@@ -57,7 +58,7 @@
                     <div>{{ data.name }}</div>
                     <span>{{ data.ar[0].name }}</span>
                     <Icon name="more-o" class="more-o"
-                        @click="popupShow(data.id, data.al.picUrl, data.name, data.ar[0].name)" />
+                        @click.stop="popupShow(data.id, data.al.picUrl, data.name, data.ar[0].name)" />
                 </div>
             </div>
         </div>
@@ -72,6 +73,7 @@ import { ref, watch } from 'vue';
 import { formatNumber } from '@/plugins/DigitalConverter';
 import MusicOperate from '@/components/MusicOperatePopup'
 import { playAll } from '@/plugins/playAll'
+import { play } from '@/plugins/play';
 import list from '@/store/List';
 const listData = list();
 
@@ -116,6 +118,9 @@ function closeOutPopup() {
     popupOutShow.value = false;
 }
 
+function playMusic(id, imageUrl, title, author) {
+    play(id, imageUrl, title, author);
+}
 // 播放全部音乐
 function playMusicAll() {
     playAll(listData.albumlist);

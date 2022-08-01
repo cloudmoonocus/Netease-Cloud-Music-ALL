@@ -27,8 +27,10 @@ const onplayingData = onplaying();
 if (JSON.parse(localStorage.getItem('localPlayer'))) {
     onplayingData.playList = JSON.parse(localStorage.getItem('localPlayer')).playlist;
     onplayingData.playNow = JSON.parse(localStorage.getItem('localPlayer')).playnow;
-    // onplayingData.playNow.play = false;
     onplayingData.judageNow();
+    if (onplayingData.playNow.id != 0) {
+        onplayingData.playNow.play = false;
+    }
 } else {
     onplayingData.judageNow();
 }

@@ -27,6 +27,8 @@ export default defineStore('onplaying', {
                 musicUrl: null,
                 lyricDetail: [],
             },
+            totalTime: null,
+            spead: null,
         };
     },
     actions: {
@@ -44,6 +46,14 @@ export default defineStore('onplaying', {
                     }
                 }
             }
+            let { minute, second, millisecond } =
+                this.playNow.lyricDetail[0][[this.playNow.lyricDetail[0].length - 2]];
+            minute = Number(minute);
+            second = Number(second);
+            millisecond = Number(millisecond);
+            let totalMI = minute * 60 + second + millisecond / 1000;
+            this.totalTime = totalMI;
+            this.spead = 100 / this.totalTime;
             const playnow = this.playNow;
             const playlist = this.playList;
             let localData = { playnow, playlist };

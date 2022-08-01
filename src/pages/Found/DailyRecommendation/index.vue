@@ -14,7 +14,8 @@
             </div>
             <!-- 歌曲列表 -->
             <div class="third">
-                <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic" :key="dailyRecMusics.id">
+                <div class="card" v-for="dailyRecMusics in foundData.dailyRcMusic" :key="dailyRecMusics.id"
+                    @click="playMusic(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name, dailyRecMusics.ar[0].name)">
                     <van-image width="55" height="55" :src="dailyRecMusics.al.picUrl" :alt="dailyRecMusics.name"
                         class="cardImage" radius="10">
                         <template v-slot:loading>
@@ -23,10 +24,8 @@
                     </van-image>
                     <div>{{ dailyRecMusics.name }}</div>
                     <span>{{ dailyRecMusics.ar[0].name }}</span>
-                    <Icon name="play-circle-o" class="play-circle-o"
-                        @click="playMusic(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name, dailyRecMusics.ar[0].name)" />
                     <Icon name="more-o" class="more-o"
-                        @click="popupShow(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name, dailyRecMusics.ar[0].name)" />
+                        @click.stop="popupShow(dailyRecMusics.id, dailyRecMusics.al.picUrl, dailyRecMusics.name, dailyRecMusics.ar[0].name)" />
                 </div>
             </div>
             <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
@@ -82,7 +81,6 @@ function playMusic(id, imageUrl, title, author) {
         width: 100%;
         height: 200px;
         position: relative;
-        z-index: 100;
         overflow: hidden;
     }
 
@@ -93,7 +91,6 @@ function playMusic(id, imageUrl, title, author) {
         position: absolute;
         left: -20%;
         top: 0;
-        z-index: 100;
         border-radius: 0 0 130px 130px;
         background-image: url('~@/assets/images/Found/headDaily.jpg');
         background-size: 100% 100%;

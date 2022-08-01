@@ -7,7 +7,7 @@
                 <span>({{ onplayingData.playList.length }})</span>
             </template>
             <template #right>
-                <Icon name="delete-o" size="20" color="#000" />
+                <Icon name="delete-o" size="20" color="#000" @click="deleteAll" />
             </template>
         </NavBar>
         <div class="list">
@@ -46,11 +46,28 @@ function closeList() {
 }
 
 function clearMusic(id) {
-    onplayingData.playList.map((m) => {
-        if (m.id === id) {
-
+    let playIs = onplayingData.playNow.play;
+    for (let index = 0; index < onplayingData.playList.length; index++) {
+        if (onplayingData.playList[index].id === id) {
+            if (onplayingData.playList[index].id === onplayingData.playNow.id) {
+                if (onplayingData.playList[index].index === (onplayingData.playList.length - 1)) {
+                    onplayingData.playList[0].playNow = true;
+                } else {
+                    onplayingData.playList[index + 1].playNow = true;
+                }
+            }
+            onplayingData.playList.splice(index, 1);
+            for (let index2 = index; index2 < onplayingData.playList.length; index2++) {
+                onplayingData.playList[index2].index--;
+            }
         }
-    })
+    }
+    onplayingData.judageNow();
+    onplayingData.playNow.play = playIs;
+}
+function deleteAll() {
+    onplayingData.playList = [];
+    onplayingData.judageNow();
 }
 </script>
 

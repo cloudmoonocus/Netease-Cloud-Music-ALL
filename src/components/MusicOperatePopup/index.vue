@@ -49,7 +49,7 @@ async function nextPlay() {
 
             return { minute, second, millisecond, lyric }
         })
-        if (onplayingData.playList.length) {
+        if (onplayingData.playList.length >= 2) {
             if (props.data.id === onplayingData.playList[onplayingData.playNow.index + 1].id) {
             } else {
                 for (let index = 0; index < onplayingData.playList.length; index++) {
@@ -63,6 +63,23 @@ async function nextPlay() {
                         }
                     }
                 }
+                data = {
+                    play: false,
+                    playNow: false,
+                    index: (onplayingData.playNow.index + 1),
+                    id: props.data.id,
+                    imageUrl: props.data.url,
+                    title: props.data.title,
+                    author: props.data.author,
+                    musicUrl: urlResult.data[0].url,
+                    lyricDetail: [newLyricArray],
+                }
+                onplayingData.playList.push(data);
+            }
+        } else if (onplayingData.playList.length === 1) {
+            if (props.data.id === onplayingData.playList[0].id) {
+
+            } else {
                 data = {
                     play: false,
                     playNow: false,

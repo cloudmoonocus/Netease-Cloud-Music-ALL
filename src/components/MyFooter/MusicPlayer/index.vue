@@ -8,15 +8,16 @@
             <span v-if="onplayingData.playNow.id != 0" style="margin-left: 10px;">- {{ onplayingData.playNow.author
             }}</span>
         </div>
-        <div class="pause" @click.stop="musicPause">
+        <div class="pause" @click.stop="musicPause" v-show="onplayingData.playList.length">
             <Circle v-model:current-rate="currentRate" :stroke-width="50" size="30px" color="#000" layer-color="#eee"
-                text="▶" :speed="10" />
+                :text="onplayingData.playNow.play === true ? '||' : '▶'" :speed="spead" />
         </div>
         <div class="list" @click.stop="showMusicList">
             <Icon name="bars" />
         </div>
     </div>
-    <MusicDetail :show="detailShow" @changeShow="changeDetailShow" />
+    <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${onplayingData.playNow.id}.mp3`"></audio>
+    <MusicDetail :show="detailShow" :data="musicDetail" @changeShow="changeDetailShow" />
     <MusicList :show="listShow" @changeShow="changeListShow" />
 </template>
 
@@ -34,6 +35,22 @@ const listShow = ref(false);
 
 const animationClass = ref(false);
 
+const spead = ref(onplayingData.spead);
+const time = ref(onplayingData.totalTime);
+watch(() => onplayingData.totalTime, () => {
+    time.value = onplayingData.totalTime;
+    spead.value = onplayingData.spead;
+})
+
+function roundFun(value, n) {
+    return Math.round(value * Math.pow(10, n)) / Math.pow(10, n);
+}
+
+const musicDetail = ref(null);
+watch(() => onplayingData.playNow.id, () => {
+    musicDetail.value = onplayingData.playNow
+})
+
 watch(() => onplayingData.playNow.play, () => {
     if (onplayingData.playNow.play === true) {
         animationClass.value = true;
@@ -44,16 +61,30 @@ watch(() => onplayingData.playNow.play, () => {
 
 // 展示歌曲详情页
 function showMusicDetail() {
-    detailShow.value = true;
+    if (onplayingData.playList.length) {
+        detailShow.value = true;
+    }
 }
 function changeDetailShow(value) {
     detailShow.value = value;
 }
 
+const audio = ref();
 // 暂停/开始歌曲
 function musicPause() {
-
+    if (audio.value.paused) {
+        audio.value.play();
+        onplayingData.playNow.play = true;
+    } else {
+        audio.value.pause();
+        onplayingData.playNow.play = false;
+    }
 }
+watch(() => onplayingData.playNow.id, () => {
+    if (onplayingData.playNow.play) {
+        audio.value.autoplay = true;
+    }
+})
 
 // 展示歌曲列表
 function showMusicList() {

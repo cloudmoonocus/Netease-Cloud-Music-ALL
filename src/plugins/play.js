@@ -61,7 +61,6 @@ export async function play(id, imageUrl, title, author) {
                 lyricDetail: [newLyricArray],
             };
         }
-        console.log(data);
         onplayingData.playList.push(data);
         onplayingData.judageNow();
     }
