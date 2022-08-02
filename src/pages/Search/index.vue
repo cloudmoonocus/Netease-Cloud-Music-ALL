@@ -27,12 +27,14 @@
     <!-- 搜索结果 -->
     <div class="result" v-show="resultShow">
         <div class="top">
-            <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px" />
+            <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px; line-height: 30px"
+                @click="playMusicAll" />
             <span>播放全部</span>
         </div>
         <div class="listResult">
             <div class="cardResult" v-for="(value, index) in searchData.result" :key="value.id"
-                style="background-color: #fff">
+                style="background-color: #fff"
+                @click="playMusic(value.id, value.al.picUrl, value.name, value.ar[0].name)">
                 <van-image :src="value.al.picUrl" :alt="value.name" width="55" height="55" radius="10" class="cardImage"
                     fit="cover" position="center">
                     <template v-slot:loading>
@@ -42,10 +44,10 @@
                 <div>{{ value.name }}</div>
                 <span>{{ value.ar[0].name }}</span>
                 <Icon name="play-circle-o" class="play-circle-o" />
-                <Icon name="more-o" class="more-o" @click="popupShow(value.id)" />
+                <Icon name="more-o" class="more-o" @click.stop="popupShow(value.id)" />
             </div>
         </div>
-        <MusicOperate :show="popupShowVal" :id="musicId" v-if="popupOutShow" @closePopup="closeOutPopup" />
+        <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />
     </div>
 </template>
 
@@ -53,6 +55,8 @@
 import { Search, Icon, Divider } from 'vant';
 import { Image as VanImage } from 'vant';
 import { ref, watch } from 'vue';
+import { play } from '@/plugins/play.js';
+import { playAll } from '@/plugins/playAll.js';
 import MusicOperate from '@/components/MusicOperatePopup'
 import search from '@/store/Search';
 const searchData = search();
@@ -117,15 +121,24 @@ searchData.getHotSearch();
 
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
-const musicId = ref();
-function popupShow(id) {
+const musicData = ref();
+function popupShow(id, url, title, author) {
     popupShowVal.value = true;
-    musicId.value = id;
+    musicData.value = { id, url, title, author };
     popupOutShow.value = true;
 }
+
 function closeOutPopup() {
     popupShowVal.value = false;
     popupOutShow.value = false;
+}
+
+function playMusicAll() {
+    playAll(searchData.result);
+}
+
+function playMusic(id, imageUrl, title, author) {
+    play(id, imageUrl, title, author);
 }
 </script>
 
@@ -244,6 +257,8 @@ function closeOutPopup() {
             position: relative;
             padding-top: 15px;
             height: 80px;
+            display: flex;
+            align-items: center;
 
             .cardImage {
                 position: absolute;
@@ -253,7 +268,7 @@ function closeOutPopup() {
             div:nth-child(2) {
                 position: absolute;
                 left: 90px;
-                top: 25px;
+                top: 40px;
                 width: 160px;
                 overflow: hidden;
                 display: -webkit-box;
@@ -265,20 +280,7 @@ function closeOutPopup() {
             span:nth-child(3) {
                 position: absolute;
                 left: 90px;
-                top: 48px;
-                width: 110px;
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
-                font-size: 10px;
-                color: rgb(122, 119, 119);
-            }
-
-            span:nth-child(4) {
-                position: absolute;
-                left: 80px;
-                top: 38px;
+                top: 55px;
                 width: 110px;
                 overflow: hidden;
                 display: -webkit-box;
@@ -289,15 +291,15 @@ function closeOutPopup() {
             }
 
             .play-circle-o {
+                font-size: 25px;
                 position: absolute;
-                top: 10px;
-                right: 55px;
+                right: 50px;
                 color: rgb(122, 119, 119);
             }
 
             .more-o {
+                font-size: 25px;
                 position: absolute;
-                top: 10px;
                 right: 10px;
                 color: rgb(122, 119, 119);
             }
