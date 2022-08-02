@@ -9,42 +9,30 @@
             }}</span>
         </div>
         <div class="pause" @click.stop="musicPause" v-show="onplayingData.playList.length">
-            <Circle v-model:current-rate="currentRate" :stroke-width="50" size="30px" color="#000" layer-color="#eee"
-                :text="onplayingData.playNow.play === true ? '||' : '▶'" :speed="spead" />
+            <Icon :name="onplayingData.playNow.play === true ? 'pause-circle-o' : 'play-circle-o'" />
         </div>
         <div class="list" @click.stop="showMusicList">
             <Icon name="bars" />
         </div>
     </div>
-    <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${onplayingData.playNow.id}.mp3`"></audio>
+    <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${onplayingData.playNow.id}.mp3`"
+        @canplay="getDuration"></audio>
     <MusicDetail :show="detailShow" :data="musicDetail" @changeShow="changeDetailShow" />
     <MusicList :show="listShow" @changeShow="changeListShow" />
 </template>
 
 <script setup>
-import { Circle, Icon } from 'vant'
+import { Icon } from 'vant'
 import { ref, watch } from 'vue';
 import MusicDetail from '@/components/MyFooter/MusicPlayer/MusicDetail'
 import MusicList from '@/components/MyFooter/MusicPlayer/MusicList'
 import onplaying from '@/store/OnPlaying';
 const onplayingData = onplaying();
 
-const currentRate = ref(0);
 const detailShow = ref(false);
 const listShow = ref(false);
 
 const animationClass = ref(false);
-
-const spead = ref(onplayingData.spead);
-const time = ref(onplayingData.totalTime);
-watch(() => onplayingData.totalTime, () => {
-    time.value = onplayingData.totalTime;
-    spead.value = onplayingData.spead;
-})
-
-function roundFun(value, n) {
-    return Math.round(value * Math.pow(10, n)) / Math.pow(10, n);
-}
 
 const musicDetail = ref(null);
 watch(() => onplayingData.playNow.id, () => {
@@ -70,6 +58,7 @@ function changeDetailShow(value) {
 }
 
 const audio = ref();
+const interval = ref();
 // 暂停/开始歌曲
 function musicPause() {
     if (audio.value.paused) {
@@ -80,11 +69,40 @@ function musicPause() {
         onplayingData.playNow.play = false;
     }
 }
-watch(() => onplayingData.playNow.id, () => {
+
+watch(() => [onplayingData.playNow.id, onplayingData.playNow.play], () => {
     if (onplayingData.playNow.play) {
+        audio.value.play();
         audio.value.autoplay = true;
+        sendCurrentTime();
+    } else {
+        audio.value.pause();
+        clearInterval(interval.value);
     }
 })
+
+watch(() => onplayingData.playNow.id, () => {
+    onplayingData.currentTime = 0;
+    onplayingData.totalTime = audio.value.duration;
+})
+
+function sendCurrentTime() {
+    interval.value = setInterval(() => {
+        onplayingData.currentTime = audio.value.currentTime;
+    }, 500)
+}
+
+watch(() => onplayingData.currentTime, () => {
+    if (onplayingData.slider) {
+        audio.value.currentTime = onplayingData.currentTime;
+    }
+    onplayingData.slider = false;
+})
+
+function getDuration() {
+    onplayingData.totalTime = audio.value.duration;
+}
+
 
 // 展示歌曲列表
 function showMusicList() {
@@ -143,7 +161,7 @@ function changeListShow(value) {
     }
 
     .animatePause {
-        animation-play-state: paused;
+        animation-play-state: paused !important;
     }
 
     .name {
@@ -162,14 +180,13 @@ function changeListShow(value) {
     .pause {
         display: inline-block;
         position: absolute;
-        margin-top: 8px;
+        line-height: 50px;
         right: 55px;
     }
 
     .list {
         display: inline-block;
         position: absolute;
-        font-size: 30px;
         line-height: 50px;
         right: 15px;
     }

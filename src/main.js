@@ -34,21 +34,3 @@ if (JSON.parse(localStorage.getItem('localPlayer'))) {
 } else {
     onplayingData.judageNow();
 }
-
-// 火山引擎监控
-import browserClient from '@apmplus/web';
-
-browserClient('init', {
-    aid: 372146,
-    userId: '356660222',
-    env: 'production/staging',
-    release: '1.0.0',
-    plugins: {
-        pageview: {
-            routeMode: 'history',
-        },
-    },
-});
-
-// 开启上报
-browserClient('start');

@@ -19,12 +19,20 @@ export function playAll(data) {
             let second = item.slice(4, 6);
             let millisecond = item.slice(7, 10);
             let lyric = item.slice(11, item.length);
-
             if (isNaN(Number(millisecond))) {
                 millisecond = item.slice(7, 9);
                 lyric = item.slice(10, item.length);
             }
-            return { minute, second, millisecond, lyric };
+            let time = Number(minute) * 60 + Number(second) + Number(millisecond) / 1000;
+            return { minute, second, millisecond, lyric, time };
+        });
+        newLyricArray.forEach((item, i) => {
+            if (i === newLyricArray.length - 1) {
+                item.lyric = 'Made By Cloudmoon';
+                item.nextTime = 99999;
+            } else {
+                item.nextTime = newLyricArray[i + 1].time;
+            }
         });
         let musicData = {
             play: false,

@@ -29,6 +29,8 @@ export default defineStore('onplaying', {
             },
             totalTime: null,
             spead: null,
+            currentTime: 0,
+            slider: null,
         };
     },
     actions: {
@@ -52,8 +54,6 @@ export default defineStore('onplaying', {
             second = Number(second);
             millisecond = Number(millisecond);
             let totalMI = minute * 60 + second + millisecond / 1000;
-            this.totalTime = totalMI;
-            this.spead = 100 / this.totalTime;
             const playnow = this.playNow;
             const playlist = this.playList;
             let localData = { playnow, playlist };

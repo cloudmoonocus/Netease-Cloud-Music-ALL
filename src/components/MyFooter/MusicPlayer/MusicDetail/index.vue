@@ -8,9 +8,9 @@
         </NavBar>
         <div id="firstPlayer" v-show="firstPlayer">
             <div id="click" @click="showLyric">
-                <svg version="1.1" id="player" x="0px" y="0px" width="180px" height="190px" viewBox="0 0 226 226"
+                <svg version="1.1" class="player" x="0px" y="0px" width="180px" height="190px" viewBox="0 0 226 226"
                     enable-background="new 0 0 226 226" xml:space="preserve">
-                    <g id="record">
+                    <g id="record" :class="{ iconPause: !onplayingData.playNow.play }">
                         <circle fill="#2C3E50" cx="112.11" cy="121.222" r="88.333" />
                         <circle fill="#E74C3C" cx="112.109" cy="121.223" r="35.333" />
                         <path fill="#4F5E6D" d="M89.414,168.208c-18.393-9.132-29.818-27.552-29.816-48.073c-0.001-10.566,3.068-20.789,8.875-29.563
@@ -30,7 +30,7 @@
 		c-6.396-13.118-16.467-23.83-29.124-30.98l2.459-4.354c13.542,7.65,24.317,19.11,31.159,33.142
 		C191.692,114.99,188.554,145.838,170.632,169.113z" />
                     </g>
-                    <g id="needle">
+                    <g id="needle" :class="{ iconPause: !onplayingData.playNow.play }">
                         <circle fill="#e60026" cx="191.664" cy="26.333" r="18.333" />
                         <path fill="#FFFFFF" d="M195.152,38.158c5.111-1.505,8.845-6.226,8.845-11.825c0-6.811-5.521-12.333-12.333-12.333
 		c-6.811,0-12.333,5.521-12.333,12.333c0,3.628,1.576,6.88,4.07,9.137l-11.944,91.183c-1.618-0.176-3.246,0.638-4.014,2.18
@@ -43,19 +43,19 @@
         </div>
         <div id="secondLyric" v-show="secondLyric" @click="showLyric">
             <div id="lyric">
-                <div v-for="(value, index) in onplayingData.playNow.lyricDetail[0]" :key="index" class="infor">
+                <div v-for="value in onplayingData.playNow.lyricDetail[0]" :key="value" id="infor"
+                    :data-time="value.time"
+                    :class="{ current: (onplayingData.currentTime >= value.time && onplayingData.currentTime < value.nextTime) }">
                     {{ value.lyric }}
                 </div>
             </div>
         </div>
         <div id="component">
-            <Slider v-model="value" active-color="#000" @change="" class="bottom">
-                <template #button>
-                    <div class="custom-button">{{ value }}</div>
-                </template>
+            <Slider v-model="value" active-color="#e60026" inactive-color="#ccc" @change="changeSlider" class="bottom"
+                button-size="12px">
             </Slider>
             <div class="fuc">
-                <i class="iconfont icon-xihuan" @click="likeMusic"></i>
+                <i class="iconfont icon-xiayigexiayishou" @click="lastMusic" style="transform:rotate(180deg)"></i>
                 <i :class="pause" @click="musicPause"></i>
                 <i class="iconfont icon-xiayigexiayishou" @click="nextMusic"></i>
             </div>
@@ -65,12 +65,10 @@
 
 <script setup>
 import { watch } from 'vue';
-import { Popup, Slider, NavBar, Icon } from 'vant';
+import { Popup, Slider, NavBar, Icon, Toast } from 'vant';
 import { ref } from 'vue';
 import onplaying from '@/store/OnPlaying';
 const onplayingData = onplaying();
-
-const value = ref(50)
 
 const props = defineProps({
     show: Boolean,
@@ -114,7 +112,6 @@ function nextMusic() {
     for (let index = 0; index < onplayingData.playList.length; index++) {
         if (onplayingData.playList[index].playNow) {
             onplayingData.playList[index].playNow = false;
-            break;
         }
     }
     if (onplayingData.playNow.index === (onplayingData.playList.length - 1)) {
@@ -125,6 +122,73 @@ function nextMusic() {
         onplayingData.playList[onplayingData.playNow.index + 1].play = true;
     }
     onplayingData.judageNow();
+}
+function lastMusic() {
+    for (let index = 0; index < onplayingData.playList.length; index++) {
+        if (onplayingData.playList[index].playNow) {
+            onplayingData.playList[index].playNow = false;
+        }
+    }
+    if (onplayingData.playNow.index === 0) {
+        onplayingData.playList[(onplayingData.playList.length - 1)].playNow = true;
+        onplayingData.playList[(onplayingData.playList.length - 1)].play = true;
+    } else {
+        onplayingData.playList[onplayingData.playNow.index - 1].playNow = true;
+        onplayingData.playList[onplayingData.playNow.index - 1].play = true;
+    }
+    onplayingData.judageNow();
+}
+
+const value = ref(0);
+watch(() => onplayingData.currentTime, () => {
+    value.value = parseInt((onplayingData.currentTime / onplayingData.totalTime) * 100);
+    if (props.show) {
+        let lyricAll = document.querySelector("#lyric")
+        let lyricLine = document.querySelector('#infor.current');
+        let scrollTop = lyricLine.offsetTop - lyricAll.clientHeight / 2;
+        if (Math.abs(lyricLine.getBoundingClientRect().top - (lyricLine.offsetTop - scrollTop)) > 60) {
+            setTimeout(() => {
+                lyricAll.scroll({ top: lyricLine.offsetTop - lyricAll.clientHeight / 2, behavior: 'auto' })
+            }, 2000);
+        } else {
+            lyricAll.scroll({ top: lyricLine.offsetTop - lyricAll.clientHeight / 2, behavior: 'smooth' })
+        }
+    }
+    if (onplayingData.currentTime == onplayingData.totalTime) {
+        onplayingData.currentTime = 0;
+        for (let index = 0; index < onplayingData.playList.length; index++) {
+            if (onplayingData.playList[index].playNow) {
+                onplayingData.playList[index].playNow = false;
+            }
+        }
+        if (onplayingData.playNow.index === (onplayingData.playList.length - 1)) {
+            onplayingData.playList[0].playNow = true;
+            onplayingData.playList[0].play = true;
+        } else {
+            onplayingData.playList[onplayingData.playNow.index + 1].playNow = true;
+            onplayingData.playList[onplayingData.playNow.index + 1].play = true;
+        }
+        onplayingData.judageNow();
+    }
+})
+
+function changeSlider() {
+    onplayingData.slider = true;
+    onplayingData.playNow.play = true;
+    onplayingData.currentTime = value.value / 100 * onplayingData.totalTime;
+    let time = parseInt(onplayingData.currentTime);
+    let minute = parseInt(time / 60);
+    let second = parseInt(time % 60);
+    if (second.toString().length === 1) {
+        second = second + '0';
+    }
+    if (minute.toString().length === 1) {
+        minute = '0' + minute;
+    }
+    Toast(`${minute}:${second}`);
+    let lyricAll = document.querySelector("#lyric")
+    let lyricLine = document.querySelector('#infor.current');
+    lyricAll.scroll({ top: lyricLine.offsetTop - lyricAll.clientHeight / 2, behavior: 'auto' })
 }
 </script>
 
@@ -138,60 +202,89 @@ function nextMusic() {
     background-image: linear-gradient(to left top, #eefbf8, #e6f5f5, #e0eff2, #dae9ef, #d6e2eb, #d1dde6, #cbd7e2, #c6d2dd, #bccdd6, #b3c8cf, #abc3c6, #a5bebc);
     height: 94%;
     width: 100%;
+
+    #click {
+        height: 72%;
+
+        .player {
+            margin-top: 25%;
+            margin-left: 50%;
+            transform: translateX(-50%);
+
+            #record {
+                animation: record 10s linear infinite;
+                animation-play-state: running;
+                transform-origin: 108px 121px;
+            }
+
+            @keyframes record {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(720deg);
+                }
+            }
+
+            #needle {
+                transform-origin: 50% 9% 0;
+                width: 50px;
+                height: 30px;
+                animation: jitter 1s ease-in-out infinite;
+                animation-iteration-count: 40;
+                animation-play-state: running;
+                transition: 2s ease-in-out;
+            }
+
+            @keyframes jitter {
+                0% {
+                    transform: rotate(1deg);
+                }
+
+                50% {
+                    transform: rotate(3deg);
+                }
+
+                100% {
+                    transform: rotate(1deg);
+                }
+            }
+
+            .iconPause {
+                animation-play-state: paused !important;
+            }
+        }
+    }
 }
 
 #secondLyric {
     background-image: linear-gradient(to left top, #eefbf8, #e6f5f5, #e0eff2, #dae9ef, #d6e2eb, #d1dde6, #cbd7e2, #c6d2dd, #bccdd6, #b3c8cf, #abc3c6, #a5bebc);
     height: 94%;
     width: 100%;
-}
 
-#player {
-    margin-top: 25%;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    #lyric {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        scroll-behavior: auto;
 
-    #record {
-        animation: record 10s linear infinite;
-        transform-origin: 108px 121px;
-    }
+        padding-top: 55%;
+        font-size: 13px;
+        height: 38%;
+        color: #000;
 
-    @keyframes record {
-        0% {
-            transform: rotate(0deg);
+        overflow: scroll;
+
+        #infor {
+            margin-top: 30px;
         }
 
-        100% {
-            transform: rotate(720deg);
-        }
-    }
-
-    #needle {
-        transform-origin: 50% 9% 0;
-        width: 50px;
-        height: 30px;
-        animation: jitter 1s ease-in-out infinite;
-        animation-iteration-count: 40;
-        transition: 2s ease-in-out;
-    }
-
-    @keyframes jitter {
-        0% {
-            transform: rotate(1deg);
-        }
-
-        50% {
-            transform: rotate(3deg);
-        }
-
-        100% {
-            transform: rotate(1deg);
+        .current {
+            font-size: 14px;
+            color: #e60026;
         }
     }
-}
-
-#click {
-    height: 72%;
 }
 
 #component {
@@ -240,23 +333,6 @@ function nextMusic() {
         }
 
 
-    }
-}
-
-#lyric {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding-top: 55%;
-    font-size: 15px;
-    height: 38%;
-    color: #000;
-
-    overflow: scroll;
-
-    .infor {
-        margin-top: 20px;
     }
 }
 </style>
