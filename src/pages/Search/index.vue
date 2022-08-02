@@ -10,7 +10,8 @@
         </div>
         <Divider :hairline="false" />
         <div class="list">
-            <div class="card" v-for="(value, index) in searchData.hotSearch" :key="index">
+            <div class="card" v-for="(value, index) in searchData.hotSearch" :key="index"
+                @click="hotSearch(value.searchWord)">
                 <span :class="{ three: index < 3, noThree: index >= 3 }">{{ ++index }}</span>
                 <span>{{ value.searchWord }}</span>
             </div>
@@ -118,6 +119,16 @@ function onSearch() {
 }
 // 获取热搜
 searchData.getHotSearch();
+
+function hotSearch(hotSearchWord) {
+    searchValue.value = hotSearchWord;
+    setTimeout(() => {
+        hotShow.value = false;
+        suggestShow.value = false;
+        resultShow.value = true;
+        searchData.getSearchResult(searchValue.value);
+    }, 1200);
+}
 
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);
