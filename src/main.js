@@ -9,6 +9,7 @@ import MyLoading from '@/components/Loading';
 import MyEmpty from '@/components/MyEmpty';
 import MusicList from '@/components/MusicList';
 import onplaying from './store/OnPlaying';
+import '@/directives/wave.js';
 
 const app = createApp(App);
 

@@ -44,7 +44,7 @@ export const handleNetworkError = (errStatus) => {
                 errMessage = `其他连接错误 --${errStatus}`;
         }
     } else {
-        errMessage = `无法连接到服务器！`;
+        errMessage = `无法连接到服务器!(常见问题：刷新即可)`;
     }
     Notify({ type: 'danger', message: errMessage });
 };

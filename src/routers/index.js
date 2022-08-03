@@ -370,7 +370,7 @@ const router = createRouter({
             name: 'search',
             path: '/search',
             component: () => import('@/pages/Search'),
-            meta: { title: '搜索', show: false, activeHeader: true, playerShow: true, firstIs: true },
+            meta: { title: '搜索', show: false, activeHeader: true, playerShow: true, firstIs: false },
         },
         // 登录页
         {

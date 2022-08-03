@@ -26,6 +26,7 @@
             </div>
         </div>
         <div id="component">
+            <div class="siler">{{ showSlider() }}</div>
             <Slider v-model="value" active-color="#e60026" inactive-color="#ccc" @change="changeSlider" class="bottom"
                 button-size="12px">
             </Slider>
@@ -40,7 +41,7 @@
 
 <script setup>
 import { watch } from 'vue';
-import { Popup, Slider, NavBar, Icon, Toast } from 'vant';
+import { Popup, Slider, NavBar, Icon } from 'vant';
 import { ref } from 'vue';
 import onplaying from '@/store/OnPlaying';
 const onplayingData = onplaying();
@@ -151,19 +152,43 @@ function changeSlider() {
     onplayingData.slider = true;
     onplayingData.playNow.play = true;
     onplayingData.currentTime = value.value / 100 * onplayingData.totalTime;
+    let lyricAll = document.querySelector("#lyric")
+    let lyricLine = document.querySelector('#infor.current');
+    lyricAll.scroll({ top: lyricLine.offsetTop - lyricAll.clientHeight / 2, behavior: 'auto' })
+}
+
+function showSlider() {
     let time = parseInt(onplayingData.currentTime);
     let minute = parseInt(time / 60);
     let second = parseInt(time % 60);
+    let time2 = parseInt(onplayingData.totalTime);
+    let minute2 = parseInt(time2 / 60);
+    let second2 = parseInt(time2 % 60);
+    minute = Number(minute);
+    second = Number(second);
+    minute2 = Number(minute2);
+    second2 = Number(second2);
+    if (second > 60) {
+        minute++;
+        second -= 60;
+    }
+    if (second2 > 60) {
+        minute2++;
+        second2 -= 60;
+    }
     if (second.toString().length === 1) {
-        second = second + '0';
+        second = '0' + second;
     }
     if (minute.toString().length === 1) {
         minute = '0' + minute;
     }
-    Toast(`${minute}:${second}`);
-    let lyricAll = document.querySelector("#lyric")
-    let lyricLine = document.querySelector('#infor.current');
-    lyricAll.scroll({ top: lyricLine.offsetTop - lyricAll.clientHeight / 2, behavior: 'auto' })
+    if (second2.toString().length === 1) {
+        second2 = '0' + second2;
+    }
+    if (minute2.toString().length === 1) {
+        minute2 = '0' + minute2;
+    }
+    return (`${minute}:${second} / ${minute2}:${second2}`);
 }
 </script>
 
@@ -279,6 +304,14 @@ function changeSlider() {
     height: 50px;
     width: 100%;
     bottom: 10vh;
+
+    .siler {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 15px;
+        bottom: 50px;
+    }
 
     .bottom {
         bottom: 35px;
