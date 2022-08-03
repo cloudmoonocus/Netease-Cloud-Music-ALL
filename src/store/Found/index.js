@@ -21,6 +21,7 @@ export const found = defineStore('found', {
             dailyListFound: [],
             dailyList: [],
             dailyRcMusic: [],
+            dailyRcMusicIndex: [],
             newMusic: [],
             newAlbum: [],
             newDigitalAlbum: [],
@@ -77,6 +78,9 @@ export const found = defineStore('found', {
             const dailyRcMusicResult = await reqDailyRecMusic();
             if (dailyRcMusicResult.code === 200) {
                 this.dailyRcMusic = dailyRcMusicResult.data.dailySongs;
+                for (let index = 0; index < 4; index++) {
+                    this.dailyRcMusicIndex[index] = this.dailyRcMusic[index];
+                }
             }
         },
         // 新歌

@@ -37,6 +37,7 @@ const props = defineProps({
     .myImage {
         margin-left: 20px;
         height: 85px;
+        width: 85px;
     }
 
     div:nth-child(2) {

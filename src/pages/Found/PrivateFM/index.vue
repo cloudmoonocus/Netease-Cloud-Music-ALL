@@ -12,9 +12,6 @@
                     <Icon name="add-o" class="icon" />
                 </div>
                 <Slider v-model="value" active-color="#e60026" @change="onChange" class="bottom">
-                    <template #button>
-                        <div class="custom-button">{{ value }}</div>
-                    </template>
                 </Slider>
                 <div class="fuc">
                     <i class="iconfont icon-buxihuan"></i>
@@ -29,8 +26,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Icon, Slider } from 'vant';
+import { onMounted, ref } from 'vue';
+import { Dialog, Icon, Slider } from 'vant';
 const value = ref(50);
 
 const outShow = ref(true);
@@ -38,13 +35,16 @@ const inShow = ref(false);
 
 // 进度条
 function onChange(value) {
-    console.log(value);
 };
 
 setTimeout(() => {
     outShow.value = false;
     inShow.value = true;
 }, 200);
+
+onMounted(() => {
+    Dialog({ message: '本页面只有界面，无实际功能' });
+})
 
 </script>
 

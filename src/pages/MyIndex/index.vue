@@ -144,28 +144,33 @@ import {
 } from 'vant';
 import { Image as VanImage } from 'vant';
 import Tip from '@/components/Tip';
-import { nextTick, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { reqCreateList, reqDeleteList } from '@/Api';
 import { getAlbumList } from '@/plugins/ClickAlbum';
 import myindex from '@/store/MyIndex';
 import AlbumDetail from '@/components/AlbumDetail';
+import { useRoute } from 'vue-router';
 const myindexData = myindex();
 
 const outShow = ref(true);
 const inShow = ref(false);
 const tabs = ref();
+const route = useRoute();
 
 watch(
     () => myindexData.isOk,
     () => {
         if (myindexData.isOk) {
-            outShow.value = false;
-            tabs.value.resize();
-            inShow.value = true;
+            if (route.path === '/myindex') {
+                outShow.value = false;
+                tabs.value.resize();
+                inShow.value = true;
+            }
         }
     }
 );
 
+myindexData.isOk = false;
 // 获取用户信息
 myindexData.getUserInfor();
 

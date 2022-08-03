@@ -1,52 +1,43 @@
 <template>
     <!-- 顶部 -->
     <Sticky :offset-top="0" v-if="$route.meta.activeHeader">
-        <Nav-bar :title="title">
+        <NavBar :title="title">
             <template #left>
-                <Icon @click="show = true" name="wap-nav" size="25" style="color: #e60026" />
+                <Icon @click="show = true" name="wap-nav" size="25" style="color: #e60026"
+                    v-show="route.meta.firstIs" />
+                <Icon @click="router.go(-1)" name="arrow-left" size="25" style="color: #e60026"
+                    v-show="!route.meta.firstIs" />
             </template>
             <template #right>
                 <Icon name="search" size="25" style="color: #e60026" @click="$router.push('/search')" />
             </template>
-        </Nav-bar>
+        </NavBar>
     </Sticky>
     <!-- 侧边栏 -->
-    <Popup
-        v-model:show="show"
-        position="left"
-        :style="{ height: '100%', width: '80%', float: 'left' }"
-        class="van-popup"
-    >
+    <Popup v-model:show="show" position="left" :style="{ height: '100%', width: '80%', float: 'left' }"
+        class="van-popup">
         <div class="headDiv" @click="goSignIn">
-            <van-image
-                round
-                width="35px"
-                height="35px"
-                :src="avatarUrl"
-                fit="cover"
-                position="left"
-                class="van-image"
-            />
+            <VanImage round width="35px" height="35px" :src="avatarUrl" fit="cover" position="left" class="van-image" />
             <span class="headSpan">{{ nickname }}</span>
             <Icon name="arrow" class="head-van-icon" />
         </div>
         <br />
-        <Cell-group inset>
+        <CellGroup inset>
             <Cell title="&nbsp;我的消息" icon="chat-o" is-link />
             <Cell title="&nbsp;云贝中心" icon="cash-back-record" is-link />
             <Cell title="&nbsp;创作者中心" icon="bulb-o" is-link />
-        </Cell-group>
+        </CellGroup>
         <br />
-        <Cell-group inset>
+        <CellGroup inset>
             <Cell title="音乐服务" />
             <Cell title="&nbsp;云村有票" icon="description" is-link />
             <Cell title="&nbsp;商城" icon="shopping-cart-o" is-link />
             <Cell title="&nbsp;Beat交易平台" icon="shop-o" is-link />
             <Cell title="&nbsp;游戏专区" icon="award-o" is-link />
             <Cell title="&nbsp;口袋彩铃" icon="phone-circle-o" is-link />
-        </Cell-group>
+        </CellGroup>
         <br />
-        <Cell-group inset>
+        <CellGroup inset>
             <Cell title="其他" />
             <Cell title="&nbsp;设置" icon="setting-o" is-link />
             <Cell title="&nbsp;夜间模式" icon="closed-eye" is-link>
@@ -61,9 +52,9 @@
             <Cell title="&nbsp;音乐黑名单" icon="close" is-link />
             <Cell title="&nbsp;青少年模式" icon="certificate" is-link />
             <Cell title="&nbsp;音乐闹钟" icon="tosend" is-link />
-        </Cell-group>
+        </CellGroup>
         <br />
-        <Cell-group inset>
+        <CellGroup inset>
             <Cell title="&nbsp;我的订单" icon="records" is-link />
             <Cell title="&nbsp;优惠券" icon="coupon-o" is-link />
             <Cell title="&nbsp;我的客服" icon="exchange" is-link />
@@ -72,17 +63,17 @@
             <Cell title="&nbsp;个人信息第三方共享清单" icon="browsing-history-o" is-link />
             <Cell title="&nbsp;个人信息与隐私保护" icon="cart-o" is-link />
             <Cell title="&nbsp;关于" icon="info-o" is-link />
-        </Cell-group>
+        </CellGroup>
         <br />
-        <Cell-group inset>
+        <CellGroup inset>
             <Cell center style="color: #e60026" title="退出登录/关闭" @click="logOut" />
-        </Cell-group>
+        </CellGroup>
         <br />
     </Popup>
 </template>
 
 <script setup>
-import { Icon, Sticky, NavBar, Popup, Cell, CellGroup, ConfigProvider, Switch, Toast, Dialog } from 'vant';
+import { Icon, Sticky, NavBar, Popup, Cell, CellGroup, Switch, Toast, Dialog } from 'vant';
 import { Image as VanImage } from 'vant';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -102,10 +93,15 @@ const show = ref(false);
 const nickname = ref('');
 const avatarUrl = ref('');
 onMounted(async () => {
-    let stateResult = await reqSignInState();
-    if (stateResult.data.code === 200) {
-        nickname.value = stateResult.data.profile.nickname;
-        avatarUrl.value = stateResult.data.profile.avatarUrl;
+    if (localStorage.getItem('cookie')) {
+        let stateResult = await reqSignInState();
+        if (stateResult.data.code === 200) {
+            nickname.value = stateResult.data.profile.nickname;
+            avatarUrl.value = stateResult.data.profile.avatarUrl;
+        }
+    } else {
+        Dialog({ message: '请先使用网易云音乐账号登录，若无账号，请先到网易云音乐官网进行注册！' });
+        router.replace('/index');
     }
 });
 // 跳转登录界面

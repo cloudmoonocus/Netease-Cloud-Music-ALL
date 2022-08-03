@@ -3,17 +3,9 @@
     <div class="phoneOut" style="background-color: #fff; height: 97vh" v-show="loginShow">
         <div>登录体验更多精彩</div>
         <div>未注册手机号登录后将自动创建账号</div>
-        <Field
-            v-model.trim="tel"
-            clearable
-            clear-icon="cross"
-            placeholder="请输入手机号(仅支持+86)"
-            maxlength="11"
-            class="phoneInput"
-        />
-        <Button type="primary" size="large" round color="#e60026" class="phoneButton" @click="next"
-            >下一步</Button
-        >
+        <Field v-model.trim="tel" clearable clear-icon="cross" placeholder="请输入手机号(仅支持+86)" maxlength="11"
+            class="phoneInput" />
+        <Button type="primary" size="large" round color="#e60026" class="phoneButton" @click="next">下一步</Button>
     </div>
     <!-- 输入验证码页面 -->
     <div class="verificationCode" style="background-color: #fff; height: 100vh" v-show="!loginShow">
@@ -23,15 +15,8 @@
             <span class="resetSend" v-show="countDown != 0">重新发送{{ countDown }}s</span>
             <span class="resetSend" v-show="countDown === 0" @click="resetSend">重新发送</span>
         </div>
-        <password-input
-            :value="verificationValue"
-            :gutter="10"
-            :focused="showKeyboard"
-            :mask="false"
-            :length="4"
-            @focus="showKeyboard = true"
-            class="password-input"
-        />
+        <password-input :value="verificationValue" :gutter="10" :focused="showKeyboard" :mask="false" :length="4"
+            @focus="showKeyboard = true" class="password-input" />
         <Button type="primary" size="large" round color="#e60026" class="submit" @click="submit">提交</Button>
         <number-keyboard v-model="verificationValue" :show="showKeyboard" @blur="showKeyboard = false" />
     </div>
@@ -124,6 +109,7 @@ async function submit() {
         Toast.success('登录成功');
         localStorage.setItem('cookie', codeResult.cookie);
         router.replace('/found');
+        window.location.reload();
     } else {
         Toast.fail('登录失败');
     }

@@ -36,7 +36,7 @@
 <script setup>
 import { Icon } from 'vant';
 import { Image as VanImage } from 'vant';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { found } from '@/store/Found';
 import MusicOperate from '@/components/MusicOperatePopup'
 import { playAll } from '@/plugins/playAll'
@@ -46,6 +46,16 @@ const outShow = ref(true);
 const inShow = ref(false);
 
 const foundData = found();
+
+foundData.getDailyRcMusic();
+foundData.getBannerImage();
+
+const bgiUrl = ref();
+onMounted(() => {
+    setTimeout(() => {
+        bgiUrl.value = 'url(' + foundData.bannerImage[1].pic + ')';
+    }, 500);
+})
 
 setTimeout(() => {
     outShow.value = false;
@@ -92,7 +102,8 @@ function playMusic(id, imageUrl, title, author) {
         left: -20%;
         top: 0;
         border-radius: 0 0 130px 130px;
-        background-image: url('~@/assets/images/Found/headDaily.jpg');
+        background-image: v-bind(bgiUrl);
+        background-size: cover;
         background-size: 100% 100%;
     }
 }

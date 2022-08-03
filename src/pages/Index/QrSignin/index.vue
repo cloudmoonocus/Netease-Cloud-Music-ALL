@@ -11,6 +11,8 @@ import QrcodeVue from 'qrcode.vue';
 import { Dialog, Notify, Toast } from 'vant';
 import router from '@/routers';
 
+Notify({ type: 'danger', message: '在手机客户端扫码成功并授权后\n请耐心等待 2 ~ 3 分钟即可登录成功', duration: 0 });
+
 let timer;
 const data = reactive({
     qrUrl: null,
@@ -43,17 +45,20 @@ timer = setInterval(async () => {
     const statusResult = await reqQrTime(data.key);
     if (statusResult.code === 800) {
         Dialog.alert({
-            message: '二维码已过期，点击确认重新获取',
+            message: '二维码已过期，点击确认重新获取(多确定几次)',
         }).then(() => {
             qrRefresh.value = false;
             getQrImg();
         });
-    } else if (statusResult.code === 803) {
+    }
+    if (statusResult.code === 803) {
         clearInterval(timer);
         Notify({ type: 'success', message: '授权登录成功' });
         localStorage.setItem('cookie', statusResult.cookie);
-        router.push('/found');
-    } else if (statusResult.code === 802) {
+        router.replace('/found');
+        window.location.reload();
+    }
+    if (statusResult.code === 802) {
         Toast.success('扫码成功，等待确认');
     }
 }, 3000);
@@ -61,13 +66,16 @@ timer = setInterval(async () => {
 
 <style lang="less" scoped>
 .out {
-    background-color: #fff;
+    background-image: linear-gradient(135deg, #FFF6B7 10%, #F6416C 100%);
     height: 100vh;
 
     .qr {
         margin-left: 50%;
         transform: translateX(-50%);
         margin-top: 50%;
+        background-color: #fff; //设置白色背景色
+        padding: 6px;
+        border: 1px #000 solid;
     }
 }
 </style>

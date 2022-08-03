@@ -13,27 +13,12 @@
                 <Icon name="phone-circle" class="first" />
                 <div>手机登录</div>
             </div>
-            <div class="tourist">
-                <Icon name="friends" class="first" @click="friendsSignIn" />
-                <div>游客访问</div>
-            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import { Icon } from 'vant';
-import { reqFriendsSignIn } from '@/Api';
-import router from '@/routers';
-
-// 游客登录
-async function friendsSignIn() {
-    let friendsSignResult = await reqFriendsSignIn();
-    if (friendsSignResult.code === 200) {
-        router.replace('/found');
-        localStorage.setItem('cookie', friendsSignResult.cookie);
-    }
-}
 </script>
 
 <style lang="less" scoped>
@@ -79,17 +64,6 @@ async function friendsSignIn() {
             .first {
                 margin-left: 50%;
                 transform: translateX(-50%);
-            }
-
-            div:nth-child(2) {
-                font-size: 15px;
-            }
-        }
-
-        .tourist {
-            .first {
-                margin-left: 50%;
-                transform: translateX(-55%);
             }
 
             div:nth-child(2) {

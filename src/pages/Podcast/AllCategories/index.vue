@@ -1,7 +1,9 @@
 <template>
-    <Notice-bar left-icon="info-o">
-        播放数为0是该接口返回的播放数全部为0,但未调用其他接口来获取数量
-    </Notice-bar>
+    <div>
+        <Notice-bar left-icon="info-o">
+            播放数为0是该接口返回的播放数全部为0,但未调用其他接口来获取数量
+        </Notice-bar>
+    </div>
     <div class="head">
         <Tabs duration="0" :lazy-render="false" line-height="7" ref="tabs">
             <Tab title="创作翻唱">

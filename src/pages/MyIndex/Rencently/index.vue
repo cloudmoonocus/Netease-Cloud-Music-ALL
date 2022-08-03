@@ -1,7 +1,7 @@
 <template>
     <div style="background-color: #fff">
         <div class="rcMyHead">
-            <Tabs swipeable line-height="6px" :lazy-render="true">
+            <Tabs swipeable line-height="6px" :lazy-render="true" v-if="show">
                 <Tab title="歌曲">
                     <div class="rcSecond">
                         <Icon name="play-circle" style="color: #e60026; font-size: 30px; margin-left: 15px" />
@@ -43,11 +43,19 @@
 import { Tab, Tabs, Icon } from 'vant';
 import MusicOperate from '@/components/MusicOperatePopup'
 import myindex from '@/store/MyIndex';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 const myindexData = myindex();
 
 // 获取最近播放歌曲
 myindexData.getRecentSong();
+
+const show = ref();
+watch(() => myindexData.recentSong, () => {
+    setTimeout(() => {
+        show.value = true;
+    }, 800)
+})
+
 
 const popupShowVal = ref(false);
 const popupOutShow = ref(false);

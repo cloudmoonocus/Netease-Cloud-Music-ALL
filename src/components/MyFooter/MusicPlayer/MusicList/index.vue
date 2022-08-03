@@ -49,9 +49,11 @@ function closeList() {
 
 function clearMusic(id) {
     let playIs = onplayingData.playNow.play;
+    console.log(playIs);
     for (let index = 0; index < onplayingData.playList.length; index++) {
         if (onplayingData.playList[index].id === id) {
             if (onplayingData.playList[index].id === onplayingData.playNow.id) {
+                playIs = true;
                 if (onplayingData.playList[index].index === (onplayingData.playList.length - 1)) {
                     onplayingData.playList[0].playNow = true;
                 } else {

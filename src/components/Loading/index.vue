@@ -1,114 +1,41 @@
 <template>
-    <!-- https://codepen.io/blakemanzo/pen/OXOBaw -->
-    <div class="three-balls">
-        <div class="ball ball1"></div>
-        <div class="ball ball2"></div>
-        <div class="ball"></div>
+    <div>
+        <i class="iconfont icon-wangyiyunyinyueclick" id="icon"></i>
     </div>
 </template>
 
 <style scoped>
-.three-balls {
-    margin: 0 auto;
-    width: 70px;
-    text-align: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 45%;
+div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    width: 100vw;
+    background-image: radial-gradient(circle, #fbe7e8, #ffcfd1, #ffb8b9, #ffa0a0, #ff8787);
 }
 
-.three-balls .ball {
-    position: relative;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    display: inline-block;
-    -webkit-animation: bouncedelay 2.0s infinite cubic-bezier(.62, .28, .23, .99) both;
-    animation: bouncedelay 2.0s infinite cubic-bezier(.62, .28, .23, .99) both;
+#icon {
+    margin-bottom: 80px;
+    font-size: 85px;
+    color: rgb(230, 0, 38);
+    animation: 1.5s cubic-bezier(0.3, 0.6, 0.9, 1.0) infinite iconAni;
 }
 
-.three-balls .ball1 {
-    -webkit-animation-delay: -.16s;
-    animation-delay: -.16s;
-}
-
-.three-balls .ball2 {
-    -webkit-animation-delay: -.08s;
-    animation-delay: -.08s;
-}
-
-@keyframes bouncedelay {
-    0% {
-        bottom: 0;
-        background-color: #03A9F4;
-    }
-
-    16.66% {
-        bottom: 40px;
-        background-color: #FB6542;
-    }
-
-    33.33% {
-        bottom: 0;
-        background-color: #FB6542;
+@keyframes iconAni {
+    from {
+        font-size: 85px;
+        transform: rotate(0deg);
     }
 
     50% {
-        bottom: 40px;
-        background-color: #FFBB00;
+        font-size: 95px;
+        transform: rotate(180deg);
     }
 
-    66.66% {
-        bottom: 0;
-        background-color: #FFBB00;
-    }
-
-    83.33% {
-        bottom: 40px;
-        background-color: #03A9F4;
-    }
-
-    100% {
-        bottom: 0;
-        background-color: #03A9F4;
-    }
-}
-
-@-webkit-keyframes bouncedelay {
-    0% {
-        bottom: 0;
-        background-color: #03A9F4;
-    }
-
-    16.66% {
-        bottom: 40px;
-        background-color: #FB6542;
-    }
-
-    33.33% {
-        bottom: 0;
-        background-color: #FB6542;
-    }
-
-    50% {
-        bottom: 40px;
-        background-color: #FFBB00;
-    }
-
-    66.66% {
-        bottom: 0;
-        background-color: #FFBB00;
-    }
-
-    83.33% {
-        bottom: 40px;
-        background-color: #03A9F4;
-    }
-
-    100% {
-        bottom: 0;
-        background-color: #03A9F4;
+    to {
+        font-size: 85px;
+        transform: rotate(360deg);
     }
 }
 </style>

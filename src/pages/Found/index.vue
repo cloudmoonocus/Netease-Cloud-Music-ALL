@@ -14,7 +14,7 @@
             <!-- 功能列表 -->
             <div>
                 <Grid :gutter="5" class="grid" icon-size="25px" column-num="4">
-                    <Grid-item v-for="value in grids" :key="value.id" :icon="value.icon" :text="value.text"
+                    <GridItem v-for="value in grids" :key="value.id" :icon="value.icon" :text="value.text"
                         :to="value.path" class="gridIn" />
                 </Grid>
             </div>
@@ -22,17 +22,17 @@
             <div class="rec1">
                 <div class="recChild">
                     <span class="recommention">推荐歌单</span>
-                    <a class="more" @click="$router.push('/found/musiclist')">更多 ></a>
+                    <a class="more" href="javascript:;" @click="$router.push('/found/musiclist')">更多 ></a>
                 </div>
                 <Grid :border="false" :column-num="3" class="vanGridItemParent" :center="false">
                     <GridItem class="vanGridItem" v-for="dailyLists in foundData.dailyListFound" :key="dailyLists.id"
                         @click.stop="changeAlbumShow(dailyLists.id)">
-                        <van-image class="vanImage" radius="5" :src="dailyLists.picUrl">
+                        <VanImage class="vanImage" radius="5" :src="dailyLists.picUrl">
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
                             </template>
-                        </van-image>
-                        <a :title="dailyLists.name">{{ dailyLists.name }}</a>
+                        </VanImage>
+                        <a :title="dailyLists.name" href="javascript:;">{{ dailyLists.name }}</a>
                     </GridItem>
                 </Grid>
                 <AlbumDetail :show="albumShow" @changeAlbumInShow="changeAlbumOutShow" />
@@ -41,34 +41,35 @@
             <div class="rec2">
                 <div>
                     <span class="recommention">推荐歌曲</span>
-                    <a class="more2" @click="$router.push('/found/dailyrecommendation')">播放
+                    <a href="javascript:;" class="more2" @click="$router.push('/found/dailyrecommendation')">播放
                         <Icon name="play-circle-o" />
                     </a>
                 </div>
                 <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
                     <!-- 通过splice方法控制循环的长度 -->
-                    <Grid-item v-for="dailyRcMusics in foundData.dailyRcMusic.splice(0, 4)" :key="dailyRcMusics.al.id"
-                        :icon="dailyRcMusics.al.picUrl" :text="dailyRcMusics.name" class="indent" />
+                    <GridItem v-for="dailyRcMusics in foundData.dailyRcMusicIndex" :key="dailyRcMusics.id"
+                        :icon="dailyRcMusics.al.picUrl" :text="dailyRcMusics.name" class="indent"
+                        @click="playMusic(dailyRcMusics.id, dailyRcMusics.al.picUrl, dailyRcMusics.name, dailyRcMusics.ar[0].name)" />
                 </Grid>
             </div>
             <!-- 新歌 新碟 数字专辑 -->
             <div class="rec3">
-                <Tabs v-model:active="active" swipeable :lazy-render="false" ref="tabs">
+                <Tabs v-model:active="active" swipeable ref="tabs">
                     <Tab title="新歌">
                         <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                            <Grid-item v-for="newMusics in foundData.newMusic.slice(0, 5)" :key="newMusics.album.id"
+                            <GridItem v-for="newMusics in foundData.newMusic.slice(0, 5)" :key="newMusics.id"
                                 :icon="newMusics.album.picUrl" :text="newMusics.name" class="indent" />
                         </Grid>
                     </Tab>
                     <Tab title="新碟">
                         <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                            <Grid-item v-for="newAlbum in foundData.newAlbum.slice(0, 5)" :key="newAlbum.id"
-                                :icon="newAlbum.picUrl" :text="newAlbum.name" class="indent" />
+                            <GridItem v-for="newAlbum in foundData.newAlbum.slice(0, 5)" :key="newAlbum.id"
+                                :icon="newAlbum.picUrl" :text="`${newAlbum.name}-${newAlbum.subType}`" class="indent" />
                         </Grid>
                     </Tab>
                     <Tab title="数字专辑">
                         <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                            <Grid-item v-for="newDigitalAlbum in foundData.newDigitalAlbum.slice(0, 5)"
+                            <GridItem v-for="newDigitalAlbum in foundData.newDigitalAlbumshou"
                                 :key="newDigitalAlbum.albumId" :icon="newDigitalAlbum.coverUrl"
                                 :text="newDigitalAlbum.albumName" class="indent" />
                         </Grid>
@@ -79,10 +80,10 @@
             <div class="rec4">
                 <div class="recChild">
                     <span class="recommention">排行榜&nbsp;&nbsp;</span>
-                    <a class="more" @click="$router.push('/found/rankinglist')">更多 ></a>
+                    <a href="javascript:;" class="more" @click="$router.push('/found/rankinglist')">更多 ></a>
                 </div>
                 <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                    <Grid-item v-for="rankingLists in foundData.rankingList.slice(0, 5)" :key="rankingLists.rank"
+                    <GridItem v-for="rankingLists in foundData.rankingList.slice(0, 5)" :key="rankingLists.rank"
                         :icon="rankingLists.coverUrl" :text="rankingLists.albumName" class="indent" />
                 </Grid>
             </div>
@@ -92,7 +93,7 @@
                     <span class="recommention">热门话题</span>
                 </div>
                 <Grid :column-num="1" direction="horizontal" class="vanGrid" :center="false" icon-size="35">
-                    <Grid-item v-for="hotTopics in foundData.hotTopic" :key="hotTopics.actId"
+                    <GridItem v-for="hotTopics in foundData.hotTopic" :key="hotTopics.actId"
                         :icon="hotTopics.sharePicUrl" :text="hotTopics.title" class="indent" />
                 </Grid>
             </div>
@@ -112,6 +113,7 @@ import AlbumDetail from '@/components/AlbumDetail';
 import { ref, watch } from 'vue';
 import { found } from '@/store/Found';
 import { getAlbumList } from '@/plugins/ClickAlbum';
+import { play } from '@/plugins/play.js';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -223,6 +225,9 @@ function changeAlbumShow(id) {
 }
 function changeAlbumOutShow(value) {
     albumShow.value = value;
+}
+function playMusic(id, imageUrl, title, author) {
+    play(id, imageUrl, title, author);
 }
 </script>
 
@@ -342,7 +347,7 @@ function changeAlbumOutShow(value) {
 
 .vanGridItem a {
     margin-top: 4px;
-    font-size: 10px;
+    font-size: 11px;
     width: 95px;
     overflow: hidden;
     display: -webkit-box;

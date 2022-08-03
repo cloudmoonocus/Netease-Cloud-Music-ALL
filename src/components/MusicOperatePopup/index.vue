@@ -1,5 +1,5 @@
 <template>
-    <Popup v-model:show="show" round position="bottom" :style="{ height: '18%', backgroundColor: '#fff' }"
+    <Popup v-model:show="show" round position="bottom" :style="{ height: '15%', backgroundColor: '#fff' }"
         @click-overlay="emits('closePopup')" teleport="#app">
         <CellGroup class="group" :border="false">
             <Cell title="&nbsp;&nbsp;下一首播放" :border="false" icon="play-circle-o" @click="nextPlay" />
@@ -11,7 +11,7 @@
 <script setup>
 import { reqMusicLyric, reqMusicUrl } from '@/Api';
 import onplaying from '@/store/OnPlaying';
-import { Popup, Cell, CellGroup, Toast } from 'vant';
+import { Popup, Cell, CellGroup, Toast, Notify } from 'vant';
 import { ref } from 'vue';
 
 const onplayingData = onplaying();
@@ -28,6 +28,7 @@ show.value = props.show;
 async function nextPlay() {
     Toast.loading({
         message: '添加中...',
+        duration: 0,
         forbidClick: true,
     });
     // 获取点击歌曲的Url
@@ -114,6 +115,12 @@ async function nextPlay() {
             }
             onplayingData.playList.push(data);
         }
+        Notify({
+            type: 'success',
+            position: 'bottom',
+            message: '添加成功！',
+        })
+        Toast.clear();
     }
     onplayingData.judageNow();
     emits('closePopup');

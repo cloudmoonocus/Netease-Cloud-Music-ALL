@@ -31,7 +31,7 @@
                 <Grid :border="false" :column-num="3" class="vanGridItemParent">
                     <Grid-item class="vanGridItem" v-for="value in podcastData.djRecom">
                         <van-image class="vanImage" radius="5" :src="value.picUrl" />
-                        <a :title="value.name">{{ value.name }}</a>
+                        <a href="javascript:;" :title="value.name">{{ value.name }}</a>
                     </Grid-item>
                 </Grid>
             </div>
@@ -47,7 +47,7 @@
                                 <van-loading type="spinner" size="20" />
                             </template>
                         </van-image>
-                        <a :title="value.name">{{ value.name }}</a>
+                        <a href="javascript:;" :title="value.name">{{ value.name }}</a>
                     </Grid-item>
                 </Grid>
             </div>
@@ -63,7 +63,7 @@
                                 <van-loading type="spinner" size="20" />
                             </template>
                         </van-image>
-                        <a :title="value.name">{{ value.name }}</a>
+                        <a href="javascript:;" :title="value.name">{{ value.name }}</a>
                     </Grid-item>
                 </Grid>
             </div>
@@ -79,7 +79,7 @@
                                 <van-loading type="spinner" size="20" />
                             </template>
                         </van-image>
-                        <a :title="value.name">{{ value.name }}</a>
+                        <a href="javascript:;" :title="value.name">{{ value.name }}</a>
                     </Grid-item>
                 </Grid>
             </div>
@@ -95,7 +95,7 @@
                                 <van-loading type="spinner" size="20" />
                             </template>
                         </van-image>
-                        <a :title="value.name">{{ value.name }}</a>
+                        <a href="javascript:;" :title="value.name">{{ value.name }}</a>
                     </Grid-item>
                 </Grid>
             </div>
@@ -111,7 +111,7 @@
                                 <van-loading type="spinner" size="20" />
                             </template>
                         </van-image>
-                        <a :title="value.name">{{ value.name }}</a>
+                        <a href="javascript:;" :title="value.name">{{ value.name }}</a>
                     </Grid-item>
                 </Grid>
             </div>

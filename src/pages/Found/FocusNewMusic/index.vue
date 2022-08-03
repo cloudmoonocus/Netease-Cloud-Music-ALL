@@ -4,19 +4,19 @@
         <div v-show="inShow">
             <div class="first"></div>
             <div class="out">
-                <div class="card" v-for="value in foundData.newAirtistMusic" :key="value.songLists[0].id"
+                <div class="card" v-for="value in foundData.newAirtistMusic" :key="value.songLists[0].name"
                     style="background-color: #fff;"
-                    @click="playMusic(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name, value.ar[0].name)">
-                    <van-image :src="value.songLists[0].al.picUrl" :alt="value.songLists[0].al.name" width="55"
-                        height="55" radius="10" class="cardImage" fit="cover" position="center">
+                    @click="playMusic(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].name, value.blockTitle.artistName)">
+                    <van-image :src="value.songLists[0].al.picUrl" :alt="value.songLists[0].name" width="55" height="55"
+                        radius="10" class="cardImage" fit="cover" position="center">
                         <template v-slot:loading>
                             <van-loading type="spinner" size="20" />
                         </template>
                     </van-image>
-                    <div>{{ value.songLists[0].al.name }}</div>
+                    <div>{{ value.songLists[0].name }}</div>
                     <span>{{ value.blockTitle.artistName }}</span>
                     <Icon name="more-o" class="more-o"
-                        @click.stop="popupShow(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].al.name, value.ar[0].name)" />
+                        @click.stop="popupShow(value.songLists[0].id, value.songLists[0].al.picUrl, value.songLists[0].name, value.blockTitle.artistName)" />
                 </div>
             </div>
             <MusicOperate :show="popupShowVal" :data="musicData" v-if="popupOutShow" @closePopup="closeOutPopup" />

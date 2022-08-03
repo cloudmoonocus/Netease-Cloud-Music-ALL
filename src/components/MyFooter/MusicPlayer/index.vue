@@ -70,7 +70,7 @@ function musicPause() {
     }
 }
 
-watch(() => [onplayingData.playNow.id, onplayingData.playNow.play], () => {
+watch(() => onplayingData.playNow.play, () => {
     if (onplayingData.playNow.play) {
         audio.value.play();
         audio.value.autoplay = true;
@@ -84,6 +84,14 @@ watch(() => [onplayingData.playNow.id, onplayingData.playNow.play], () => {
 watch(() => onplayingData.playNow.id, () => {
     onplayingData.currentTime = 0;
     onplayingData.totalTime = audio.value.duration;
+    if (onplayingData.playNow.play) {
+        audio.value.play();
+        audio.value.autoplay = true;
+        sendCurrentTime();
+    } else {
+        audio.value.pause();
+        clearInterval(interval.value);
+    }
 })
 
 function sendCurrentTime() {
@@ -118,8 +126,9 @@ function changeListShow(value) {
     position: relative;
     width: 100%;
     height: 55px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-top: #ccc 1px solid;
     background-color: #fff;
 
     .leftImage {
